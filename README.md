@@ -1,27 +1,24 @@
-# MesteriLicentaUi
+## ℹ️ About
+Mesteri-UI is the frontend interface for the MesteriConnect web platform. It provides users with an intuitive and interactive interface to interact with the platform's features, including listing request posting, project uploads, and browsing.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.1.
+## 🛠️ Functionalities
+✅User Interface: Provides a user-friendly interface for clients and handyman to navigate and interact with the platform.
 
-## Development server
+✅Service Request Posting: Allows clients to create and submit listings requests.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+✅Project Upload: Enables users to upload large-scale projects for bidding.
 
-## Code scaffolding
+✅Browsing and Bidding: Facilitates hadnyman to browse through service requests and place bids on projects.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+✅Profile Update: Handyman can update their profile stating what services they have completed after user confirmation
 
-## Build
+✅Pagination: Listings and projects are display using pagination to enhance user experience
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🧠 Key learnings
+•Frontend Development: Designing and developing a responsive and visually appealing user interface.
 
-## Running unit tests
+•User Experience Design: Ensuring an intuitive and seamless user experience for improved usability.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+•Integration with Backend: Communicating with the backend API to fetch and submit data.
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+•Component-Based Architecture: Implementing a modular and reusable component-based architecture for maintainability.
