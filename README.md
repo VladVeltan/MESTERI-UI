@@ -3,7 +3,7 @@ Mesteri-UI is the frontend interface for the MesteriConnect web platform. It pro
 
 Project is in progres.
 
-## 🛠️ Functionalities
+## 🛠️ To be implemented 
 ✅User Interface: Provides a user-friendly interface for clients and handyman to navigate and interact with the platform.
 
 ✅Service Request Posting: Allows clients to create and submit listings requests.
@@ -16,11 +16,3 @@ Project is in progres.
 
 ✅Pagination: Listings and projects are display using pagination to enhance user experience
 
-## 🧠 Key learnings
-•Frontend Development: Designing and developing a responsive and visually appealing user interface.
-
-•User Experience Design: Ensuring an intuitive and seamless user experience for improved usability.
-
-•Integration with Backend: Communicating with the backend API to fetch and submit data.
-
-•Component-Based Architecture: Implementing a modular and reusable component-based architecture for maintainability.
