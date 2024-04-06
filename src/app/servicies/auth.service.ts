@@ -38,6 +38,7 @@ export class AuthService {
        .post<AccessToken>(environment.apiUrl + '/login', authData)
        .pipe(
            tap((res: AccessToken) => {
+               console.log(res.token)
                localStorage.setItem(StorageKeys.TOKEN, res.token);
                this.isLoggedIn$.next(true);
                this.getUserDetails();
