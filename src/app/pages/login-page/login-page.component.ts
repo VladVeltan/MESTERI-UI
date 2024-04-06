@@ -42,6 +42,7 @@ export class LoginPageComponent implements OnInit {
 
      console.log("Login page: " + authData.email);
      console.log("Login page: " + authData.password);
+      
 
      this.authService.login(authData).subscribe();
   }
