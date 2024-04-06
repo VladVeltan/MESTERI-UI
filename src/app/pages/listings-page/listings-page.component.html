@@ -1,1 +1,17 @@
 <p>listings-page works!</p>
+<!-- listings.component.html -->
+
+<div *ngIf="listings.length > 0; else loading">
+    <h2>Listings</h2>
+    <ul>
+      <li *ngFor="let listing of listings">
+        <!-- Display listing details here -->
+        {{ listing.title }} - {{ listing.category }} - {{listing.description}} -{{listing.county}}-{{listing.city}}
+      </li>
+    </ul>
+  </div>
+  
+  <ng-template #loading>
+    <p>Loading listings...</p>
+  </ng-template>
+  
