@@ -2,16 +2,18 @@ import { Component, OnInit, inject } from '@angular/core';
 
 import { FormGroup,ReactiveFormsModule , FormControl, Validators, FormBuilder } from '@angular/forms';
 
-import { Router } from '@angular/router';
+import { ROUTES, Router } from '@angular/router';
 import { AuthService } from '../../servicies/auth.service';
 import { PATHS } from '../../globals/routes';
 import { EMAIL_VALIDATION_PATTERN, PASSWORD_VALIDATION_PATTERN } from '../../globals/validators/regex-patterns';
 import { AuthData } from '../../types/auth.types';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncAction } from 'rxjs/internal/scheduler/AsyncAction';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,NgIf],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
 })
@@ -21,7 +23,8 @@ export class LoginPageComponent implements OnInit {
   formBuilder=inject(FormBuilder)
 
   formData!: FormGroup;
-  errorStatus!: number;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
   
 
   ngOnInit() {
@@ -37,13 +40,23 @@ export class LoginPageComponent implements OnInit {
   });
   }
 
-  onClickSubmit(authData: AuthData):void {
-     
-
-     console.log("Login page: " + authData.email);
-     console.log("Login page: " + authData.password);
-      
-
-     this.authService.login(authData).subscribe();
+  onClickSubmit(authData: AuthData): void {
+    this.authService.login(authData).subscribe(
+      () => {
+        // Autentificare reușită
+        this.successMessage = 'Authentication successful!';
+        this.errorMessage = null;
+        this.router.navigate([PATHS.LISTINGS]);
+      },
+      (error) => {
+        // Autentificare eșuată
+        this.errorMessage = 'Invalid email or password';
+        this.successMessage = null;
+        console.error('Login error:', error);
+      }
+    );
   }
+
+
+
 }
