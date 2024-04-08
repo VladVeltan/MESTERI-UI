@@ -10,6 +10,7 @@
       <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page" class="mr-5 hover:text-white">Home</a>
       <a routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page" class="mr-5 hover:text-white">Profile</a>
       <a routerLink="/listings" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page" class="mr-5 hover:text-white">Listings</a>
+      <a routerLink="/projects" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page" class="mr-5 hover:text-white">Projects</a>
       <button *ngIf="!(authService.isLoggedIn$ | async)" routerLink="/login" class="btn btn-lg btn-primary btn-block mr-5 hover:text-white">Login</button>
       <button *ngIf="(authService.isLoggedIn$ | async)" (click)="logout()" class="btn btn-lg btn-danger btn-block mr-5 hover:text-white">Logout</button>
     </nav>
