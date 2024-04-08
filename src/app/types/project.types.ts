@@ -1,6 +1,6 @@
 import { User } from "./user.types";
 
-export interface Listing{
+export interface Project{
     id:string;
     title:string;
     description:string;
@@ -10,5 +10,5 @@ export interface Listing{
     media:string;
     user:User;
     status:boolean;
-
+    
 }
