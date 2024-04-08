@@ -4,11 +4,11 @@ import { PATHS } from '../globals/routes';
 import { AuthService } from '../servicies/auth.service';
 
 
-export const candidateGuard: CanActivateFn = () => {
+export const userGuard: CanActivateFn = () => {
     const authService = inject(AuthService);
-    const isCandidate = authService.isUser$;
+    const isUser = authService.isUser$;
 
-    if (!isCandidate) {
+    if (!isUser) {
         inject(Router).createUrlTree([PATHS.LOGIN]);
         return false;
     }
