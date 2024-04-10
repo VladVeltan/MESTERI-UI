@@ -12,35 +12,35 @@ export class ListingService {
     http=inject(HttpClient)
     
     postListing(listing: Listing): Observable<Listing> {
-      return this.http.post<Listing>(`${environment.apiUrl}${PATHS.LISTINGS}`, listing);
+      return this.http.post<Listing>(`${environment.apiUrl}/${PATHS.LISTINGS}`, listing);
     }
   
     getAllListings(): Observable<Listing[]> {
-      return this.http.get<Listing[]>(`${environment.apiUrl}${PATHS.LISTINGS}`);
+      return this.http.get<Listing[]>(`${environment.apiUrl}/${PATHS.LISTINGS}`);
     }
   
     getListingsWithSorting(fieldToSortBy: string): Observable<Listing[]> {
-      return this.http.get<Listing[]>(`${environment.apiUrl}${PATHS.LISTINGS}/sort/${fieldToSortBy}`);
+      return this.http.get<Listing[]>(`${environment.apiUrl}/${PATHS.LISTINGS}/sort/${fieldToSortBy}`);
     }
   
     getListingsWithPagination(offset: number, pageSize: number): Observable<Listing[]> {
-      return this.http.get<Listing[]>(`${environment.apiUrl}${PATHS.LISTINGS}/pagination/${offset}/${pageSize}`);
+      return this.http.get<Listing[]>(`${environment.apiUrl}/${PATHS.LISTINGS}/pagination/${offset}/${pageSize}`);
     }
   
     getListingsWithPaginationAndSorting(offset: number, pageSize: number, field: string): Observable<Listing[]> {
-      return this.http.get<Listing[]>(`${environment.apiUrl}${PATHS.LISTINGS}/pagination/sort/${offset}/${pageSize}/${field}`);
+      return this.http.get<Listing[]>(`${environment.apiUrl}/${PATHS.LISTINGS}/pagination/sort/${offset}/${pageSize}/${field}`);
     }
   
     getListingById(listingId: string): Observable<Listing> {
-      return this.http.get<Listing>(`${environment.apiUrl}${PATHS.LISTINGS}/${listingId}`);
+      return this.http.get<Listing>(`${environment.apiUrl}/${PATHS.LISTINGS}/${listingId}`);
     }
   
     updateListing(listing: Listing): Observable<Listing> {
-      return this.http.put<Listing>(`${environment.apiUrl}${PATHS.LISTINGS}`, listing);
+      return this.http.put<Listing>(`${environment.apiUrl}/${PATHS.LISTINGS}`, listing);
     }
   
     deleteListing(id: string): Observable<string> {
-      return this.http.delete<string>(`${environment.apiUrl}${PATHS.LISTINGS}/${id}`);
+      return this.http.delete<string>(`${environment.apiUrl}/${PATHS.LISTINGS}/${id}`);
     }
 
 
