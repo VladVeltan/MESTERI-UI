@@ -1,14 +1,14 @@
+import { Category } from "./category.types";
 import { User } from "./user.types";
 
 export interface Listing{
     id:string;
     title:string;
     description:string;
-    category:string;
+    category:Category;
     county:string;
     city:string;
-    media:string;
-    user:User;
     status:boolean;
-
+    creationDate:string;
+    user:User;
 }

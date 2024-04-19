@@ -1,0 +1,40 @@
+<!-- filter-sidebar.component.html -->
+<div class="filter-sidebar">
+    <div class="filter-crt-wrap">
+        <h3>Filter Criteria</h3>
+    </div>
+    
+    <!-- Categorie -->
+    <div>
+        <button (click)="toggleCategoryDropdown()">Categorie</button>
+        <div *ngIf="showCategoryDropdown" class="dropdown">
+            <ul>
+                <li *ngFor="let category of categories">
+                    <label>
+                        <input type="checkbox" 
+                               [checked]="isSelected(category, 'category')" 
+                               (change)="selectItem(category, 'category')">
+                        {{ category.name }}
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Județ -->
+    <div>
+        <button (click)="toggleCountyDropdown()">Județ</button>
+        <div *ngIf="showCountyDropdown" class="dropdown">
+            <ul>
+                <li *ngFor="let county of counties">
+                    <label>
+                        <input type="checkbox" 
+                               [checked]="isSelected(county, 'county')" 
+                               (change)="selectItem(county, 'county')">
+                        {{ county.name }}
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

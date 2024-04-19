@@ -15,7 +15,7 @@ import { Routes } from "@angular/router";
 export const routes: Routes = [
     { path: PATHS.HOME,'title':'Home',component: HomePageComponent },
     { path: PATHS.LOGIN,'title':'Login',canActivate:[notAuthGuard], component: LoginPageComponent },
-    { path: PATHS.LISTINGS,'title':'Listings',canActivate:[authGuard,userGuard], component: ListingsPageComponent },
+    { path: PATHS.LISTINGS,'title':'Listings', component: ListingsPageComponent },
     { path: PATHS.PROFILE,'title':'Profile',canActivate:[authGuard,userGuard], component: ProfilePageComponent },
     { path: PATHS.PROJECTS,'title':'Projects',canActivate:[authGuard,userGuard], component: ProjectsPageComponent },
     { path: '', 'title':'Login',redirectTo: PATHS.LOGIN, pathMatch: 'full' },

@@ -1,0 +1,42 @@
+.filter-sidebar {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  width: 16rem; /* Lățimea sidebar-ului */
+  margin-right: 1rem; /* Distanța față de marginea din dreapta */
+
+  .filter-crt-wrap {
+    background-color: #59abcb;
+    width: 100%; /* Lățimea elementului pentru a acoperi întreaga lățime a sidebar-ului */
+  }
+
+  h3 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 0; /* Eliminarea marginii de sus */
+  }
+
+  button {
+    font-size: 16px;
+  }
+
+  ul {
+    margin-top: 5px;
+    padding: 0;
+    list-style: none; /* Eliminarea stilului implicit al listei */
+  }
+
+  ul li {
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  ul li:hover {
+    background-color: #f0f0f0;
+  }
+
+  .dropdown {
+    max-height: 300px; /* Înălțimea maximă a dropdown-ului */
+    overflow-y: auto; /* Adăugarea unui scrollbar vertical atunci când lista depășește înălțimea maximă */
+  }
+}

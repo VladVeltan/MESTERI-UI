@@ -1,17 +1,20 @@
-<p>listings-page works!</p>
-<!-- listings.component.html -->
+<body class="app-body">
+  <div class="app-row">
+    <div class="app-col-md-3">
+      <app-filter-sidebar class="app-narrow"></app-filter-sidebar>
+    </div>
+    <div class="app-col-md-9">
+      <app-search-bar class="app-search-bar"(searchEvent)="onSearch($event)"></app-search-bar>
+      <div *ngIf="listings.length > 0; else loading" class="app-listings-container">
+        <h2 class="app-listings-title">Listings</h2>
+        <ul class="app-listings-list">
+          <app-listing-item *ngFor="let listing of listings" [listing]="listing"></app-listing-item>
+        </ul>
+      </div>
 
-<div *ngIf="listings.length > 0; else loading">
-    <h2>Listings</h2>
-    <ul>
-      <li *ngFor="let listing of listings">
-        <!-- Display listing details here -->
-        {{ listing.title }} - {{ listing.category }} - {{listing.description}} -{{listing.county}}-{{listing.city}}
-      </li>
-    </ul>
+      <ng-template #loading>
+        <p>Loading listings...</p>
+      </ng-template>
+    </div>
   </div>
-  
-  <ng-template #loading>
-    <p>Loading listings...</p>
-  </ng-template>
-  
+</body>

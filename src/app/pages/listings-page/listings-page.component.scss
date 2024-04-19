@@ -1,0 +1,79 @@
+body {
+  background-color: #ededed;
+  margin-bottom: 0; /* Eliminăm spațiul alb de la fundul paginii */
+}
+
+.app-body {
+  background-color: #ededed;
+}
+
+.app-row {
+  display: flex;
+}
+
+.app-col-md-9 {
+  width: 75%; /* Afișăm listările pe 75% din lățimea paginii */
+  padding: 0 15px; /* Adăugăm un spațiu de 15px între listări și marginea paginii */
+}
+
+.app-col-md-3 {
+  width: 25%; /* Afișăm sidebar-ul pe 25% din lățimea paginii */
+  padding: 0 15px; /* Adăugăm un spațiu de 15px între sidebar și marginea paginii */
+}
+
+.app-filter-sidebar {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.app-filter-sidebar.app-narrow {
+  width: 100%; /* Facem sidebar-ul să ocupe întreaga lățime */
+}
+
+.app-filter-sidebar h3 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.app-filter-sidebar button {
+  font-size: 16px;
+}
+
+.app-filter-sidebar ul {
+  margin-top: 5px;
+}
+
+.app-filter-sidebar ul li {
+  cursor: pointer;
+}
+
+.app-filter-sidebar ul li:hover {
+  background-color: #f0f0f0;
+}
+
+.app-listings-container {
+  background-color: #ededed;
+  padding: 15px;
+  padding-left: 0;
+  border-radius: 5px;
+  margin-bottom: 15px; /* Adăugăm un spațiu între listări și marginea de jos */
+}
+
+.app-listings-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.app-listings-list {
+  list-style: none;
+  padding: 0;
+}
+
+.app-listing-item {
+  background-color: white;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
