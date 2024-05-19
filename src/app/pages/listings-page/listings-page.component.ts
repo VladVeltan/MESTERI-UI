@@ -9,6 +9,7 @@ import { MediaService } from '../../servicies/media.service';
 import { MediaItem } from '../../types/media.types';
 import { Category } from '../../types/category.types';
 import { County } from '../../types/county.types';
+import { ListingDto } from '../../types/listingDto.types';
 
 @Component({
   selector: 'app-listings-page',
@@ -23,8 +24,8 @@ export class ListingsPageComponent implements OnInit {
   selectedCountiesForFiltering: County[] = [];
   searchTerm: string = '';
 
-  originalListings: Listing[] = [];
-  filteredListings: Listing[] = [];
+  originalListings: ListingDto[] = [];
+  filteredListings: ListingDto[] = [];
   mediaListMap: Map<string, MediaItem[]> = new Map()
 
   isCreateListingModalOpen: boolean = false;

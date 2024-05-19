@@ -4,6 +4,7 @@ import { Media, MediaItem } from '../../../types/media.types';
 import { NgIf } from '@angular/common';
 import { ImageCroppedEvent, ImageCropperModule } from 'ngx-image-cropper';
 import { HammerModule } from '@angular/platform-browser';
+import { ListingDto } from '../../../types/listingDto.types';
 
 @Component({
   selector: 'app-listing-item',
@@ -13,7 +14,7 @@ import { HammerModule } from '@angular/platform-browser';
   styleUrl: './listing-item.component.scss'
 })
 export class ListingItemComponent {
-  @Input() listing!: Listing;
+  @Input() listingDto!: ListingDto;
   @Input() mediaList!: MediaItem[];
   desiredWidth = 300; // Definește lățimea dorită a imaginii redimensionate
   desiredHeight = 200;

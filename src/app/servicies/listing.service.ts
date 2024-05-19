@@ -21,8 +21,8 @@ export class ListingService {
     }
     
   
-    getAllListings(): Observable<Listing[]> {
-      return this.http.get<Listing[]>(`${environment.apiUrl}/${PATHS.LISTINGS}`);
+    getAllListings(): Observable<ListingDto[]> {
+      return this.http.get<ListingDto[]>(`${environment.apiUrl}/${PATHS.LISTINGS}`);
     }
   
     getListingsWithSorting(fieldToSortBy: string): Observable<Listing[]> {

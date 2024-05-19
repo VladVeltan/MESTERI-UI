@@ -1,4 +1,5 @@
 export interface ListingDto{
+    id:string;
     title:string;
     description:string;
     category:string;
@@ -7,6 +8,10 @@ export interface ListingDto{
     status:boolean;
     creationDate:string;
     userEmail:string;
+    userPhone:string;
+    userFirstName:string;
+    userLastName:string;
+
 }
 
 

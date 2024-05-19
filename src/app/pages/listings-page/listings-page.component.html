@@ -28,7 +28,7 @@
         <!-- Display original listings -->
         <ul class="listings-list">
           <ng-container *ngFor="let listing of originalListings">
-            <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listing]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+            <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
           </ng-container>
         </ul>
       </ng-container>
@@ -38,7 +38,7 @@
         <ng-container *ngIf="filteredListings.length > 0; else noListings">
           <ul class="listings-list">
             <ng-container *ngFor="let listing of filteredListings">
-              <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listing]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+              <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
             </ng-container>
           </ul>
         </ng-container>
