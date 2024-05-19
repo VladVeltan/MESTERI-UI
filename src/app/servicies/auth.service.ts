@@ -84,20 +84,20 @@ getUserDetails(): void {
    }
 }
 
-logout(): void {
-   localStorage.removeItem(StorageKeys.TOKEN);
-   this.userId = undefined;
+    logout(): void {
+        localStorage.removeItem(StorageKeys.TOKEN);
 
-   this.isLoggedIn$.next(false);
-   this.isAdmin$.next(false);
-   this.isUser$.next(false);
+        this.userId = undefined;
+        this.isLoggedIn$.next(false);
+        this.isAdmin$.next(false);
+        this.isUser$.next(false);
 
-   this.router.navigate([PATHS.LOGIN]);
-}
+        this.router.navigate([PATHS.LOGIN]);
+    }
 
-private autoLogout(expirationDuration: number): void {
-   setTimeout(() => {
-       this.logout();
-   }, expirationDuration);
-}
+    private autoLogout(expirationDuration: number): void {
+        setTimeout(() => {
+            this.logout();
+        }, expirationDuration);
+    }
 }

@@ -6,60 +6,124 @@ import { FilterSidebarComponent } from "../../globals/components/filter-sidebar/
 import { ListingItemComponent } from '../../globals/components/listing-item/listing-item.component';
 import { SearchBarComponent } from '../../globals/components/search-bar/search-bar.component';
 import { MediaService } from '../../servicies/media.service';
-import { Media } from '../../types/media.types';
+import { MediaItem } from '../../types/media.types';
+import { Category } from '../../types/category.types';
+import { County } from '../../types/county.types';
 
 @Component({
-    selector: 'app-listings-page',
-    standalone: true,
-    templateUrl: './listings-page.component.html',
-    styleUrl: './listings-page.component.scss',
-    imports: [NgFor, NgIf, FilterSidebarComponent,ListingItemComponent,SearchBarComponent]
+  selector: 'app-listings-page',
+  standalone: true,
+  templateUrl: './listings-page.component.html',
+  styleUrl: './listings-page.component.scss',
+  imports: [NgFor, NgIf, FilterSidebarComponent, ListingItemComponent, SearchBarComponent]
 })
-export class ListingsPageComponent  implements OnInit {
-  listings: Listing[] = [];
-  mediaListMap: Map<string, Media[]> = new Map();
+export class ListingsPageComponent implements OnInit {
 
-  private listingService=inject(ListingService)
-  private mediaService=inject(MediaService)
+  selectedCategoriesForFiltering: Category[] = [];
+  selectedCountiesForFiltering: County[] = [];
+  searchTerm: string = '';
 
+  originalListings: Listing[] = [];
+  filteredListings: Listing[] = [];
+  mediaListMap: Map<string, MediaItem[]> = new Map()
 
-  ngOnInit(): void {
-    this.getListingsWithMedia();
+  isCreateListingModalOpen: boolean = false;
+  noListingsMessage: string = '';
+
+  private listingService = inject(ListingService);
+  private mediaService = inject(MediaService);
+
+  async ngOnInit(): Promise<void> {
+    await this.getListingsWithMedia();
+    console.log(this.mediaListMap);
+    this.filterListings(); // Initialize filtered listings
   }
 
-  getListingsWithMedia(): void {
-    this.listingService.getAllListings().subscribe(
-      (listings: Listing[]) => {
-        this.listings = listings;
-        console.log(listings);
-        // Pentru fiecare anunț, obține media corespunzătoare
-        listings.forEach(listing => {
-          this.getMediaForListing(listing.id);
-        });
-      },
-      (error) => {
-        console.error('Error fetching listings:', error);
+  async getListingsWithMedia(): Promise<void> {
+    try {
+      const listings = await this.listingService.getAllListings().toPromise();
+      if (listings) {
+        for (const listing of listings) {
+          const mediaList = await this.getMediaForListing(listing.id);
+          this.mediaListMap.set(listing.id, mediaList);
+        }
+        this.originalListings = listings;
       }
-    );
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+    }
   }
-  
-  getMediaForListing(listingId: string): void {
-    // Obține media corespunzătoare anunțului
-    this.mediaService.findMediaByTypeAndId('listing_id', listingId).subscribe(
-      (mediaList: Media[]) => {
-        // Stochează media într-un map folosind id-ul anunțului ca cheie
-        this.mediaListMap.set(listingId, mediaList);
-      },
-      (error) => {
-        console.error('Error fetching media for listing:', error);
-      }
-    );
-  }
-  
 
+  async getMediaForListing(listingId: string): Promise<MediaItem[]> {
+    try {
+      const media = await this.mediaService.findMediaByTypeAndId('listing_id', listingId).toPromise();
+      return media || []; // Folosim operatorul ternar pentru a trata cazul în care media este undefined
+    } catch (error) {
+      console.error('Error fetching media for listing:', error);
+      return [];
+    }
+  }
 
   onSearch(searchTerm: string): void {
-    // Aici poți face ce vrei cu termenul de căutare, de exemplu, filtrarea listărilor după termenul introdus
-    console.log('Search term:', searchTerm);
+    this.searchTerm = searchTerm;
+    this.filterListings();
+  }
+
+  filterListings(): void {
+    // If no filters are applied, display the original listings
+    if (this.selectedCategoriesForFiltering.length === 0 &&
+        this.selectedCountiesForFiltering.length === 0 &&
+        this.searchTerm.length === 0) {
+      this.filteredListings = this.originalListings;
+      return;
+    }
+
+    // Filter listings based on category, county, and search term
+    let filteredListings = this.originalListings.filter(listing =>
+      (this.selectedCategoriesForFiltering.length === 0 || 
+       this.selectedCategoriesForFiltering.some(category => category.name === listing.category.toString())) &&
+      (this.selectedCountiesForFiltering.length === 0 || 
+       this.selectedCountiesForFiltering.some(county => county.name === listing.county.toString())) &&
+      (this.searchTerm.length === 0 || 
+       Object.values(listing).some(value => value.toString().toLowerCase().includes(this.searchTerm.toLowerCase())))
+    );
+
+    // Update the filtered listings
+    this.filteredListings = filteredListings;
+
+    // Construct the message for no listings found
+    this.noListingsMessage = this.constructNoListingsMessage();
+  }
+
+  constructNoListingsMessage(): string {
+    let filters = [];
+
+    if (this.selectedCategoriesForFiltering.length > 0) {
+      const categories = this.selectedCategoriesForFiltering.map(category => category.name).join(', ');
+      filters.push(`Categories: ${categories}`);
+    }
+
+    if (this.selectedCountiesForFiltering.length > 0) {
+      const counties = this.selectedCountiesForFiltering.map(county => county.name).join(', ');
+      filters.push(`Counties: ${counties}`);
+    }
+
+    if (this.searchTerm.length > 0) {
+      filters.push(`Search Term: "${this.searchTerm}"`);
+    }
+
+    return filters.length > 0 ? `No listings found for the following filters: ${filters.join('; ')}` : '';
+  }
+
+  // Method to handle changes in selected categories
+  onSelectedCategoriesChange(categories: Category[]): void {
+    this.selectedCategoriesForFiltering = categories;
+    this.filterListings();
+  }
+
+  // Method to handle changes in selected counties
+  onSelectedCountiesChange(counties: County[]): void {
+    this.selectedCountiesForFiltering = counties;
+    this.filterListings();
   }
 }

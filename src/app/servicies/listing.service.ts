@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../types/environment/environment';
 import { Listing } from '../types/listing.types';
 import { PATHS } from '../globals/routes';
+import { ListingDto } from '../types/listingDto.types';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ import { PATHS } from '../globals/routes';
 export class ListingService {
     http=inject(HttpClient)
     
-    postListing(listing: Listing): Observable<Listing> {
-      return this.http.post<Listing>(`${environment.apiUrl}/${PATHS.LISTINGS}`, listing);
+    postListing(listingDto: ListingDto): Observable<ListingDto> {
+      return this.http.post<ListingDto>(`${environment.apiUrl}/${PATHS.LISTINGS}`, listingDto);
     }
   
     getAllListings(): Observable<Listing[]> {

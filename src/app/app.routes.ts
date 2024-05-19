@@ -2,6 +2,7 @@ import { PATHS } from "./globals/routes";
 import { authGuard } from "./guards/auth.guard";
 import { notAuthGuard } from "./guards/not-auth.guard";
 import { userGuard } from "./guards/user.guard";
+import { CreatePostPageComponent } from "./pages/create-post-page/create-post-page.component";
 import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { ListingsPageComponent } from "./pages/listings-page/listings-page.component";
 import { LoginPageComponent } from "./pages/login-page/login-page.component";
@@ -17,7 +18,8 @@ export const routes: Routes = [
     { path: PATHS.LOGIN,'title':'Login',canActivate:[notAuthGuard], component: LoginPageComponent },
     { path: PATHS.LISTINGS,'title':'Listings', component: ListingsPageComponent },
     { path: PATHS.PROFILE,'title':'Profile',canActivate:[authGuard,userGuard], component: ProfilePageComponent },
-    { path: PATHS.PROJECTS,'title':'Projects',canActivate:[authGuard,userGuard], component: ProjectsPageComponent },
+    { path: PATHS.PROJECTS,'title':'Projects', component: ProjectsPageComponent },
+    { path: PATHS.POST,'title':'Post', component: CreatePostPageComponent },
     { path: '', 'title':'Login',redirectTo: PATHS.LOGIN, pathMatch: 'full' },
     { path: '**', redirectTo: PATHS.HOME } 
   ];

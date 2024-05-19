@@ -12,7 +12,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           Authorization: `Bearer ${authToken}`
         }
       });
-  
+      
       // Pass the cloned request with the updated header to the next handler
       return next(authReq).pipe(
         catchError((err: any) => {

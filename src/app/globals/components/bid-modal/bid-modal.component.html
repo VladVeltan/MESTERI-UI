@@ -1,0 +1,23 @@
+<div class="bid-modal">
+  <div class="modal-content">
+    <span class="close-button" (click)="onCloseModal()">&times;</span>
+    <h2>Place a Bid</h2>
+    <form (ngSubmit)="submitBidForm()">
+      <label for="bidSum">Bid Amount:</label>
+      <input type="number" id="bidSum" name="bidSum" [(ngModel)]="bidSum" required>
+
+      <label for="messageToUser">Message to User:</label>
+      <textarea id="messageToUser" name="messageToUser" [(ngModel)]="messageToUser" required></textarea>
+
+      <button type="submit">Submit Bid</button>
+    </form>
+    <div *ngIf="bids.length > 0">
+      <h3>Bid History</h3>
+      <ul>
+        <li *ngFor="let bid of bids">
+          {{ bid.amount }} by {{ bid.bidderEmail }} on {{ bid.creationDate }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

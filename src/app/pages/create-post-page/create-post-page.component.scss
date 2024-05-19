@@ -1,0 +1,63 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  header {
+    background-color: #007bff;
+    padding: 10px 0;
+  }
+  
+  nav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  .create-post-container {
+    text-align: center;
+  }
+  
+  .create-post-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .button-container button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: calc(40% - 20px); /* Lățimea butoanelor va fi 50% din lățimea paginii - margin */
+    height: 50px;
+    margin: 10px; /* Margin între butoane */
+    border-radius: 20px; /* Rotunjirea colțurilor */
+  }
+  
+  .button-container button:hover {
+    background-color: #0056b3;
+  }
+  

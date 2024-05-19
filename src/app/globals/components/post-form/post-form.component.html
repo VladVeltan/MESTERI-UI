@@ -1,0 +1,43 @@
+<div class="create-listing-form">
+  <h2>Create {{ isProject ? 'Project' : 'Listing' }}</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="input-container">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" [(ngModel)]="formData.title" required>
+    </div>
+    <div class="input-container">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" rows="4" [(ngModel)]="formData.description" required></textarea>
+    </div>
+    <div class="input-container">
+      <label for="category">Category:</label>
+      <select id="category" name="category" [(ngModel)]="formData.category" required>
+        <option value="">Select category</option>
+        <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+      </select>
+    </div>
+    <div class="input-container">
+      <label for="county">County:</label>
+      <select id="county" name="county" [(ngModel)]="formData.county" required>
+        <option value="">Select county</option>
+        <option *ngFor="let county of counties" [value]="county.name">{{ county.name }}</option>
+      </select>
+    </div>
+    <div class="input-container">
+      <label for="images">Upload Images:</label>
+      <input type="file" id="images" name="images" (change)="onFileChange($event)" multiple [attr.required]="isProject ? 'true' : null" required>
+    </div>
+    <div *ngIf="isProject">
+      <div class="input-container">
+        <label for="expectedDueDate">Expected Due Date:</label>
+        <input type="datetime-local" id="expectedDueDate" name="expectedDueDate" [(ngModel)]="formData.expectedDueDate" required>
+      </div>
+      <div class="input-container">
+        <label for="actionDuration">Action Duration (days):</label>
+        <input type="number" id="actionDuration" name="actionDuration" [(ngModel)]="formData.actionDuration" required>
+      </div>
+    </div>
+    
+    <button type="submit">Submit</button>
+  </form>
+</div>

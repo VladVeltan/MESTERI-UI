@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Category } from '../../../types/category.types';
 import { County } from '../../../types/county.types';
 import { NgFor, NgIf } from '@angular/common';
@@ -13,6 +13,10 @@ import { counties } from '../../../types/county.types';
   styleUrl: './filter-sidebar.component.scss'
 })
 export class FilterSidebarComponent {
+
+  @Output() selectedCategoriesChange: EventEmitter<Category[]> = new EventEmitter<Category[]>();
+  @Output() selectedCountiesChange: EventEmitter<County[]> = new EventEmitter<County[]>();
+
   showCategoryDropdown: boolean = false;
   showCountyDropdown: boolean = false;
 
@@ -59,6 +63,13 @@ export class FilterSidebarComponent {
         this.selectedCounties.splice(index, 1);
       }
     }
+
+    if (type === 'category') {
+      this.emitSelectedCategories();
+    } else if (type === 'county') {
+      this.emitSelectedCounties();
+    }
+
   }
 
   isSelected(item: Category | County, type: string): boolean {
@@ -69,4 +80,15 @@ export class FilterSidebarComponent {
     }
     return false;
   }
+
+  emitSelectedCategories(): void {
+    this.selectedCategoriesChange.emit(this.selectedCategories);
+  }
+
+  // Method to emit changes when counties are selected/deselected
+  emitSelectedCounties(): void {
+    this.selectedCountiesChange.emit(this.selectedCounties);
+  }
+  
+
 }

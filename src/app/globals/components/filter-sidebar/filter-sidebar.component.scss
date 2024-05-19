@@ -1,23 +1,38 @@
 .filter-sidebar {
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   padding: 10px;
-  border-radius: 5px;
-  width: 16rem; /* Lățimea sidebar-ului */
-  margin-right: 1rem; /* Distanța față de marginea din dreapta */
+  width: auto; /* Lățimea sidebar-ului */
+  margin-right: 2rem; /* Distanța față de marginea din dreapta */
+  margin-left:1.2rem;
+  margin-top:22px;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #f7f7f7;
 
-  .filter-crt-wrap {
-    background-color: #59abcb;
-    width: 100%; /* Lățimea elementului pentru a acoperi întreaga lățime a sidebar-ului */
-  }
 
   h3 {
+    font-family: 'Arial', sans-serif;
     font-weight: bold;
-    font-size: 18px;
-    margin-top: 0; /* Eliminarea marginii de sus */
+    font-size: 24px;
+    margin-top: 0;
+    text-align: center; // Centrare text pe orizontală
+    color: #333;
   }
 
   button {
-    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 100%;
+    transition: background-color 0.3s;
+    text-align: center; // Centrare text pe orizontală
+    border-radius: 5px;
   }
 
   ul {
@@ -36,7 +51,7 @@
   }
 
   .dropdown {
-    max-height: 300px; /* Înălțimea maximă a dropdown-ului */
+    max-height: 400px; /* Înălțimea maximă a dropdown-ului */
     overflow-y: auto; /* Adăugarea unui scrollbar vertical atunci când lista depășește înălțimea maximă */
   }
 }
