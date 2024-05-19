@@ -12,9 +12,14 @@ import { ListingDto } from '../types/listingDto.types';
 export class ListingService {
     http=inject(HttpClient)
     
-    postListing(listingDto: ListingDto): Observable<ListingDto> {
-      return this.http.post<ListingDto>(`${environment.apiUrl}/${PATHS.LISTINGS}`, listingDto);
+    postListing(formData: FormData): Observable<any> {
+      return this.http.post<any>(`${environment.apiUrl}/listings`, formData, {
+        headers: {
+          'enctype': 'multipart/form-data'
+        }
+      });
     }
+    
   
     getAllListings(): Observable<Listing[]> {
       return this.http.get<Listing[]>(`${environment.apiUrl}/${PATHS.LISTINGS}`);

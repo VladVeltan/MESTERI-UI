@@ -37,4 +37,17 @@ export class MediaService {
     }
     return bytes.buffer;
   }
+
+
+  uploadMedia(whichEntity: string, entityId: string, files: File[]): Observable<any> {
+    const formData = new FormData();
+    files.forEach(file => {
+      formData.append('images', file);
+    });
+    return this.http.post<any>(`${environment.apiUrl}/medias/${whichEntity}/${entityId}`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
 }

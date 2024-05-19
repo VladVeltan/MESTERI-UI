@@ -12,9 +12,14 @@ import { ProjectDto } from '../types/projectDto.types';
 export class ProjectService {
   http=inject(HttpClient)
 
-  postProject(project: Project): Observable<ProjectDto> {
-    return this.http.post<ProjectDto>(`${environment.apiUrl}/${PATHS.PROJECTS}`, project);
+  postProject(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/projects`, formData, {
+      headers: {
+        'enctype': 'multipart/form-data'
+      }
+    });
   }
+  
 
   getAllProjects(): Observable<ProjectDto[]> {
     return this.http.get<ProjectDto[]>(`${environment.apiUrl}/${PATHS.PROJECTS}`);

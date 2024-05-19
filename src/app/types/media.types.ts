@@ -12,7 +12,7 @@ export interface Media{
 
 }
 export interface MediaItem {
-    id: string; // ID-ul unic al elementului media
-    imageUrl: string; // URL-ul imaginii
+    id: string; 
+    imageUrl: string;
   }
   

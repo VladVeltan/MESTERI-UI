@@ -62,6 +62,8 @@ export class PostFormComponent {
   onSubmit(): void {
     console.log("in form", this.formData);
     this.formData.images = this.selectedFiles; // Include the selected files in formData
+    console.log("imagini selectate ", this.selectedFiles);
+    console.log("imagini din form data ", this.formData.images);
     this.formSubmitted.emit(this.formData);
   }
 }

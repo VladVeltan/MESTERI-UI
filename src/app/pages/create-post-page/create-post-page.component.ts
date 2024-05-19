@@ -1,29 +1,29 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { PostFormComponent } from '../../globals/components/post-form/post-form.component';
 import { NgIf } from '@angular/common';
-import { ListingService } from '../../servicies/listing.service';
-import { ListingDto } from '../../types/listingDto.types';
-import { ProjectDto } from '../../types/projectDto.types';
-import { jwtDecode } from 'jwt-decode';
-import { ProjectService } from '../../servicies/project.service';
+
 import { FeedbackModalComponent } from '../../globals/components/feedback-modal/feedback-modal.component';
+import { jwtDecode } from 'jwt-decode';
+import { ListingService } from '../../servicies/listing.service';
+import { ProjectService } from '../../servicies/project.service';
+import { MediaService } from '../../servicies/media.service';
 
 @Component({
   selector: 'app-create-post-page',
   standalone: true,
-  imports: [PostFormComponent,NgIf,FeedbackModalComponent],
+  imports: [PostFormComponent, NgIf, FeedbackModalComponent],
   templateUrl: './create-post-page.component.html',
-  styleUrl: './create-post-page.component.scss'
+  styleUrls: ['./create-post-page.component.scss']
 })
 export class CreatePostPageComponent {
   @ViewChild(FeedbackModalComponent) feedbackModal!: FeedbackModalComponent;
   showForm: boolean = false; // Variabila pentru controlul afișării formularului
-  formData:any={};
-  userEmail:string=""
-  listingService=inject(ListingService);
-  projectSerivce=inject(ProjectService)
+  formData: any = {};
+  userEmail: string = "";
+  listingService = inject(ListingService);
+  projectService = inject(ProjectService);
+  mediaService = inject(MediaService);
   isProject: boolean = false;
-
 
   ngOnInit() {
     // Apelează funcția decodeToken() la inițializarea paginii
@@ -33,6 +33,7 @@ export class CreatePostPageComponent {
   // Metoda pentru afișarea formularului de creare a listării
   showListingForm() {
     this.showForm = true;
+    this.isProject = false;
   }
 
   showProjectForm() {
@@ -40,44 +41,53 @@ export class CreatePostPageComponent {
     this.isProject = true; 
   }
 
-
-  onFormSubmitted(formData:any) {
+  onFormSubmitted(formData: any) {
     this.formData = formData;
-    this.formData.userEmail=this.userEmail!
-    console.log(formData)
+    this.formData.userEmail = this.userEmail!;
+    console.log(formData);
 
-    if (this.isProject){
-      this.projectSerivce.postProject(this.formData).subscribe(
+    if (this.isProject) {
+      this.projectService.postProject(this.formData).subscribe(
         (response) => {
-          this.showCompletionMessage('Project created successfully!');
-          console.log('Project created successfully!', response);
+          const projectId = response.id; // Adaptează în funcție de răspunsul API-ului
+          this.uploadFiles('project_id', projectId, formData.images);
         },
         (error) => {
           console.error('Error creating project:', error);
         }
       );
-    }
-    else{
+    } else {
       this.listingService.postListing(this.formData).subscribe(
         (response) => {
-          this.showCompletionMessage('Listing created successfully!');
-          console.log('Listing created successfully!', response);
+          const listingId = response.id; // Adaptează în funcție de răspunsul API-ului
+          this.uploadFiles('listing_id', listingId, formData.images);
         },
         (error) => {
           console.error('Error creating listing:', error);
         }
       );
     }
-    
   }
 
-  
+  uploadFiles(whichEntity: string, entityId: string, files: File[]): void {
+    console.log("in update files",files)
+    this.mediaService.uploadMedia(whichEntity, entityId, files).subscribe(
+      (response) => {
+        this.showCompletionMessage(`${whichEntity} created and files uploaded successfully!`);
+        console.log(`${whichEntity} created and files uploaded successfully!`, response);
+      },
+      (error) => {
+        console.error(`Error uploading files for ${whichEntity}:`, error);
+      }
+    );
+  }
+
   decodeToken() {
-    var token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
-      var decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode(token);
       if (decodedToken) {
-        this.userEmail= decodedToken.sub!;
+        this.userEmail = decodedToken.sub!;
         console.log('Email-ul este:', this.userEmail);
       } else {
         console.error('Token-ul JWT nu poate fi decodat.');
@@ -87,13 +97,10 @@ export class CreatePostPageComponent {
     }
   }
 
-
   showCompletionMessage(message: string): void {
     this.feedbackModal.showMessage(message);
     setTimeout(() => {
       this.feedbackModal.hideModal();
     }, 3000); // Adjust duration as needed
   }
-  
 }
-
