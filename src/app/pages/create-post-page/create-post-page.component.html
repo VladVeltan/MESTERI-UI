@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Post</title>
+  <link rel="stylesheet" href="create-post-page.component.scss">
+</head>
+<body>
+
+  <main>
+    <div class="create-post-container">
+      <h1>Select Post Type</h1>
+      <div class="button-container">
+        <button id="create-listing-btn" (click)="showListingForm()">Create Listing</button>
+        <button id="create-project-btn" (click)="showProjectForm()">Create Project</button>
+      </div>
+      <app-post-form *ngIf="showForm" [isProject]="isProject" (formSubmitted)="onFormSubmitted($event)"></app-post-form>
+    </div>
+    <app-feedback-modal></app-feedback-modal>
+
+  </main>
+
+</body>
+</html>

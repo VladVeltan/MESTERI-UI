@@ -1,0 +1,49 @@
+.body {
+    display: flex;
+  }
+  .side-bar-container {
+    width: 25%;
+  }
+  .main-container {
+    width: 75%;
+  }
+  
+  .top-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    border-radius: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+  }
+  
+  .search-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .select-default-sorting {
+    padding: 8px 12px;
+    border-radius: 15px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ced4da;
+    cursor: pointer;
+    width: auto;
+  }
+  
+  .sort-form {
+    margin-right: 10px;
+  }
+  
+  .no-items-found-message {
+    color: #000;
+  }
+  

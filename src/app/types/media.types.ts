@@ -11,3 +11,8 @@ export interface Media{
     projectId:Project
 
 }
+export interface MediaItem {
+    id: string; 
+    imageUrl: string;
+  }
+  

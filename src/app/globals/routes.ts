@@ -5,5 +5,7 @@ export const PATHS = {
     PROJECTS:'projects',
     REGISTER:'register',
     LOGIN:'login',
+    POST:'post',
+    BIDS:'bids',
     NOT_FOUND: 'not-found'
  };

@@ -1,19 +1,17 @@
 <div class="listing-item">
-  <div class="title-category">
+  <div class="details">
     <div class="title">{{ listing.title }}</div>
     <div class="category">{{ listing.category }}</div>
-  </div>
-  <div class="details">
-    <div class="posted-by-date">
-      <!-- <div class="posted-by">{{ listing.user.firstName }} {{ listing.user.lastName }}</div> -->
+      <div class="posted-by" *ngIf="listing.user">
+        {{ listing.user.firstName }} {{ listing.user.lastName }}
+      </div>
       <div class="date">{{ listing.creationDate }}</div>
       <div class="location">{{ listing.county }}, {{ listing.city }}</div>
-    </div>
+      <div class="description" colspan="2">{{ listing.description }}</div>
+  </div>
     <div class="media" *ngIf="mediaList && mediaList[currentImageIndex]">
-      <img [src]="mediaList[currentImageIndex].mediaUrl" alt="Media">
       <button class="navigation-button" (click)="navigateToPreviousImage()">&lt;</button>
+      <img [src]="mediaList[currentImageIndex].imageUrl" alt="Media">
       <button class="navigation-button" (click)="navigateToNextImage()">&gt;</button>
     </div>
-  </div>
-  <div class="description" colspan="2">{{ listing.description }}</div>
 </div>

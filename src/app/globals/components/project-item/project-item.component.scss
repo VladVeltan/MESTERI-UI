@@ -1,5 +1,4 @@
-/* listing-item.component.scss */
-.listing-item {
+.project-item {
     background-color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -15,33 +14,41 @@
     margin-bottom: 10px;
   }
   
+  .category,
   .posted-by,
   .date,
-  .category {
+  .location,
+  .description {
     font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .location {
-    font-size: 14px;
     margin-bottom: 5px;
   }
   
   .description {
     font-size: 16px;
   }
-  .title-category {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
   
-  .media{
+  .media {
     display: flex;
     align-items: center;
-    
   }
-  .posted-by{
-    display: flex;
-    flex-direction: column;
+  
+  .navigation-button {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+
+  .bid-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .bid-button:hover {
+    background-color: #0056b3;
   }

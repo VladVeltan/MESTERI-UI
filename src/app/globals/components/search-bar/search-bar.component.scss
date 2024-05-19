@@ -1,16 +1,17 @@
 .search-bar {
     display: flex;
     align-items: center;
-    width: max-content;
+    height: 80px;
+    width: auto;
   }
   
   .search-input {
-    flex: 1; /* Face input-ul să ocupe cât mai mult spațiu disponibil */
     padding: 5px;
     border-radius: 15px; /* Facem colțurile rotunjite tare pentru zona de scriere */
     border: 1px solid #ccc;
     margin-right: 10px;
-    width: auto;
+    width: 85%;
+    height: 40px;
   }
   
   .search-button {
@@ -20,6 +21,8 @@
     color: white;
     border: none;
     cursor: pointer;
+    width:15%;
+    height: 40px;
   }
   
   .search-button:hover {

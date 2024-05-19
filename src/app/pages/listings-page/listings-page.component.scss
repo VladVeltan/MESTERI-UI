@@ -1,79 +1,57 @@
-body {
-  background-color: #ededed;
-  margin-bottom: 0; /* Eliminăm spațiul alb de la fundul paginii */
+.body{
+  display:flex;
+}
+.side-bar-container{
+  width: 25%;
+}
+.main-container{
+  width: 75%;
 }
 
-.app-body {
-  background-color: #ededed;
-}
-
-.app-row {
+.top-container{
   display: flex;
+  justify-content: space-between;
+  
 }
 
-.app-col-md-9 {
-  width: 75%; /* Afișăm listările pe 75% din lățimea paginii */
-  padding: 0 15px; /* Adăugăm un spațiu de 15px între listări și marginea paginii */
-}
 
-.app-col-md-3 {
-  width: 25%; /* Afișăm sidebar-ul pe 25% din lățimea paginii */
-  padding: 0 15px; /* Adăugăm un spațiu de 15px între sidebar și marginea paginii */
-}
-
-.app-filter-sidebar {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.app-filter-sidebar.app-narrow {
-  width: 100%; /* Facem sidebar-ul să ocupe întreaga lățime */
-}
-
-.app-filter-sidebar h3 {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.app-filter-sidebar button {
-  font-size: 16px;
-}
-
-.app-filter-sidebar ul {
-  margin-top: 5px;
-}
-
-.app-filter-sidebar ul li {
+.search-button {
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
   cursor: pointer;
+  width: 150px;
+  margin-bottom: 10px; /* Adaugăm un spațiu mic între buton și titlu */
+  margin-left:20px;
 }
 
-.app-filter-sidebar ul li:hover {
-  background-color: #f0f0f0;
+.search-button:hover {
+  background-color: #0056b3; /* Schimbăm culoarea de fundal la hover */
 }
 
-.app-listings-container {
-  background-color: #ededed;
-  padding: 15px;
-  padding-left: 0;
-  border-radius: 5px;
-  margin-bottom: 15px; /* Adăugăm un spațiu între listări și marginea de jos */
+
+.select-default-sorting {
+  padding: 8px 12px;
+  border-radius: 15px;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ced4da;
+  cursor: pointer;
+  width: auto;
+}
+.sort-form{
+  margin-right: 10px;
+}
+.no-items-found-message{
+  color:#000
 }
 
-.app-listings-title {
-  font-size: 24px;
-  font-weight: bold;
-}
 
-.app-listings-list {
-  list-style: none;
-  padding: 0;
-}
 
-.app-listing-item {
-  background-color: white;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 15px;
-}
+
+
+
+
 

@@ -1,4 +1,5 @@
 import { Category } from "./category.types";
+import { County } from "./county.types";
 import { User } from "./user.types";
 
 export interface Listing{
@@ -6,7 +7,7 @@ export interface Listing{
     title:string;
     description:string;
     category:Category;
-    county:string;
+    county:County;
     city:string;
     status:boolean;
     creationDate:string;

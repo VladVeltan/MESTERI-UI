@@ -1,20 +1,57 @@
-<body class="app-body">
-  <div class="app-row">
-    <div class="app-col-md-3">
-      <app-filter-sidebar class="app-narrow"></app-filter-sidebar>
-    </div>
-    <div class="app-col-md-9">
-      <app-search-bar class="app-search-bar"(searchEvent)="onSearch($event)"></app-search-bar>
-      <div *ngIf="listings.length > 0; else loading" class="app-listings-container">
-        <h2 class="app-listings-title">Listings</h2>
-        <ul class="app-listings-list">
-          <app-listing-item *ngFor="let listing of listings" [listing]="listing"></app-listing-item>
-        </ul>
+<body class="body">
+  <div class="side-bar-container">
+    <app-filter-sidebar 
+      (selectedCategoriesChange)="onSelectedCategoriesChange($event)" 
+      (selectedCountiesChange)="onSelectedCountiesChange($event)">
+    </app-filter-sidebar>
+  </div>
+
+  <div class="main-container">
+    <app-search-bar class="app-search-bar" (searchEvent)="onSearch($event)"></app-search-bar>
+
+    <div class="listings-container" *ngIf="originalListings.length > 0; else loading">
+      <div class="top-container">
+        <h2 class="listings-title">Listings</h2>
+        <div class="sort-and-create-listing-container">
+          <form class="sort-form">
+            <label class="text-sortby">Sortare:</label>
+            <select class="select-default-sorting" name="orderby">
+              <option value="date" selected>Dată</option>
+              <option value="salary">Preț</option>
+              <option value="name">Titlu</option>
+            </select>
+          </form>
+        </div>
       </div>
 
-      <ng-template #loading>
-        <p>Loading listings...</p>
+      <ng-container *ngIf="selectedCategoriesForFiltering.length === 0 && selectedCountiesForFiltering.length === 0 && searchTerm.length === 0">
+        <!-- Display original listings -->
+        <ul class="listings-list">
+          <ng-container *ngFor="let listing of originalListings">
+            <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listing]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+          </ng-container>
+        </ul>
+      </ng-container>
+      
+      <ng-container *ngIf="selectedCategoriesForFiltering.length !== 0 || selectedCountiesForFiltering.length !== 0 || searchTerm.length !==0 ">
+        <!-- Display filtered listings or no listings message -->
+        <ng-container *ngIf="filteredListings.length > 0; else noListings">
+          <ul class="listings-list">
+            <ng-container *ngFor="let listing of filteredListings">
+              <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listing]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+            </ng-container>
+          </ul>
+        </ng-container>
+      </ng-container>
+
+      <!-- No listings found message -->
+      <ng-template #noListings>
+        <p class="no-items-found-message">{{ noListingsMessage }}</p>
       </ng-template>
     </div>
+
+    <ng-template #loading>
+      <p>Loading listings...</p>
+    </ng-template>
   </div>
 </body>
