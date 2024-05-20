@@ -24,13 +24,13 @@
     >
     <button class="navigation-button" (click)="navigateToNextImage()">&gt;</button>
   </div>
-  <button class="bid-button" (click)="openBidModal()">Bid</button>
+  <button class="bid-button" *ngIf="project.acceptBids" (click)="openBidModal()">Bid</button>
 
-  <div *ngIf="latestBid">
+  <div *ngIf="project.acceptBids && latestBid">
     <p>Latest Bid: {{ latestBid.amount }} by {{ latestBid.bidderEmail }} on {{ latestBid.creationDate }}</p>
   </div>
 
-  <button (click)="openBidHistoryModal()">View Bid History</button>
+  <button *ngIf="project.acceptBids" (click)="openBidHistoryModal()">View Bid History</button>
   <app-bid-history-modal [bids]="allBids" [isVisible]="isBidHistoryModalVisible" (closeModalEvent)="closeBidHistoryModal()"></app-bid-history-modal>
 
   <app-bid-modal *ngIf="isBidModalOpen" (closeModal)="closeBidModal()" (submitBid)="submitBid($event.bidSum, $event.messageToUser)" [bids]="allBids"></app-bid-modal>
