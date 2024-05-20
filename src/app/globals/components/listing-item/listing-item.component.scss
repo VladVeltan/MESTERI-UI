@@ -36,10 +36,15 @@
     width: 100%;
   }
   
-  .media{
+  .media {
     display: flex;
     align-items: center;
-    
+    transition: background-color 0.3s ease; /* Adăugăm o tranziție pentru un efect lin */
+  }
+  
+  .media:hover {
+    background-color: #f5f5f5; /* Schimbăm culoarea de fundal la hover */
+    cursor: pointer; /* Schimbăm cursorul la hover */
   }
   .posted-by{
     display: flex;

@@ -3,17 +3,25 @@
     <div class="title">{{ project.title }}</div>
     <div class="category">{{ project.category }}</div>
     <div class="posted-by" *ngIf="project.userEmail">
-      {{ project.userPhone }}
-      {{ project.userFirstName }}
-      {{ project.userLastName }}
+      <mat-icon>person</mat-icon> {{ project.userFirstName }} {{ project.userLastName }}
+      <mat-icon>phone</mat-icon> {{ project.userPhone }}
     </div>
-    <div class="date">{{ project.creationDate }}</div>
-    <div class="location">{{ project.county }}, {{ project.city }}</div>
+    <div class="date">
+      <mat-icon>calendar_today</mat-icon> {{ project.creationDate }}
+    </div>
+    <div class="location">
+      <mat-icon>location_on</mat-icon> {{ project.county }}, {{ project.city }}
+    </div>
     <div class="description">{{ project.description }}</div>
   </div>
   <div class="media" *ngIf="mediaList && mediaList[currentImageIndex]">
     <button class="navigation-button" (click)="navigateToPreviousImage()">&lt;</button>
-    <img [src]="mediaList[currentImageIndex].imageUrl" alt="Media">
+    <img 
+      [src]="mediaList[currentImageIndex].imageUrl" 
+      alt="Media" 
+      (click)="openImageDialog(currentImageIndex)"
+      class="clickable-image"
+    >
     <button class="navigation-button" (click)="navigateToNextImage()">&gt;</button>
   </div>
   <button class="bid-button" (click)="openBidModal()">Bid</button>

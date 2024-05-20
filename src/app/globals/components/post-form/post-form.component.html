@@ -25,19 +25,22 @@
     </div>
     <div class="input-container">
       <label for="images">Upload Images:</label>
-      <input type="file" id="images" name="images" (change)="onFileChange($event)" multiple [attr.required]="isProject ? 'true' : null" required>
+      <input type="file" id="images" name="images" (change)="onFileChange($event)" multiple [attr.required]="isProject ? 'true' : null">
     </div>
     <div *ngIf="isProject">
       <div class="input-container">
-        <label for="expectedDueDate">Expected Due Date:</label>
-        <input type="datetime-local" id="expectedDueDate" name="expectedDueDate" [(ngModel)]="formData.expectedDueDate" required>
+        <label for="acceptBids">Accept Bids:</label>
+        <input type="checkbox" id="acceptBids" name="acceptBids" [(ngModel)]="formData.acceptBids" (change)="onAcceptBidsChange()">
+      </div>
+      <div class="input-container" *ngIf="formData.acceptBids">
+        <label for="actionDuration">Action Duration (days):</label>
+        <input type="number" id="actionDuration" name="actionDuration" [(ngModel)]="formData.actionDuration" (change)="onActionDurationChange()" required>
       </div>
       <div class="input-container">
-        <label for="actionDuration">Action Duration (days):</label>
-        <input type="number" id="actionDuration" name="actionDuration" [(ngModel)]="formData.actionDuration" required>
+        <label for="expectedDueDate">Expected Due Date:</label>
+        <input type="date" id="expectedDueDate" name="expectedDueDate" [(ngModel)]="formData.expectedDueDate" [attr.min]="minDueDate" required>
       </div>
     </div>
-    
     <button type="submit">Submit</button>
   </form>
 </div>

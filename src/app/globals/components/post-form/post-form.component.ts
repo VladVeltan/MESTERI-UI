@@ -17,6 +17,7 @@ export class PostFormComponent {
   @Output() formSubmitted: EventEmitter<ListingDto> = new EventEmitter<ListingDto>();
   @Input() isProject: boolean = false; // Adaugă un input pentru a primi tipul de post
   selectedFiles: File[] = [];
+  minDueDate: string = '';
 
   counties = counties;
   categories = categories;
@@ -30,33 +31,50 @@ export class PostFormComponent {
   initializeFormData(): void {
     if (this.isProject) {
       this.formData = {
-          title: '',
-          description: '',
-          category: '',
-          county: '',
-          city: '',
-          status: true,
-          creationDate: new Date().toISOString().slice(0, -5),
-          userEmail: '',
-          expectedDueDate: '',
-          actionDuration: 0 // Adaugă câmpul specific pentru proiect
+        title: '',
+        description: '',
+        category: '',
+        county: '',
+        city: '',
+        status: true,
+        creationDate: new Date().toISOString().slice(0, -5),
+        userEmail: '',
+        expectedDueDate: '',
+        actionDuration: 0, // Adaugă câmpul specific pentru proiect
+        acceptBids: false
       };
     } else {
       this.formData = {
-          title: '',
-          description: '',
-          category: '',
-          county: '',
-          city: '',
-          status: true,
-          creationDate: new Date().toISOString().slice(0, -5),
-          userEmail: ''
+        title: '',
+        description: '',
+        category: '',
+        county: '',
+        city: '',
+        status: true,
+        creationDate: new Date().toISOString().slice(0, -5),
+        userEmail: ''
       };
     }
   }
 
   onFileChange(event: any): void {
     this.selectedFiles = Array.from(event.target.files);
+  }
+
+  onAcceptBidsChange(): void {
+    this.formData.actionDuration = this.formData.acceptBids ? this.formData.actionDuration : 0;
+    this.updateMinDueDate();
+  }
+
+  onActionDurationChange(): void {
+    this.updateMinDueDate();
+  }
+
+  updateMinDueDate(): void {
+    const actionDuration = this.formData.actionDuration;
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + actionDuration);
+    this.minDueDate = currentDate.toISOString().split('T')[0]; // Only get the date part in 'YYYY-MM-DD' format
   }
 
   onSubmit(): void {
