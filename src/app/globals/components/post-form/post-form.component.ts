@@ -41,7 +41,7 @@ export class PostFormComponent {
         userEmail: '',
         expectedDueDate: '',
         actionDuration: 0, // Adaugă câmpul specific pentru proiect
-        acceptBids: false
+        acceptBids: false // Setează implicit la false
       };
     } else {
       this.formData = {
@@ -78,6 +78,11 @@ export class PostFormComponent {
   }
 
   onSubmit(): void {
+    // Asigură-te că acceptBids este setat la false dacă este null sau undefined
+    if (this.isProject && (this.formData.acceptBids === null || this.formData.acceptBids === undefined)) {
+      this.formData.acceptBids = false;
+    }
+
     console.log("in form", this.formData);
     this.formData.images = this.selectedFiles; // Include the selected files in formData
     console.log("imagini selectate ", this.selectedFiles);
