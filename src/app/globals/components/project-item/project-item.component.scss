@@ -32,13 +32,6 @@
     align-items: center;
   }
   
-  .navigation-button {
-    background-color: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
 
   .bid-button {
     padding: 10px 20px;
@@ -52,3 +45,13 @@
   .bid-button:hover {
     background-color: #0056b3;
   }
+
+  .nav-button {
+    position: relative;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    
+  }
+  

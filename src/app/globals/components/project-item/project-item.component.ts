@@ -10,22 +10,25 @@ import { jwtDecode } from 'jwt-decode';
 import { Bid } from '../../../types/bid.types';
 import { FeedbackModalComponent } from '../feedback-modal/feedback-modal.component';
 import { BidHistoryModalComponent } from '../bid-history-modal/bid-history-modal.component';
+import { MaterialModule } from '../../modules/material.module';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogData, ImageDialogComponent } from '../image-dialog/image-dialog.component';
 
 @Component({
   selector: 'app-project-item',
   standalone: true,
-  imports: [NgIf, ImageCropperModule, HammerModule,BidModalComponent,BidHistoryModalComponent],
+  imports: [NgIf, ImageCropperModule, HammerModule, BidModalComponent, BidHistoryModalComponent, MaterialModule],
   templateUrl: './project-item.component.html',
   styleUrls: ['./project-item.component.scss']
 })
 export class ProjectItemComponent {
-
   @Input() project!: ProjectDto;
   @Input() mediaList!: MediaItem[];
-  @Input() userEmail!:string;
+  @Input() userEmail!: string;
 
   @Output() bidPlaced: EventEmitter<string> = new EventEmitter<string>();
   @Output() showBidHistory: EventEmitter<void> = new EventEmitter<void>();
+
 
   desiredWidth = 300;
   desiredHeight = 200;
@@ -33,26 +36,28 @@ export class ProjectItemComponent {
   croppedImages: any[] = [];
   isBidModalOpen: boolean = false;
   isBidHistoryModalVisible: boolean = false;
-  mail!:string;
-  bidDto:any={}
+  mail!: string;
+  bidDto: any = {};
 
   latestBid!: Bid;
-  allBids!:Bid[];
+  allBids!: Bid[];
+
+  dialog=inject(MatDialog)
+  bidService = inject(BidService);
+
 
   ngOnInit(): void {
     this.decodeToken();
     this.resizeMediaImages();
-    this.bidDto= {
-      id:'',
-      projectId: this.project.id, // Id-ul proiectului
-      creationDate: new Date().toISOString(), // Data curentă
-      bidderEmail: this.mail, // Va fi completat mai târziu cu adresa de email a utilizatorului logat
-      amount: '', // Va fi completat mai târziu cu suma din modal
-      message: '' // Va fi completat mai târziu cu mesajul din modal
+    this.bidDto = {
+      id: '',
+      projectId: this.project.id,
+      creationDate: new Date().toISOString(),
+      bidderEmail: this.mail,
+      amount: '',
+      message: ''
     };
-
     this.fetchLatestBid();
-
   }
 
   decodeToken(): void {
@@ -60,7 +65,7 @@ export class ProjectItemComponent {
     if (token) {
       const decodedToken: any = jwtDecode(token);
       if (decodedToken) {
-         this.mail= decodedToken.sub;
+        this.mail = decodedToken.sub;
         console.log('Email-ul este:', this.mail);
       } else {
         console.error('Token-ul JWT nu poate fi decodat.');
@@ -70,7 +75,7 @@ export class ProjectItemComponent {
     }
   }
 
-  bidService=inject(BidService)
+  
 
   navigateToNextImage(): void {
     if (this.mediaList && this.currentImageIndex < this.mediaList.length - 1) {
@@ -84,8 +89,6 @@ export class ProjectItemComponent {
     }
   }
 
-  
-
   async resizeMediaImages(): Promise<void> {
     for (let i = 0; i < this.mediaList.length; i++) {
       const resizedImage = await this.resizeImage(this.mediaList[i].imageUrl);
@@ -98,9 +101,7 @@ export class ProjectItemComponent {
       const image = new Image();
       image.onload = function () {
         const canvas = document.createElement('canvas');
-
         const aspectRatio = image.width / image.height;
-
         let newWidth = 300;
         let newHeight = 200;
         if (aspectRatio > 1) {
@@ -108,7 +109,6 @@ export class ProjectItemComponent {
         } else {
           newWidth = newHeight * aspectRatio;
         }
-
         canvas.width = newWidth;
         canvas.height = newHeight;
         const ctx = canvas.getContext('2d');
@@ -122,6 +122,11 @@ export class ProjectItemComponent {
     });
   }
 
+  openImageDialog(index: number): void {
+    const imageUrls = this.mediaList.map(media => media.imageUrl);
+    const dialogData: DialogData = { images: imageUrls, currentIndex: index };
+    this.dialog.open(ImageDialogComponent, { data: dialogData });
+  }
 
   openBidModal(): void {
     this.isBidModalOpen = true;
@@ -130,7 +135,6 @@ export class ProjectItemComponent {
   closeBidModal(): void {
     this.isBidModalOpen = false;
   }
-
 
   submitBid(bidSum: number, messageToUser: string): void {
     this.bidDto.amount = bidSum.toString();
@@ -148,7 +152,6 @@ export class ProjectItemComponent {
     this.closeBidModal();
   }
 
-
   fetchLatestBid(): void {
     this.bidService.getBidsForProject(this.project.id).subscribe(
       (bids: Bid[]) => {
@@ -162,13 +165,12 @@ export class ProjectItemComponent {
       }
     );
   }
-  
+
   openBidHistoryModal(): void {
     this.isBidHistoryModalVisible = true;
   }
+
   closeBidHistoryModal(): void {
     this.isBidHistoryModalVisible = false;
   }
-
-  
 }

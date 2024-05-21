@@ -28,7 +28,7 @@
         <!-- Display original listings -->
         <ul class="listings-list">
           <ng-container *ngFor="let listing of originalListings">
-            <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listing]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+            <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
           </ng-container>
         </ul>
       </ng-container>
@@ -38,11 +38,23 @@
         <ng-container *ngIf="filteredListings.length > 0; else noListings">
           <ul class="listings-list">
             <ng-container *ngFor="let listing of filteredListings">
-              <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listing]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+              <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
             </ng-container>
           </ul>
         </ng-container>
       </ng-container>
+
+      <!-- Pagination controls -->
+      <div class="pagination-controls">
+        <label for="pageSize">Items per page:</label>
+        <select id="pageSize" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+
+        <button class="pagination-button" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">Previous</button>
+        <span class="pagination-info">Page {{currentPage + 1}} of {{totalPages}}</span>
+        <button class="pagination-button" [disabled]="currentPage >= totalPages - 1" (click)="onPageChange(currentPage + 1)">Next</button>
+      </div>
 
       <!-- No listings found message -->
       <ng-template #noListings>

@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ListingService } from '../../servicies/listing.service';
-import { NgFor, NgIf } from '@angular/common';
-import { Listing } from '../../types/listing.types';
+import { NgFor, NgIf, CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ListingDto } from '../../types/listingDto.types';
 import { FilterSidebarComponent } from "../../globals/components/filter-sidebar/filter-sidebar.component";
 import { ListingItemComponent } from '../../globals/components/listing-item/listing-item.component';
 import { SearchBarComponent } from '../../globals/components/search-bar/search-bar.component';
@@ -15,7 +16,7 @@ import { County } from '../../types/county.types';
   standalone: true,
   templateUrl: './listings-page.component.html',
   styleUrl: './listings-page.component.scss',
-  imports: [NgFor, NgIf, FilterSidebarComponent, ListingItemComponent, SearchBarComponent]
+  imports: [CommonModule, FormsModule, NgFor, NgIf, FilterSidebarComponent, ListingItemComponent, SearchBarComponent]
 })
 export class ListingsPageComponent implements OnInit {
 
@@ -23,8 +24,8 @@ export class ListingsPageComponent implements OnInit {
   selectedCountiesForFiltering: County[] = [];
   searchTerm: string = '';
 
-  originalListings: Listing[] = [];
-  filteredListings: Listing[] = [];
+  originalListings: ListingDto[] = [];
+  filteredListings: ListingDto[] = [];
   mediaListMap: Map<string, MediaItem[]> = new Map()
 
   isCreateListingModalOpen: boolean = false;
@@ -33,21 +34,28 @@ export class ListingsPageComponent implements OnInit {
   private listingService = inject(ListingService);
   private mediaService = inject(MediaService);
 
+  // Pagination variables
+  currentPage: number = 0;
+  pageSize: number = 10;
+  totalPages: number = 1;
+
+  pageSizeOptions = [5, 10, 20, 50];
+
   async ngOnInit(): Promise<void> {
-    await this.getListingsWithMedia();
-    console.log(this.mediaListMap);
-    this.filterListings(); // Initialize filtered listings
+    await this.loadListingsPage(this.currentPage);
   }
 
-  async getListingsWithMedia(): Promise<void> {
+  async loadListingsPage(page: number): Promise<void> {
     try {
-      const listings = await this.listingService.getAllListings().toPromise();
-      if (listings) {
-        for (const listing of listings) {
+      const paginatedListings = await this.listingService.getListingsWithPagination(page, this.pageSize).toPromise();
+      if (paginatedListings) {
+        for (const listing of paginatedListings.content) {
           const mediaList = await this.getMediaForListing(listing.id);
           this.mediaListMap.set(listing.id, mediaList);
         }
-        this.originalListings = listings;
+        this.originalListings = paginatedListings.content;
+        this.totalPages = paginatedListings.totalPages;
+        this.filterListings();
       }
     } catch (error) {
       console.error('Error fetching listings:', error);
@@ -57,7 +65,7 @@ export class ListingsPageComponent implements OnInit {
   async getMediaForListing(listingId: string): Promise<MediaItem[]> {
     try {
       const media = await this.mediaService.findMediaByTypeAndId('listing_id', listingId).toPromise();
-      return media || []; // Folosim operatorul ternar pentru a trata cazul în care media este undefined
+      return media || [];
     } catch (error) {
       console.error('Error fetching media for listing:', error);
       return [];
@@ -70,7 +78,6 @@ export class ListingsPageComponent implements OnInit {
   }
 
   filterListings(): void {
-    // If no filters are applied, display the original listings
     if (this.selectedCategoriesForFiltering.length === 0 &&
         this.selectedCountiesForFiltering.length === 0 &&
         this.searchTerm.length === 0) {
@@ -78,7 +85,6 @@ export class ListingsPageComponent implements OnInit {
       return;
     }
 
-    // Filter listings based on category, county, and search term
     let filteredListings = this.originalListings.filter(listing =>
       (this.selectedCategoriesForFiltering.length === 0 || 
        this.selectedCategoriesForFiltering.some(category => category.name === listing.category.toString())) &&
@@ -88,10 +94,7 @@ export class ListingsPageComponent implements OnInit {
        Object.values(listing).some(value => value.toString().toLowerCase().includes(this.searchTerm.toLowerCase())))
     );
 
-    // Update the filtered listings
     this.filteredListings = filteredListings;
-
-    // Construct the message for no listings found
     this.noListingsMessage = this.constructNoListingsMessage();
   }
 
@@ -115,15 +118,24 @@ export class ListingsPageComponent implements OnInit {
     return filters.length > 0 ? `No listings found for the following filters: ${filters.join('; ')}` : '';
   }
 
-  // Method to handle changes in selected categories
   onSelectedCategoriesChange(categories: Category[]): void {
     this.selectedCategoriesForFiltering = categories;
     this.filterListings();
   }
 
-  // Method to handle changes in selected counties
   onSelectedCountiesChange(counties: County[]): void {
     this.selectedCountiesForFiltering = counties;
     this.filterListings();
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadListingsPage(page);
+  }
+
+  onPageSizeChange(size: number): void {
+    this.pageSize = size;
+    this.currentPage = 0; // Reset to first page
+    this.loadListingsPage(this.currentPage);
   }
 }

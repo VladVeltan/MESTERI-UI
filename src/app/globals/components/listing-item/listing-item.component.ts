@@ -1,24 +1,29 @@
-import { Component,Input } from '@angular/core';
-import { Listing } from '../../../types/listing.types';
-import { Media, MediaItem } from '../../../types/media.types';
+import { Component, Input, inject } from '@angular/core';
+import { ListingDto } from '../../../types/listingDto.types';
+import { MediaItem } from '../../../types/media.types';
 import { NgIf } from '@angular/common';
-import { ImageCroppedEvent, ImageCropperModule } from 'ngx-image-cropper';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { HammerModule } from '@angular/platform-browser';
+import { MaterialModule } from '../../modules/material.module';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogData, ImageDialogComponent } from '../image-dialog/image-dialog.component';
 
 @Component({
   selector: 'app-listing-item',
   standalone: true,
-  imports: [NgIf,ImageCropperModule,HammerModule],
+  imports: [NgIf, ImageCropperModule, HammerModule, MaterialModule],
   templateUrl: './listing-item.component.html',
-  styleUrl: './listing-item.component.scss'
+  styleUrls: ['./listing-item.component.scss']
 })
 export class ListingItemComponent {
-  @Input() listing!: Listing;
+  @Input() listingDto!: ListingDto;
   @Input() mediaList!: MediaItem[];
-  desiredWidth = 300; // Definește lățimea dorită a imaginii redimensionate
+  desiredWidth = 300;
   desiredHeight = 200;
   currentImageIndex: number = 0;
   croppedImages: any[] = [];
+
+  dialog=inject(MatDialog)
 
   navigateToNextImage(): void {
     if (this.mediaList && this.currentImageIndex < this.mediaList.length - 1) {
@@ -31,7 +36,7 @@ export class ListingItemComponent {
       this.currentImageIndex--;
     }
   }
-  
+
   ngOnInit(): void {
     this.resizeMediaImages();
   }
@@ -48,11 +53,7 @@ export class ListingItemComponent {
       const image = new Image();
       image.onload = function () {
         const canvas = document.createElement('canvas');
-        
-        // Calculează raportul de aspect al imaginii inițiale
         const aspectRatio = image.width / image.height;
-  
-        // Ajustează dimensiunile dorite în funcție de raportul de aspect
         let newWidth = 300;
         let newHeight = 200;
         if (aspectRatio > 1) {
@@ -60,12 +61,11 @@ export class ListingItemComponent {
         } else {
           newWidth = newHeight * aspectRatio;
         }
-  
-        canvas.width = newWidth; // Lățimea dorită
-        canvas.height = newHeight; // Înălțimea dorită
+        canvas.width = newWidth;
+        canvas.height = newHeight;
         const ctx = canvas.getContext('2d');
         if (ctx != null) {
-          ctx.drawImage(image, 0, 0, newWidth, newHeight); // Redimensionare la dimensiunile dorite
+          ctx.drawImage(image, 0, 0, newWidth, newHeight);
         }
         const data = canvas.toDataURL('image/jpeg', 1);
         resolve(data);
@@ -73,5 +73,10 @@ export class ListingItemComponent {
       image.src = imageURL;
     });
   }
-  
+
+  openImageDialog(index: number): void {
+    const imageUrls = this.mediaList.map(media => media.imageUrl);
+    const dialogData: DialogData = { images: imageUrls, currentIndex: index };
+    this.dialog.open(ImageDialogComponent, { data: dialogData });
+  }
 }

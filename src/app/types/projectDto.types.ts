@@ -13,4 +13,5 @@ export interface ProjectDto {
     userPhone:string;
     expectedDueDate: string;
     actionDuration:string;
+    acceptBids:boolean;
   }

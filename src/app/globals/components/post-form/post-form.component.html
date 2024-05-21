@@ -1,43 +1,66 @@
 <div class="create-listing-form">
   <h2>Create {{ isProject ? 'Project' : 'Listing' }}</h2>
-  <form (ngSubmit)="onSubmit()">
-    <div class="input-container">
+  <form (ngSubmit)="onSubmit(postForm)" #postForm="ngForm">
+    <div class="input-container" [ngClass]="{ 'has-error': title.invalid && title.touched }">
       <label for="title">Title:</label>
-      <input type="text" id="title" name="title" [(ngModel)]="formData.title" required>
+      <input type="text" id="title" name="title" [(ngModel)]="formData.title" #title="ngModel" required minlength="10">
+      <div *ngIf="title.invalid && title.touched" class="error-message">
+        <span *ngIf="title.errors?.['required']">Title is required.</span>
+        <span *ngIf="title.errors?.['minlength']">Title must be at least 10 characters long.</span>
+      </div>
     </div>
-    <div class="input-container">
+    <div class="input-container" [ngClass]="{ 'has-error': description.invalid && description.touched }">
       <label for="description">Description:</label>
-      <textarea id="description" name="description" rows="4" [(ngModel)]="formData.description" required></textarea>
+      <textarea id="description" name="description" rows="4" [(ngModel)]="formData.description" #description="ngModel" required minlength="25"></textarea>
+      <div *ngIf="description.invalid && description.touched" class="error-message">
+        <span *ngIf="description.errors?.['required']">Description is required.</span>
+        <span *ngIf="description.errors?.['minlength']">Description must be at least 25 characters long.</span>
+      </div>
     </div>
-    <div class="input-container">
+    <div class="input-container" [ngClass]="{ 'has-error': category.invalid && category.touched }">
       <label for="category">Category:</label>
-      <select id="category" name="category" [(ngModel)]="formData.category" required>
+      <select id="category" name="category" [(ngModel)]="formData.category" #category="ngModel" required>
         <option value="">Select category</option>
         <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
       </select>
+      <div *ngIf="category.invalid && category.touched" class="error-message">
+        <span *ngIf="category.errors?.['required']">Category is required.</span>
+      </div>
     </div>
-    <div class="input-container">
+    <div class="input-container" [ngClass]="{ 'has-error': county.invalid && county.touched }">
       <label for="county">County:</label>
-      <select id="county" name="county" [(ngModel)]="formData.county" required>
+      <select id="county" name="county" [(ngModel)]="formData.county" #county="ngModel" required>
         <option value="">Select county</option>
         <option *ngFor="let county of counties" [value]="county.name">{{ county.name }}</option>
       </select>
+      <div *ngIf="county.invalid && county.touched" class="error-message">
+        <span *ngIf="county.errors?.['required']">County is required.</span>
+      </div>
     </div>
-    <div class="input-container">
+    <div class="input-container" [ngClass]="{ 'has-error': selectedFiles.length === 0 && imagesTouched }">
       <label for="images">Upload Images:</label>
-      <input type="file" id="images" name="images" (change)="onFileChange($event)" multiple [attr.required]="isProject ? 'true' : null" required>
+      <input type="file" id="images" name="images" (change)="onFileChange($event)">
+      <div *ngIf="selectedFiles.length === 0 && imagesTouched" class="error-message">
+        <span>At least one image is required.</span>
+      </div>
     </div>
     <div *ngIf="isProject">
       <div class="input-container">
-        <label for="expectedDueDate">Expected Due Date:</label>
-        <input type="datetime-local" id="expectedDueDate" name="expectedDueDate" [(ngModel)]="formData.expectedDueDate" required>
+        <label for="acceptBids">Accept Bids:</label>
+        <input type="checkbox" id="acceptBids" name="acceptBids" [(ngModel)]="formData.acceptBids" (change)="onAcceptBidsChange()">
+      </div>
+      <div class="input-container" *ngIf="formData.acceptBids">
+        <label for="actionDuration">Action Duration (days):</label>
+        <input type="number" id="actionDuration" name="actionDuration" [(ngModel)]="formData.actionDuration" (change)="onActionDurationChange()" min="0" required>
+        <div *ngIf="formData.actionDuration < 0 && postForm.submitted" class="error-message">
+          <span>Action Duration cannot be negative.</span>
+        </div>
       </div>
       <div class="input-container">
-        <label for="actionDuration">Action Duration (days):</label>
-        <input type="number" id="actionDuration" name="actionDuration" [(ngModel)]="formData.actionDuration" required>
+        <label for="expectedDueDate">Expected Due Date:</label>
+        <input type="date" id="expectedDueDate" name="expectedDueDate" [(ngModel)]="formData.expectedDueDate" [attr.min]="minDueDate" required>
       </div>
     </div>
-    
-    <button type="submit">Submit</button>
+    <button type="submit" [disabled]="postForm.invalid || selectedFiles.length === 0" class="submit-button">Submit</button>
   </form>
 </div>
