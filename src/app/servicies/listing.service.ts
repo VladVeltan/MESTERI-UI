@@ -25,6 +25,10 @@ export class ListingService {
     getAllListings(): Observable<ListingDto[]> {
       return this.http.get<ListingDto[]>(`${environment.apiUrl}/${PATHS.LISTINGS}`);
     }
+
+    getListingsByUserEmail(userEmail: string): Observable<ListingDto[]> {
+      return this.http.get<ListingDto[]>(`${environment.apiUrl}/${PATHS.LISTINGS}/user/${userEmail}`);
+    }
   
     getListingsWithSorting(fieldToSortBy: string): Observable<Listing[]> {
       return this.http.get<Listing[]>(`${environment.apiUrl}/${PATHS.LISTINGS}/sort/${fieldToSortBy}`);
@@ -46,8 +50,10 @@ export class ListingService {
       return this.http.put<Listing>(`${environment.apiUrl}/${PATHS.LISTINGS}`, listing);
     }
   
-    deleteListing(id: string): Observable<string> {
-      return this.http.delete<string>(`${environment.apiUrl}/${PATHS.LISTINGS}/${id}`);
+    deleteListing(listingId: string): Observable<void> {
+      console.log("Suntem in listing service",listingId)
+      console.log(`${environment.apiUrl}/${PATHS.LISTINGS}/${listingId}`)
+      return this.http.delete<void>(`${environment.apiUrl}/${PATHS.LISTINGS}/${listingId}`);
     }
 
 

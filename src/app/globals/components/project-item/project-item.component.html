@@ -15,14 +15,18 @@
     <div class="description">{{ project.description }}</div>
   </div>
   <div class="media" *ngIf="mediaList && mediaList[currentImageIndex]">
-    <button class="navigation-button" (click)="navigateToPreviousImage()">&lt;</button>
+    <button *ngIf="mediaList.length > 1" mat-icon-button class="nav-button left" (click)="navigateToPreviousImage()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
     <img 
       [src]="mediaList[currentImageIndex].imageUrl" 
       alt="Media" 
       (click)="openImageDialog(currentImageIndex)"
       class="clickable-image"
     >
-    <button class="navigation-button" (click)="navigateToNextImage()">&gt;</button>
+    <button *ngIf="mediaList.length > 1" mat-icon-button class="nav-button right" (click)="navigateToNextImage()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
   </div>
   <button class="bid-button" *ngIf="project.acceptBids" (click)="openBidModal()">Bid</button>
 
@@ -30,7 +34,7 @@
     <p>Latest Bid: {{ latestBid.amount }} by {{ latestBid.bidderEmail }} on {{ latestBid.creationDate }}</p>
   </div>
 
-  <button *ngIf="project.acceptBids" (click)="openBidHistoryModal()">View Bid History</button>
+  <button *ngIf="project.acceptBids && allBids.length > 0" (click)="openBidHistoryModal()">View Bid History</button>
   <app-bid-history-modal [bids]="allBids" [isVisible]="isBidHistoryModalVisible" (closeModalEvent)="closeBidHistoryModal()"></app-bid-history-modal>
 
   <app-bid-modal *ngIf="isBidModalOpen" (closeModal)="closeBidModal()" (submitBid)="submitBid($event.bidSum, $event.messageToUser)" [bids]="allBids"></app-bid-modal>

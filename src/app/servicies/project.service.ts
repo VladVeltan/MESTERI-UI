@@ -29,12 +29,16 @@ export class ProjectService {
     return this.http.get<Project>(`${environment.apiUrl}/${PATHS.PROJECTS}/${projectId}`);
   }
 
+  getProjectsByUserEmail(userEmail: string): Observable<ProjectDto[]> {
+    return this.http.get<ProjectDto[]>(`${environment.apiUrl}/${PATHS.PROJECTS}/user/${userEmail}`);
+  }
+
   updateProject(project: Project): Observable<Project> {
     return this.http.put<Project>(`${environment.apiUrl}/${PATHS.PROJECTS}`, project);
   }
 
-  deleteProject(projectId: string): Observable<string> {
-    return this.http.delete<string>(`${environment.apiUrl}/${PATHS.PROJECTS}/${projectId}`);
+  deleteProject(projectId: string): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/${PATHS.PROJECTS}/${projectId}`);
   }
 
   getAllProjectsWithSorting(fieldToSortBy: string): Observable<Project[]> {

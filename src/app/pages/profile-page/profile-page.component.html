@@ -1,1 +1,17 @@
-<p>profile-page works!</p>
+<div class="profile-page">
+    <h2>User Profile</h2>
+    <h3>Your Listings</h3>
+    <div *ngFor="let listing of userListings">
+      <app-listing-item [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+      <button (click)="editListing(listing)">Edit</button>
+      <button (click)="deleteListing(listing.id)">Delete</button>
+    </div>
+  
+    <h3>Your Projects</h3>
+    <div *ngFor="let project of userProjects">
+      <app-project-item [project]="project" [mediaList]="mediaListMap.get(project.id) || []" [userEmail]="userEmail"></app-project-item>
+      <button (click)="editProject(project)">Edit</button>
+      <button (click)="deleteProject(project.id)">Delete</button>
+    </div>
+  </div>
+  

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { ListingDto } from '../../../types/listingDto.types';
 import { categories } from '../../../types/category.types';
 import { counties } from '../../../types/county.types';
@@ -18,6 +18,7 @@ export class PostFormComponent {
   @Input() isProject: boolean = false; // Adaugă un input pentru a primi tipul de post
   selectedFiles: File[] = [];
   minDueDate: string = '';
+  imagesTouched: boolean = false;
 
   counties = counties;
   categories = categories;
@@ -59,6 +60,7 @@ export class PostFormComponent {
 
   onFileChange(event: any): void {
     this.selectedFiles = Array.from(event.target.files);
+    this.imagesTouched = true;
   }
 
   onAcceptBidsChange(): void {
@@ -67,6 +69,9 @@ export class PostFormComponent {
   }
 
   onActionDurationChange(): void {
+    if (this.formData.actionDuration < 0) {
+      this.formData.actionDuration = 0;
+    }
     this.updateMinDueDate();
   }
 
@@ -77,7 +82,12 @@ export class PostFormComponent {
     this.minDueDate = currentDate.toISOString().split('T')[0]; // Only get the date part in 'YYYY-MM-DD' format
   }
 
-  onSubmit(): void {
+  onSubmit(form: NgForm): void {
+    if (form.invalid || this.selectedFiles.length === 0) {
+      this.imagesTouched = true;
+      return;
+    }
+
     // Asigură-te că acceptBids este setat la false dacă este null sau undefined
     if (this.isProject && (this.formData.acceptBids === null || this.formData.acceptBids === undefined)) {
       this.formData.acceptBids = false;

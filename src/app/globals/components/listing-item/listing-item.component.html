@@ -15,13 +15,17 @@
     <div class="description">{{ listingDto.description }}</div>
   </div>
   <div class="media" *ngIf="mediaList && mediaList[currentImageIndex]">
-    <button class="navigation-button" (click)="navigateToPreviousImage()">&lt;</button>
+    <button *ngIf="mediaList.length > 1" mat-icon-button class="nav-button left" (click)="navigateToPreviousImage()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
     <img 
       [src]="mediaList[currentImageIndex].imageUrl" 
       alt="Media" 
       (click)="openImageDialog(currentImageIndex)"
       class="clickable-image"
     >
-    <button class="navigation-button" (click)="navigateToNextImage()">&gt;</button>
+    <button *ngIf="mediaList.length > 1" mat-icon-button class="nav-button right" (click)="navigateToNextImage()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
   </div>
 </div>
