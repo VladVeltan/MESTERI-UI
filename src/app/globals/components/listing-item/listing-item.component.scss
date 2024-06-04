@@ -1,62 +1,109 @@
-/* listing-item.component.scss */
 .listing-item {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease;
+
+  &:hover {
+      border-color: blue;
+  }
+
+  .details {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    flex: 1;
+    margin-right: 15px;
   }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .posted-by,
-  .date,
-  .category {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .location {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-  
-  .description {
-    font-size: 16px;
-  }
+
   .title-category {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-right: 20px;
   }
-  
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .category {
+    font-size: 14px;
+    color: #888;
+  }
+
+  .posted-by,
+  .date,
+  .location,
+  .description {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .posted-by {
+    font-weight: normal;
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #007bff;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .date mat-icon,
+  .location mat-icon,
+  .posted-by mat-icon {
+    margin-right: 5px;
+  }
+
+  .description {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+  }
+
   .media {
     display: flex;
     align-items: center;
-    transition: background-color 0.3s ease; /* Adăugăm o tranziție pentru un efect lin */
-  }
-  
-  .media:hover {
-    background-color: #f5f5f5; /* Schimbăm culoarea de fundal la hover */
-    cursor: pointer; /* Schimbăm cursorul la hover */
-  }
-  .posted-by{
-    display: flex;
     flex-direction: column;
+    justify-content: center;
   }
 
-
-  
   .nav-button {
-    position: relative;
     background-color: transparent;
     border: none;
     cursor: pointer;
     color: inherit;
   }
+
+  .clickable-image {
+    cursor: pointer;
+    border-radius: 5px;
+    max-width: 300px;
+    max-height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .spaced-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+}

@@ -1,41 +1,44 @@
 <div class="project-item">
-  <div class="details">
+  <div class="title-category">
     <div class="title">{{ project.title }}</div>
     <div class="category">{{ project.category }}</div>
-    <div class="posted-by" *ngIf="project.userEmail">
-      <mat-icon>person</mat-icon> {{ project.userFirstName }} {{ project.userLastName }}
-      <mat-icon>phone</mat-icon> {{ project.userPhone }}
-    </div>
-    <div class="date">
-      <mat-icon>calendar_today</mat-icon> {{ project.creationDate }}
-    </div>
-    <div class="location">
-      <mat-icon>location_on</mat-icon> {{ project.county }}, {{ project.city }}
-    </div>
-    <div class="description">{{ project.description }}</div>
-  </div>
-  <div class="media" *ngIf="mediaList && mediaList[currentImageIndex]">
-    <button *ngIf="mediaList.length > 1" mat-icon-button class="nav-button left" (click)="navigateToPreviousImage()">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
-    <img 
-      [src]="mediaList[currentImageIndex].imageUrl" 
-      alt="Media" 
-      (click)="openImageDialog(currentImageIndex)"
-      class="clickable-image"
-    >
-    <button *ngIf="mediaList.length > 1" mat-icon-button class="nav-button right" (click)="navigateToNextImage()">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
-  </div>
-  <button class="bid-button" *ngIf="project.acceptBids" (click)="openBidModal()">Bid</button>
-
-  <div *ngIf="project.acceptBids && latestBid">
-    <p>Latest Bid: {{ latestBid.amount }} by {{ latestBid.bidderEmail }} on {{ latestBid.creationDate }}</p>
   </div>
 
-  <button *ngIf="project.acceptBids && allBids.length > 0" (click)="openBidHistoryModal()">View Bid History</button>
+  <div class="details-container">
+    <div class="user-details">
+      <div class="posted-by" *ngIf="project.userEmail">
+        <mat-icon>person</mat-icon> {{ project.userFirstName }} {{ project.userLastName }}
+        <mat-icon>phone</mat-icon> {{ project.userPhone }}
+      </div>
+      <div class="date">
+        <mat-icon class="spaced-icon">calendar_today</mat-icon> {{ getFormattedDate(project.creationDate) }}
+        <mat-icon class="spaced-icon">access_time</mat-icon> {{ getFormattedTime(project.creationDate) }}
+      </div>
+      <div class="location">
+        <mat-icon class="spaced-icon">location_on</mat-icon> {{ project.county }}, {{ project.city }}
+      </div>
+      <div class="description">{{ project.description }}</div>
+    </div>
+
+    <div class="media" *ngIf="mediaList && mediaList[currentImageIndex]">
+      <img 
+        [src]="mediaList[currentImageIndex].imageUrl" 
+        alt="Media" 
+        (click)="openImageDialog(currentImageIndex)"
+        class="clickable-image"
+      >
+    </div>
+
+    <div class="bidding-info" *ngIf="project.acceptBids">
+      <button *ngIf="remainingTime" class="bid-button" (click)="openBidModal()">Liciteaza</button>
+      <div *ngIf="allBids">
+        <button class="history-button" *ngIf="allBids.length > 0" (click)="openBidHistoryModal()">Istoricul licitatiilor</button>
+      </div>
+    
+      <div *ngIf="remainingTime" class="countdown">{{ remainingTime }}</div>
+    </div>
+  </div>
+
   <app-bid-history-modal [bids]="allBids" [isVisible]="isBidHistoryModalVisible" (closeModalEvent)="closeBidHistoryModal()"></app-bid-history-modal>
-
   <app-bid-modal *ngIf="isBidModalOpen" (closeModal)="closeBidModal()" (submitBid)="submitBid($event.bidSum, $event.messageToUser)" [bids]="allBids"></app-bid-modal>
 </div>

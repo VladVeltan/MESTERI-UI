@@ -1,57 +1,145 @@
 .project-item {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .category,
-  .posted-by,
-  .date,
-  .location,
-  .description {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .description {
-    font-size: 16px;
-  }
-  
-  .media {
-    display: flex;
-    align-items: center;
-  }
-  
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease;
 
-  .bid-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  &:hover {
+    border-color: blue;
   }
-  
-  .bid-button:hover {
-    background-color: #0056b3;
-  }
+}
 
-  .nav-button {
-    position: relative;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: inherit;
-    
-  }
-  
+.title-category {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.category {
+  font-size: 14px;
+  color: #888;
+}
+
+.details-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.user-details,
+.media {
+  display: flex;
+  flex-direction: column;
+  flex: 2; /* Adjusted flex value for user-details and media */
+  margin-right: 10px;
+}
+
+.bidding-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centering buttons vertically */
+  align-items: center; /* Centering buttons horizontally */
+  flex: 0 1 70px; /* Make the bidding-info container smaller */
+  margin-left: auto; /* Pushes the container to the right edge */
+  gap: 10px; /* Adds space between buttons */
+}
+
+.user-details .posted-by,
+.user-details .date,
+.user-details .location,
+.user-details .description {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.date mat-icon,
+.location mat-icon,
+.posted-by mat-icon {
+  margin-right: 5px;
+}
+
+.description {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clickable-image {
+  cursor: pointer;
+  border-radius: 5px;
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.clickable-image:hover {
+  transform: scale(1.05);
+}
+
+.bid-button,
+.history-button {
+  padding: 6px 0; /* Adjusted padding to make font slightly smaller */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px; /* Smaller font size */
+  width: 100%; /* Ensures buttons take full width of the container */
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+  text-align: center; /* Centers the text inside the button */
+  color: white;
+}
+
+.bid-button {
+  background-color: #007bff;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  transition: background 0.3s ease;
+}
+
+.bid-button:hover {
+  background: linear-gradient(135deg, #0056b3, #0041a8); /* Darker gradient on hover */
+}
+
+.history-button {
+  background-color: #28a745;
+  background: linear-gradient(135deg, #28a745, #218838);
+  transition: background 0.3s ease;
+}
+
+.history-button:hover {
+  background: linear-gradient(135deg, #218838, #1a6629); /* Darker gradient on hover */
+}
+
+.countdown {
+  font-size: 14px; /* Adjust the size as needed */
+  color: #ff69b4; /* Light pink color */
+  background: linear-gradient(135deg, #ffe6f1, #ffb3c6);
+  padding: 6px 0;
+  border-radius: 5px;
+  width: 100%; /* Same width as buttons */
+  text-align: center;
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.spaced-icon {
+  margin-right: 5px;
+}

@@ -1,17 +1,50 @@
 <div class="profile-page">
-    <h2>User Profile</h2>
-    <h3>Your Listings</h3>
-    <div *ngFor="let listing of userListings">
-      <app-listing-item [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
-      <button (click)="editListing(listing)">Edit</button>
-      <button (click)="deleteListing(listing.id)">Delete</button>
+  <div class="profile-header">
+    <div class="profile-picture">
+      <img [src]="userProfilePicture" alt="Profile Picture" class="profile-img">
+      <button *ngIf="isCurrentUser" class="change-pic-btn" (click)="changeProfilePicture()">
+        <mat-icon>edit</mat-icon> Schimba fotografia
+      </button>
+      <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;">
     </div>
-  
-    <h3>Your Projects</h3>
-    <div *ngFor="let project of userProjects">
-      <app-project-item [project]="project" [mediaList]="mediaListMap.get(project.id) || []" [userEmail]="userEmail"></app-project-item>
-      <button (click)="editProject(project)">Edit</button>
-      <button (click)="deleteProject(project.id)">Delete</button>
+    <div class="user-details">
+      <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+      <div *ngIf="user.role === 'HANDYMAN'">
+        <div class="rating">
+          <ng-container *ngFor="let star of getStars(user.rating)">
+            <mat-icon>{{ star }}</mat-icon>
+          </ng-container>
+        </div>
+        <div class="description" *ngIf="user.description">{{ user.description }}</div>
+      </div>
+      <button *ngIf="isCurrentUser" class="edit-btn" (click)="editUserDetails()">
+        <mat-icon>edit</mat-icon> Editează
+      </button>
+      <button *ngIf="!isCurrentUser && user.role === 'HANDYMAN'" class="review-btn" (click)="leaveReview()">
+        <mat-icon>rate_review</mat-icon> Lasă un review
+      </button>
     </div>
   </div>
-  
+
+  <div class="listings-section">
+    <h3>{{ isCurrentUser ? 'Anunțurile Tale' : 'Anunțurile lui ' + user.firstName }}</h3>
+    <div class="listing-item" *ngFor="let listing of userListings">
+      <app-listing-item [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+      <div class="listing-actions" *ngIf="isCurrentUser">
+        <button (click)="editListing(listing)">Editează</button>
+        <button (click)="deleteListing(listing.id)">Șterge</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="projects-section">
+    <h3>{{ isCurrentUser ? 'Proiectele Tale' : 'Proiectele lui ' + user.firstName }}</h3>
+    <div class="project-item" *ngFor="let project of userProjects">
+      <app-project-item [project]="project" [mediaList]="mediaListMap.get(project.id) || []" [userEmail]="userEmail"></app-project-item>
+      <div class="project-actions" *ngIf="isCurrentUser">
+        <button (click)="editProject(project)">Editează</button>
+        <button (click)="deleteProject(project.id)">Șterge</button>
+      </div>
+    </div>
+  </div>
+</div>

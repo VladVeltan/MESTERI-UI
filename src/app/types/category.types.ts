@@ -3,6 +3,7 @@ export interface Category {
   }
 export const categories: Category[] = [
   { name: 'Constructori' },
+  { name: 'Reparatii'},
   { name: 'Curatenie' },
   { name: 'Electricieni' },
   { name: 'Exterminatori' },
@@ -20,5 +21,6 @@ export const categories: Category[] = [
   { name: 'Tamplari' },
   { name: 'Zidari' },
   { name: 'Zugravi/Vopsitori' },
-  { name: 'Birocratie' }
+  { name: 'Birocratie' },
+  { name: 'Diverse'}
 ];  

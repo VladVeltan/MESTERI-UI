@@ -49,5 +49,14 @@ export class MediaService {
       observe: 'events'
     });
   }
+  
+  updateMedia(whichEntity: string, entityId: string, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', file);
+    return this.http.put<any>(`${environment.apiUrl}/medias/${whichEntity}/${entityId}`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
 
 }

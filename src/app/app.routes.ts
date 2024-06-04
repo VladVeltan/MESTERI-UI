@@ -14,13 +14,15 @@ import { Routes } from "@angular/router";
 
 
 export const routes: Routes = [
-    { path: PATHS.HOME,'title':'Home',component: HomePageComponent },
-    { path: PATHS.LOGIN,'title':'Login',canActivate:[notAuthGuard], component: LoginPageComponent },
-    { path: PATHS.LISTINGS,'title':'Listings', component: ListingsPageComponent },
-    { path: PATHS.PROFILE,'title':'Profile', component: ProfilePageComponent },
+    { path: PATHS.HOME,'title':'Acasa',component: HomePageComponent },
+    { path: PATHS.LOGIN,'title':'Autentificare',canActivate:[notAuthGuard], component: LoginPageComponent },
+    { path: PATHS.LISTINGS,'title':'Anunturi', component: ListingsPageComponent },
+    { path: PATHS.PROFILE,'title':'Profil', component: ProfilePageComponent },
+    { path: 'profile/:email', component: ProfilePageComponent },
     // { path: PATHS.PROFILE,'title':'Profile',canActivate:[authGuard,userGuard], component: ProfilePageComponent },
-    { path: PATHS.PROJECTS,'title':'Projects', component: ProjectsPageComponent },
-    { path: PATHS.POST,'title':'Post', component: CreatePostPageComponent },
+    { path: PATHS.PROJECTS,'title':'Proiecte', component: ProjectsPageComponent },
+    { path: PATHS.POST,'title':'Creeaza postare', component: CreatePostPageComponent },
+    { path: PATHS.REGISTER,'title':'Inregistrare', component: RegisterPageComponent },
     { path: '', 'title':'Login',redirectTo: PATHS.LOGIN, pathMatch: 'full' },
     { path: '**', redirectTo: PATHS.HOME } 
   ];

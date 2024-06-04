@@ -1,1 +1,71 @@
-<p>register-page works!</p>
+<div class="register-container">
+    <div class="register-box">
+      <form [formGroup]="formData" (ngSubmit)="onClickSubmit()" class="register-form">
+        <h1 class="register-heading">Înregistrare</h1>
+        <div class="form-check-group">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="role" id="utilizator" value="USER" formControlName="role">
+            <label class="form-check-label" for="utilizator">Utilizator</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="role" id="mester" value="HANDYMAN" formControlName="role">
+            <label class="form-check-label" for="mester">Meșter</label>
+          </div>
+        </div>
+        <input type="text" id="lastName" class="form-control" formControlName="lastName" placeholder="Nume">
+        <div *ngIf="formData.get('lastName')?.invalid && (formData.get('lastName')?.touched || formData.get('lastName')?.dirty)" class="text-danger">
+          Numele este obligatoriu.
+        </div>
+        <input type="text" id="firstName" class="form-control" formControlName="firstName" placeholder="Prenume">
+        <div *ngIf="formData.get('firstName')?.invalid && (formData.get('firstName')?.touched || formData.get('firstName')?.dirty)" class="text-danger">
+          Prenumele este obligatoriu.
+        </div>
+        <input type="email" id="email" class="form-control" formControlName="email" placeholder="Adresa de email">
+        <div *ngIf="formData.get('email')?.invalid && (formData.get('email')?.touched || formData.get('email')?.dirty)" class="text-danger">
+          Introduceți o adresă de email validă.
+        </div>
+        <input type="email" id="confirmEmail" class="form-control" formControlName="confirmEmail" placeholder="Confirmare adresa de email">
+        <div *ngIf="formData.get('confirmEmail')?.invalid && (formData.get('confirmEmail')?.touched || formData.get('confirmEmail')?.dirty)" class="text-danger">
+          Adresele de email trebuie să fie identice.
+        </div>
+        <div class="input-container">
+          <input [type]="passwordFieldType" id="password" class="form-control" formControlName="password" placeholder="Parola">
+          <button type="button" class="toggle-visibility" (click)="togglePasswordVisibility()">
+            <mat-icon class="vis-btn">{{ passwordFieldType === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="formData.get('password')?.invalid && (formData.get('password')?.touched || formData.get('password')?.dirty)" class="text-danger">
+          Parola trebuie să aibă cel puțin 8 caractere și să conțină cel puțin o literă mare, un număr și un caracter special.
+        </div>
+        <div class="input-container">
+          <input [type]="confirmPasswordFieldType" id="confirmPassword" class="form-control" formControlName="confirmPassword" placeholder="Confirmare parola">
+          <button type="button" class="toggle-visibility" (click)="toggleConfirmPasswordVisibility()">
+            <mat-icon class="vis-btn">{{ confirmPasswordFieldType === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="formData.get('confirmPassword')?.invalid && (formData.get('confirmPassword')?.touched || formData.get('confirmPassword')?.dirty)" class="text-danger">
+          Parolele trebuie să fie identice.
+        </div>
+        <input type="text" id="phone" class="form-control" formControlName="phone" placeholder="Număr de telefon">
+        <div *ngIf="formData.get('phone')?.invalid && (formData.get('phone')?.touched || formData.get('phone')?.dirty)" class="text-danger">
+          Introduceți un număr de telefon valid.
+        </div>
+        <div *ngIf="isMester">
+          <input type="number" id="experience" class="form-control" formControlName="experience" placeholder="Ani de experiență">
+          <div *ngIf="formData.get('experience')?.invalid && (formData.get('experience')?.touched || formData.get('experience')?.dirty)" class="text-danger">
+            Introduceți un număr valid de ani de experiență.
+          </div>
+          <input type="number" id="age" class="form-control" formControlName="age" placeholder="Vârstă">
+          <div *ngIf="formData.get('age')?.invalid && (formData.get('age')?.touched || formData.get('age')?.dirty)" class="text-danger">
+            Vârsta trebuie să fie de cel puțin 18 ani.
+          </div>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="formData.invalid">Înregistrare</button>
+        <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <p class="text-success" *ngIf="successMessage">{{ successMessage }}</p>
+        <p class="text-muted mt-20">Aveți deja cont?</p>
+        <p class="text-muted"><a (click)="navigateToLogin()">Navigați către autentificare</a></p>
+      </form>
+    </div>
+  </div>
+  
