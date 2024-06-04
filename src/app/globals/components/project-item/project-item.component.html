@@ -30,7 +30,7 @@
     </div>
 
     <div class="bidding-info" *ngIf="project.acceptBids">
-      <button *ngIf="remainingTime" class="bid-button" (click)="openBidModal()">Liciteaza</button>
+      <button *ngIf="remainingTime!='Lictiatie inchisa'" class="bid-button" (click)="openBidModal()">Liciteaza</button>
       <div *ngIf="allBids">
         <button class="history-button" *ngIf="allBids.length > 0" (click)="openBidHistoryModal()">Istoricul licitatiilor</button>
       </div>

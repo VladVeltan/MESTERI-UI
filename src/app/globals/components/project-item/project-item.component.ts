@@ -34,7 +34,6 @@ export class ProjectItemComponent implements OnInit {
   croppedImages: any[] = [];
   isBidModalOpen: boolean = false;
   isBidHistoryModalVisible: boolean = false;
-  mail!: string;
   bidDto: any = {};
 
   latestBid!: Bid;
@@ -43,37 +42,21 @@ export class ProjectItemComponent implements OnInit {
   remainingTime: string = '';
   dialog = inject(MatDialog);
   bidService = inject(BidService);
-  actionDuration: number = 3; // Example duration in days
+  
 
   ngOnInit(): void {
-    this.decodeToken();
     this.resizeMediaImages();
     this.bidDto = {
       id: '',
       projectId: this.project.id,
       creationDate: new Date().toISOString(),
-      bidderEmail: this.mail,
+      bidderEmail: this.userEmail,
       amount: '',
       message: ''
     };
     this.fetchLatestBid();
     this.updateRemainingTime();
     setInterval(() => this.updateRemainingTime(), 1000);
-  }
-
-  decodeToken(): void {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken: any = jwtDecode(token);
-      if (decodedToken) {
-        this.mail = decodedToken.sub;
-        console.log('Email-ul este:', this.mail);
-      } else {
-        console.error('Token-ul JWT nu poate fi decodat.');
-      }
-    } else {
-      console.error('Token-ul nu a fost găsit în localStorage.');
-    }
   }
 
   navigateToNextImage(): void {
@@ -138,7 +121,7 @@ export class ProjectItemComponent implements OnInit {
   submitBid(bidSum: number, messageToUser: string): void {
     this.bidDto.amount = bidSum.toString();
     this.bidDto.message = messageToUser;
-    console.log("suntem in project-item", this.mail);
+    console.log("suntem in project-item", this.userEmail);
 
     this.bidService.postBid(this.bidDto).subscribe(response => {
       console.log('Licitația a fost trimisă cu succes!', this.bidDto);
@@ -191,17 +174,34 @@ export class ProjectItemComponent implements OnInit {
   getRemainingBiddingTime(creationDate: string, actionDuration: number): string {
     const creation = new Date(creationDate);
     const now = new Date();
-    const end = new Date(creation.getTime() + actionDuration * 24 * 60 * 60 * 1000); // assuming actionDuration is in days
+    const end = new Date(creation.getTime() + actionDuration * 24 * 60 * 60 * 1000); // asumând că actionDuration este în zile
 
     const diffMs = end.getTime() - now.getTime();
-    if (diffMs <= 0) return "Bidding closed";
+    // console.log(actionDuration)
+    // console.log("Timp la care a fost creată licitația:", creation);
+    // console.log("Timpul la care ar trebui să se termine licitația:", end);
+    // console.log("Diferența de timp dintre timpul actual și timpul la care ar trebui să se termine licitația:", diffMs);
+
+    if (diffMs <= 0) {
+      return "Lictiatie inchisa";
+    }
 
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     const diffHrs = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    return diffDays > 2 ? `${diffDays} days` : `${diffHrs} hours`;
+    const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    // console.log(`Zile rămase: ${diffDays}, Ore rămase: ${diffHrs}, Minute rămase: ${diffMins}`);
+
+    if (diffDays > 0) {
+        return `${diffDays} zile ramase`;
+    } else if (diffHrs > 0) {
+        return `${diffHrs} ore ramase`;
+    } else {
+        return `${diffMins} minute ramase`;
+    }
   }
 
   updateRemainingTime(): void {
-    this.remainingTime = this.getRemainingBiddingTime(this.project.creationDate, this.actionDuration);
+    this.remainingTime = this.getRemainingBiddingTime(this.project.creationDate, this.project.actionDuration);
   }
 }

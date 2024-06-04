@@ -139,9 +139,10 @@ export class ProfilePageComponent implements OnInit {
   }
 
   deleteProject(projectId: string): void {
-    this.projectService.deleteProject(projectId).subscribe(() => {
-      this.loadUserProjects();
-    });
+    // this.projectService.deleteProject(projectId).subscribe(() => {
+    //   this.loadUserProjects();
+    // });
+    
   }
 
   editUserDetails(): void {

@@ -45,7 +45,7 @@ export class ProjectsPageComponent implements OnInit {
   
 
   async ngOnInit(): Promise<void> {
-    // this.decodeToken();
+    this.decodeToken();
     await this.getProjectsWithMedia();
     this.filterProjects(); // Initialize filtered projects
   }
@@ -73,6 +73,7 @@ export class ProjectsPageComponent implements OnInit {
         for (const project of projects) {
           const mediaList = await this.getMediaForProject(project.id);
           this.mediaListMap.set(project.id, mediaList);
+          
         }
         this.originalProjects = projects;
       }

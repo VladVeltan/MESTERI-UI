@@ -92,7 +92,8 @@ export class PostFormComponent {
     if (this.isProject && (this.formData.acceptBids === null || this.formData.acceptBids === undefined)) {
       this.formData.acceptBids = false;
     }
-
+    console.log("creationDate",this.formData.creationDate)
+    console.log("action duration",this.formData.actionDuration)
     console.log("in form", this.formData);
     this.formData.images = this.selectedFiles; // Include the selected files in formData
     console.log("imagini selectate ", this.selectedFiles);

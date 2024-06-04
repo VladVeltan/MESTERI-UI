@@ -29,7 +29,10 @@
   <div class="listings-section">
     <h3>{{ isCurrentUser ? 'Anunțurile Tale' : 'Anunțurile lui ' + user.firstName }}</h3>
     <div class="listing-item" *ngFor="let listing of userListings">
-      <app-listing-item [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+      <div *ngIf="listing.status">
+        <app-listing-item [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+      </div>
+     
       <div class="listing-actions" *ngIf="isCurrentUser">
         <button (click)="editListing(listing)">Editează</button>
         <button (click)="deleteListing(listing.id)">Șterge</button>
@@ -39,8 +42,12 @@
 
   <div class="projects-section">
     <h3>{{ isCurrentUser ? 'Proiectele Tale' : 'Proiectele lui ' + user.firstName }}</h3>
-    <div class="project-item" *ngFor="let project of userProjects">
-      <app-project-item [project]="project" [mediaList]="mediaListMap.get(project.id) || []" [userEmail]="userEmail"></app-project-item>
+    <div class="project-item" *ngFor="let project of userProjects" >
+      <!-- <div *ngIf="project.status==false"> pun fals daca vreau sa nu apara cele inactive -->
+      <div *ngIf="project.status">
+        <app-project-item [project]="project" [mediaList]="mediaListMap.get(project.id) || []" [userEmail]="userEmail"></app-project-item>
+      </div>
+      
       <div class="project-actions" *ngIf="isCurrentUser">
         <button (click)="editProject(project)">Editează</button>
         <button (click)="deleteProject(project.id)">Șterge</button>
