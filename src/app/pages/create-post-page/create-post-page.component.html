@@ -10,15 +10,38 @@
 
   <main>
     <div class="create-post-container">
-      <h1>Select Post Type</h1>
+      <h1>Alege tipul de postare dorit</h1>
       <div class="button-container">
-        <button id="create-listing-btn" (click)="showListingForm()">Create Listing</button>
-        <button id="create-project-btn" (click)="showProjectForm()">Create Project</button>
+        <button id="create-listing-btn" (click)="showListingForm()">
+          <div class="button-header">Creeaza anunt</div>
+          <div class="button-body" *ngIf="!hasClicked">
+            <ul class="suggestions">
+              <li>Alegeti un titlu sugestiv pentru anunt</li>
+              <li>Este nevoie sa incarcati minim o imagine</li>
+              <li>Scrieti o descriere detaliata a serviciului pe care il doriti</li>
+              <li>Selectati categoria care se potriveste cel mai bine </li>
+              <li>Selectati judetul unde se v-a realiza serviciul</li>
+              <li>Completati toate campurile din formular</li>
+            </ul>
+          </div>
+        </button>
+        <button id="create-project-btn" (click)="showProjectForm()">
+          <div class="button-header">Creeaza proiect</div>
+          <div class="button-body" *ngIf="!hasClicked">
+            <ul class="suggestions">
+              <li>Alegeti un titlu sugestiv pentru proiect</li>
+              <li>Trebuie incarcate minim trei imagini pentru proiect</li>
+              <li>Scrieti o descriere detaliata a serviciului pe care il doriti</li>
+              <li>Selectati categoria care se potriveste cel mai bine</li>
+              <li>Alegeti daca doriti sa deschideti licitatie sau nu</li>
+              <li>Selectati o data estimativa de finalizare a proiectului</li>
+            </ul>
+          </div>
+        </button>
       </div>
       <app-post-form *ngIf="showForm" [isProject]="isProject" (formSubmitted)="onFormSubmitted($event)"></app-post-form>
     </div>
     <app-feedback-modal></app-feedback-modal>
-
   </main>
 
 </body>

@@ -1,0 +1,28 @@
+<div class="review-modal">
+    <button class="close-btn" (click)="cancel()">x</button>
+    <h2>Lasă o recenzie</h2>
+    <form (ngSubmit)="submitReview()" class="review-form">
+      <div class="rating-container">
+        <ng-container *ngFor="let star of stars; let i = index">
+          <mat-icon
+            class="star"
+            [class.filled]="i < review.rating"
+            [class.half-filled]="isHalfFilled(i)"
+            (click)="setRating(i + 1)"
+            (mouseenter)="highlightStars(i + 1)"
+            (mouseleave)="resetStars()"
+          >
+            {{ getStarIcon(i) }}
+          </mat-icon>
+        </ng-container>
+      </div>
+      <div class="full-width">
+        <label for="review-comment">Recenzie</label>
+        <textarea id="review-comment" [(ngModel)]="review.comment" name="comment" required></textarea>
+      </div>
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit">Trimite recenzia</button>
+      </div>
+    </form>
+  </div>
+  

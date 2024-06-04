@@ -7,13 +7,16 @@ import { HammerModule } from '@angular/platform-browser';
 import { MaterialModule } from '../../modules/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogData, ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listing-item',
   standalone: true,
   imports: [NgIf, ImageCropperModule, HammerModule, MaterialModule],
   templateUrl: './listing-item.component.html',
-  styleUrls: ['./listing-item.component.scss']
+  styleUrls: ['./listing-item.component.scss'],
+  providers: [DatePipe]
 })
 export class ListingItemComponent {
   @Input() listingDto!: ListingDto;
@@ -23,7 +26,9 @@ export class ListingItemComponent {
   currentImageIndex: number = 0;
   croppedImages: any[] = [];
 
-  dialog=inject(MatDialog)
+  dialog = inject(MatDialog);
+  datePipe = inject(DatePipe);
+  router = inject(Router);
 
   navigateToNextImage(): void {
     if (this.mediaList && this.currentImageIndex < this.mediaList.length - 1) {
@@ -78,5 +83,16 @@ export class ListingItemComponent {
     const imageUrls = this.mediaList.map(media => media.imageUrl);
     const dialogData: DialogData = { images: imageUrls, currentIndex: index };
     this.dialog.open(ImageDialogComponent, { data: dialogData });
+  }
+
+  getFormattedDate(date: string): string {
+    return this.datePipe.transform(date, 'dd.MM.yyyy')!;
+  }
+
+  getFormattedTime(date: string): string {
+    return this.datePipe.transform(date, 'HH:mm')!;
+  }
+  navigateToUserProfile(email: string): void {
+    this.router.navigate(['/profile', { email }]);
   }
 }

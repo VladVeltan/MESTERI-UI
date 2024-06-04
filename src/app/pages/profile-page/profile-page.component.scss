@@ -1,0 +1,131 @@
+.profile-page {
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+  
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+  
+      .profile-picture {
+        position: relative;
+        margin-right: 20px;
+        text-align: center;
+  
+        .profile-img {
+          border-radius: 50%;
+          width: 200px;
+          height: 200px;
+          object-fit: cover;
+          border: 3px solid #007bff;
+          display: block;
+          margin: 0 auto;
+        }
+  
+        .change-pic-btn {
+          background-color: transparent;
+          color: gray;
+          border: none;
+          cursor: pointer;
+          font-size: 14px;
+          padding: 5px;
+          text-decoration: underline;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 10px;
+  
+          mat-icon {
+            margin-right: 5px;
+          }
+        }
+      }
+  
+      .user-details {
+        h2 {
+          margin: 0;
+          font-size: 2rem;
+          padding-bottom: 8px;
+        }
+  
+        .rating {
+          display: flex;
+          align-items: center;
+          mat-icon {
+            color: gold;
+          }
+          padding-bottom: 8px;
+        }
+  
+        .description {
+          margin-top: 10px;
+          font-size: 14px;
+          color: #666;
+        }
+  
+        .edit-btn {
+          background-color: transparent;
+          color: gray;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          margin-top: 10px;
+          font-size: 14px;
+  
+          mat-icon {
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+  
+    .listings-section,
+    .projects-section {
+      margin-top: 20px;
+  
+      h3 {
+        font-size: 1.5rem;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+  
+      .listing-item,
+      .project-item {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+        .listing-actions,
+        .project-actions {
+          margin-top: 10px;
+  
+          button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+          }
+  
+          button:last-child {
+            background-color: #e53e3e;
+          }
+  
+          button:hover {
+            opacity: 0.9;
+          }
+        }
+      }
+    }
+    .review-btn{
+        display: flex;
+        align-items: center;
+    }
+  }
+  

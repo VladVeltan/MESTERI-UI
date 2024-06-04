@@ -1,10 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
-import { AccessToken, AuthData } from '../types/auth.types';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { tap, delay, catchError } from 'rxjs/operators';
+import { AccessToken, AuthData, RegisterData } from '../types/auth.types';
 import { environment } from '../types/environment/environment';
 import { StorageKeys } from '../globals/storage-keys';
 import { PATHS } from '../globals/routes';
@@ -33,6 +33,38 @@ export class AuthService {
   getErrorStatus(): Observable<number> {
       return this.errorStatusSubject.asObservable();
   }
+
+  register(registerData: RegisterData): Observable<AccessToken> {
+    const url = `${environment.apiUrl}/register`;
+    console.log(registerData,"in authservice")
+
+    const data:RegisterData={
+        email:registerData.email,
+        firstName:registerData.firstName,
+        lastName:registerData.lastName,
+        password:registerData.password,
+        rating:registerData.rating,
+        role:registerData.role,
+        phone:registerData.phone,
+        creationDate:registerData.creationDate
+    }
+    console.log(data,"data")
+    return this.http.post<AccessToken>(url, data)
+      .pipe(
+        catchError(this.handleError),
+        tap((res: AccessToken) => {
+            console.log(res.token,"am setat tokenul dupa register")
+            localStorage.setItem(StorageKeys.TOKEN, res.token);
+            this.isLoggedIn$.next(true);
+            this.getUserDetails();
+        })
+      );
+  }
+  private handleError(error: any): Observable<never> {
+    console.error('An error occurred', error);
+    return throwError('Something bad happened; please try again later.');
+  }
+
   login(authData: AuthData): Observable<AccessToken> {
    return this.http
        .post<AccessToken>(environment.apiUrl + '/login', authData)
@@ -81,8 +113,8 @@ getUserDetails(): void {
        this.isLoggedIn$.next(false);
        this.isAdmin$.next(false);
        this.isUser$.next(false);
-   }
-}
+        }
+    }
 
     logout(): void {
         localStorage.removeItem(StorageKeys.TOKEN);

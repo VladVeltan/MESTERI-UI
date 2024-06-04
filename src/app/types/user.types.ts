@@ -7,5 +7,6 @@ export interface User{
     role:string;
     phone:string;
     media:string;
-    rating:string;
+    rating:number;
+    description:string;
 }

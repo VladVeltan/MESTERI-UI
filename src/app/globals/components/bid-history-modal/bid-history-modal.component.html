@@ -1,11 +1,22 @@
 <div *ngIf="isVisible" class="modal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
-    <h2>Bid History</h2>
-    <ul>
-      <li *ngFor="let bid of bids">
-        {{ bid.amount }} by {{ bid.bidderEmail }} on {{ bid.creationDate }}
-      </li>
-    </ul>
+    <h2>Istoric licitații</h2>
+    <table class="bid-table">
+      <thead>
+        <tr>
+          <th>Suma</th>
+          <th>Licitor</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bid of bids; let i = index" [ngClass]="{'even': i % 2 === 0, 'odd': i % 2 !== 0}">
+          <td>{{ bid.amount }}</td>
+          <td>{{ bid.bidderFirstName }}  {{bid.bidderLastName}}</td>
+          <td>{{ getFormattedDate(bid.creationDate) }}  {{getFormattedTime(bid.creationDate)}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

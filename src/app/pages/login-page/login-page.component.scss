@@ -1,10 +1,36 @@
 .form-signin {
-    max-width: 330px;
- 
-    padding: 15px;
-    margin: 0 auto;
+   max-width: 400px;
+   padding: 15px;
+   margin: 0 auto;
+   background-color: #f8f9fa;
+   border: 1px solid #dee2e6;
+   border-radius: 10px;
  }
  
  input {
-    margin-bottom: 20px;
+   margin-bottom: 20px;
  }
+ 
+ h1.form-signin-heading {
+   margin-bottom: 20px;
+   color: #6c757d; /* A more subtle color for the heading */
+ }
+ 
+ .btn {
+   background-color: #007bff;
+   border-color: #007bff;
+ }
+ 
+ .btn:hover {
+   background-color: #0056b3;
+   border-color: #0056b3;
+ }
+ 
+ .text-muted a {
+   color: #007bff;
+ }
+ 
+ .text-muted a:hover {
+   text-decoration: underline;
+ }
+ 

@@ -1,125 +1,125 @@
 .custom-navbar {
-    background-color: #1a202c; // bg-gray-900
-    color: #cbd5e0; // text-gray-400
-    font-family: 'Roboto', sans-serif; // body-font
-    padding: 0.5rem 0; 
-    height: 120px; // Increase the height of the navbar
+  background-color: #1a202c; // bg-gray-900
+  color: #cbd5e0; // text-gray-400
+  font-family: 'Roboto', sans-serif; // body-font
+  padding: 0.5rem 0; 
+  height: 120px; // Increase the height of the navbar
+  display: flex;
+  align-items: center;
+  
+  .container {
+    margin: 0 auto; // Center the container
+    padding: 0 2vw; // Adjust padding for responsiveness
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 96vw; // Make the container wider
+  }
+  
+  .logo {
     display: flex;
     align-items: center;
-  
-    .container {
-      margin: 0 auto; // Center the container
-      padding: 0 2vw; // Adjust padding for responsiveness
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      width: 96vw; // Make the container wider
+    margin-bottom: 0; // Remove bottom margin
+    cursor: pointer; // Add cursor pointer
+
+    img.custom-logo {
+      border-radius: 50%;
+      width: 90px; // Increase the size of the logo
+      height: 90px; // Maintain the aspect ratio
     }
   
-    .logo {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0; // Remove bottom margin
+    .logo-text {
+      margin-left: 0.75rem; // ml-3
+      font-size: 1.5rem; // Increase the font size
+      color: #ffffff;
+    }
+  }
   
-      img.custom-logo {
-        border-radius: 50%;
-        width: 90px; // Increase the size of the logo
-        height: 90px; // Maintain the aspect ratio
+  .navigation {
+    display: flex;
+    flex-grow: 1; // Allow the navigation to take up available space
+    justify-content: flex-end; // Align navigation items to the right
+    align-items: center;
+  
+    a {
+      margin-right: 0.75rem; // Reduce right margin to bring links closer together
+      color: inherit;
+      text-decoration: none;
+      &:hover {
+        color: #ffffff; // hover:text-white
       }
   
-      .logo-text {
-        margin-left: 0.75rem; // ml-3
-        font-size: 1.5rem; // Increase the font size
-        color: #ffffff;
+      &.active {
+        border-bottom: 2px solid #780b93;
+        transform: scale(1.1);
+        transition: border-bottom 0.3s ease, color 0.3s ease, transform 0.3s ease;
       }
     }
   
-    .navigation {
-      display: flex;
-      flex-grow: 1; // Allow the navigation to take up available space
-      justify-content: flex-end; // Align navigation items to the right
-      align-items: center;
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      margin-right: 0.75rem; // Reduce right margin for buttons
+      border-radius: 0.25rem;
+      text-align: center;
+      text-decoration: none;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 1rem; // Base font size for buttons
   
-      a {
-        margin-right: 0.75rem; // Reduce right margin to bring links closer together
-        color: inherit;
-        text-decoration: none;
+      &.btn-primary {
+        background-color: #007bff; // Use the specified blue color
         &:hover {
-          color: #ffffff; // hover:text-white
-        }
-  
-        &.active {
-          border-bottom: 2px solid #780b93;
-          transform: scale(1.1);
-          transition: border-bottom 0.3s ease, color 0.3s ease, transform 0.3s ease;
+          background-color: #0056b3; // Use the specified hover blue color
         }
       }
   
-      .btn {
-        display: inline-block;
-        padding: 0.5rem 1rem;
-        margin-right: 0.75rem; // Reduce right margin for buttons
-        border-radius: 0.25rem;
-        text-align: center;
-        text-decoration: none;
-        color: #ffffff;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        font-size: 1rem; // Base font size for buttons
-  
-        &.btn-primary {
-          background-color: #007bff; // Use the specified blue color
-          &:hover {
-            background-color: #0056b3; // Use the specified hover blue color
-          }
+      &.btn-danger {
+        background-color: #e53e3e; // bg-red-500
+        &:hover {
+          background-color: #c53030; // hover:bg-red-700
         }
-  
-        &.btn-danger {
-          background-color: #e53e3e; // bg-red-500
-          &:hover {
-            background-color: #c53030; // hover:bg-red-700
-          }
-        }
-      }
-    }
-  
-    @media (max-width: 768px) {
-      .custom-navbar {
-        height: auto; // Make navbar height adjustable
-        padding: 0.5rem 0;
-      }
-  
-      .container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-  
-      .logo {
-        margin-bottom: 1rem;
-      }
-  
-      .navigation {
-        width: 100%;
-        justify-content: flex-start;
-  
-        a, .btn {
-          margin-right: 0;
-          margin-bottom: 0.5rem;
-        }
-      }
-    }
-  
-    @media (min-width: 769px) and (max-width: 1024px) {
-      .btn {
-        font-size: 0.9rem; // Slightly smaller font size for medium screens
-      }
-    }
-  
-    @media (min-width: 1025px) {
-      .btn {
-        font-size: 1rem; // Base font size for large screens
       }
     }
   }
   
+  @media (max-width: 768px) {
+    .custom-navbar {
+      height: auto; // Make navbar height adjustable
+      padding: 0.5rem 0;
+    }
+  
+    .container {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .logo {
+      margin-bottom: 1rem;
+    }
+  
+    .navigation {
+      width: 100%;
+      justify-content: flex-start;
+  
+      a, .btn {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .btn {
+      font-size: 0.9rem; // Slightly smaller font size for medium screens
+    }
+  }
+  
+  @media (min-width: 1025px) {
+    .btn {
+      font-size: 1rem; // Base font size for large screens
+    }
+  }
+}

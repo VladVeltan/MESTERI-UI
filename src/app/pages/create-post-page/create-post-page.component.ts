@@ -24,6 +24,7 @@ export class CreatePostPageComponent {
   projectService = inject(ProjectService);
   mediaService = inject(MediaService);
   isProject: boolean = false;
+  hasClicked: boolean = false; // Variable to track button click
 
   ngOnInit() {
     // Apelează funcția decodeToken() la inițializarea paginii
@@ -34,12 +35,15 @@ export class CreatePostPageComponent {
   showListingForm() {
     this.showForm = true;
     this.isProject = false;
+    this.hasClicked = true; // Set to true when a button is clicked
   }
 
   showProjectForm() {
     this.showForm = true;
-    this.isProject = true; 
+    this.isProject = true;
+    this.hasClicked = true; // Set to true when a button is clicked
   }
+
 
   onFormSubmitted(formData: any) {
     this.formData = formData;
