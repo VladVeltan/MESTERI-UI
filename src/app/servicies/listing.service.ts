@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from '../types/environment/environment';
 import { Listing } from '../types/listing.types';
 import { PATHS } from '../globals/routes';
@@ -46,16 +46,24 @@ export class ListingService {
       return this.http.get<Listing>(`${environment.apiUrl}/${PATHS.LISTINGS}/${listingId}`);
     }
   
-    updateListing(listing: Listing): Observable<Listing> {
-      return this.http.put<Listing>(`${environment.apiUrl}/${PATHS.LISTINGS}`, listing);
+    updateListing(newListingDto: ListingDto): Observable<ListingDto> {
+      console.log(newListingDto)
+      console.log(`${environment.apiUrl}/${PATHS.LISTINGS}`)
+      return this.http.put<ListingDto>(`${environment.apiUrl}/${PATHS.LISTINGS}/update/update/update/update`, newListingDto);
     }
+    
   
-    deleteListing(listingId: string): Observable<void> {
-      console.log("Suntem in listing service",listingId)
-      console.log(`${environment.apiUrl}/${PATHS.LISTINGS}/${listingId}`)
-      return this.http.delete<void>(`${environment.apiUrl}/${PATHS.LISTINGS}/${listingId}`);
+    deleteListing(listingId: string): Observable<string> {
+      // console.log("Suntem in listing service", listingId);
+      // console.log(`${environment.apiUrl}/${PATHS.LISTINGS}/${listingId}`);
+      return this.http.delete<string>(`${environment.apiUrl}/${PATHS.LISTINGS}/${listingId}`, { responseType: 'text' as 'json' });
     }
+    
+  
 
+    countAllListings(): Observable<number> {
+      return this.http.get<number>(`${environment.apiUrl}/listings/count/count/count`);
+    }
 
 
 }

@@ -10,8 +10,7 @@ import {jwtDecode} from 'jwt-decode';
 import { Bid } from '../../../types/bid.types';
 import { BidHistoryModalComponent } from '../bid-history-modal/bid-history-modal.component';
 import { MaterialModule } from '../../modules/material.module';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogData, ImageDialogComponent } from '../image-dialog/image-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-item',
@@ -36,15 +35,17 @@ export class ProjectItemComponent implements OnInit {
   isBidHistoryModalVisible: boolean = false;
   bidDto: any = {};
 
+  fullSizeImages!:MediaItem[];
+
   latestBid!: Bid;
   allBids!: Bid[];
 
   remainingTime: string = '';
-  dialog = inject(MatDialog);
   bidService = inject(BidService);
-  
+  router = inject(Router);
 
   ngOnInit(): void {
+    this.fullSizeImages=this.mediaList;
     this.resizeMediaImages();
     this.bidDto = {
       id: '',
@@ -104,12 +105,7 @@ export class ProjectItemComponent implements OnInit {
     });
   }
 
-  openImageDialog(index: number): void {
-    const imageUrls = this.mediaList.map(media => media.imageUrl);
-    const dialogData: DialogData = { images: imageUrls, currentIndex: index };
-    this.dialog.open(ImageDialogComponent, { data: dialogData });
-  }
-
+  
   openBidModal(): void {
     this.isBidModalOpen = true;
   }
@@ -203,5 +199,8 @@ export class ProjectItemComponent implements OnInit {
 
   updateRemainingTime(): void {
     this.remainingTime = this.getRemainingBiddingTime(this.project.creationDate, this.project.actionDuration);
+  }
+  navigateToUserProfile(email: string): void {
+    this.router.navigate(['/profile', { email }]);
   }
 }

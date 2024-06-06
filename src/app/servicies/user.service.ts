@@ -13,4 +13,10 @@ export class UserService {
   findUserByEmail(email: string): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/users/email/${email}`);
   }
+  getHandymen(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiUrl}/users/handymen`);
+  }
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiUrl}/users`);
+  }
 }

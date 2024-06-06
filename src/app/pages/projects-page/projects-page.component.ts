@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ProjectDto } from '../../types/projectDto.types';
 import { FilterSidebarComponent } from "../../globals/components/filter-sidebar/filter-sidebar.component";
 
@@ -13,19 +13,20 @@ import { MediaService } from '../../servicies/media.service';
 import { MediaItem } from '../../types/media.types';
 import { jwtDecode } from 'jwt-decode';
 import { FeedbackModalComponent } from '../../globals/components/feedback-modal/feedback-modal.component';
+import { FormsModule, NgForm, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-projects-page',
   standalone: true,
   templateUrl: './projects-page.component.html',
   styleUrl: './projects-page.component.scss',
-  imports: [NgFor, NgIf, FilterSidebarComponent, ProjectItemComponent, SearchBarComponent,FeedbackModalComponent]
+  imports: [NgFor, NgIf, FilterSidebarComponent, ProjectItemComponent, SearchBarComponent,FeedbackModalComponent,FormsModule]
 })
 export class ProjectsPageComponent implements OnInit {
   @ViewChild(FeedbackModalComponent) feedbackModal!: FeedbackModalComponent;
-  
-  userEmail!:string;
 
+  userEmail!: string;
+  numberOfProjects: number = 0;
   selectedCategoriesForFiltering: Category[] = [];
   selectedCountiesForFiltering: County[] = [];
   searchTerm: string = '';
@@ -42,21 +43,30 @@ export class ProjectsPageComponent implements OnInit {
 
   projectService = inject(ProjectService);
   mediaService = inject(MediaService);
-  
+
+  // Sorting variables
+  selectedSortOption: string = 'default';
 
   async ngOnInit(): Promise<void> {
+    this.projectService.countAllProjects().subscribe({
+      next: count => {
+        this.numberOfProjects = count;
+      },
+      error: err => {
+        console.error('Error fetching project count', err);
+      }
+    });
     this.decodeToken();
     await this.getProjectsWithMedia();
     this.filterProjects(); // Initialize filtered projects
   }
-  
 
   decodeToken(): void {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken: any = jwtDecode(token);
       if (decodedToken) {
-         this.userEmail= decodedToken.sub;
+        this.userEmail = decodedToken.sub;
         console.log('Email-ul este:', this.userEmail);
       } else {
         console.error('Token-ul JWT nu poate fi decodat.');
@@ -65,7 +75,7 @@ export class ProjectsPageComponent implements OnInit {
       console.error('Token-ul nu a fost găsit în localStorage.');
     }
   }
-  
+
   async getProjectsWithMedia(): Promise<void> {
     try {
       const projects = await this.projectService.getAllProjects().toPromise();
@@ -73,7 +83,6 @@ export class ProjectsPageComponent implements OnInit {
         for (const project of projects) {
           const mediaList = await this.getMediaForProject(project.id);
           this.mediaListMap.set(project.id, mediaList);
-          
         }
         this.originalProjects = projects;
       }
@@ -98,58 +107,45 @@ export class ProjectsPageComponent implements OnInit {
   }
 
   filterProjects(): void {
-    // If no filters are applied, display the original projects
     if (this.selectedCategoriesForFiltering.length === 0 &&
-        this.selectedCountiesForFiltering.length === 0 &&
-        this.searchTerm.length === 0) {
+      this.selectedCountiesForFiltering.length === 0 &&
+      this.searchTerm.length === 0) {
       this.filteredProjects = this.originalProjects;
-      return;
+    } else {
+      let filteredProjects = this.originalProjects.filter(project =>
+        (this.selectedCategoriesForFiltering.length === 0 ||
+          this.selectedCategoriesForFiltering.some(category => category.name === project.category.toString())) &&
+        (this.selectedCountiesForFiltering.length === 0 ||
+          this.selectedCountiesForFiltering.some(county => county.name === project.county.toString())) &&
+        (this.searchTerm.length === 0 ||
+          Object.values(project).some(value => value.toString().toLowerCase().includes(this.searchTerm.toLowerCase())))
+      );
+      this.filteredProjects = filteredProjects;
     }
-
-    // Filter projects based on category, county, and search term
-    let filteredProjects = this.originalProjects.filter(project =>
-      (this.selectedCategoriesForFiltering.length === 0 || 
-       this.selectedCategoriesForFiltering.some(category => category.name === project.category.toString())) &&
-      (this.selectedCountiesForFiltering.length === 0 || 
-       this.selectedCountiesForFiltering.some(county => county.name === project.county.toString())) &&
-      (this.searchTerm.length === 0 || 
-       Object.values(project).some(value => value.toString().toLowerCase().includes(this.searchTerm.toLowerCase())))
-    );
-
-    // Update the filtered projects
-    this.filteredProjects = filteredProjects;
-
-    // Construct the message for no projects found
+    this.sortProjects();
     this.noProjectsMessage = this.constructNoProjectsMessage();
   }
 
-  constructNoProjectsMessage(): string {
-    let filters = [];
-
-    if (this.selectedCategoriesForFiltering.length > 0) {
-      const categories = this.selectedCategoriesForFiltering.map(category => category.name).join(', ');
-      filters.push(`Categories: ${categories}`);
+  sortProjects(): void {
+    if (this.selectedSortOption === 'date') {
+      this.filteredProjects.sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
+    } else if (this.selectedSortOption === 'actionDuration') {
+      this.filteredProjects.sort((a, b) => this.getRemainingBiddingTime(b.creationDate, b.actionDuration) - this.getRemainingBiddingTime(a.creationDate, a.actionDuration));
     }
-
-    if (this.selectedCountiesForFiltering.length > 0) {
-      const counties = this.selectedCountiesForFiltering.map(county => county.name).join(', ');
-      filters.push(`Counties: ${counties}`);
-    }
-
-    if (this.searchTerm.length > 0) {
-      filters.push(`Search Term: "${this.searchTerm}"`);
-    }
-
-    return filters.length > 0 ? `No projects found for the following filters: ${filters.join('; ')}` : '';
   }
 
-  // Method to handle changes in selected categories
+  getRemainingBiddingTime(creationDate: string, actionDuration: number): number {
+    const creation = new Date(creationDate);
+    const now = new Date();
+    const end = new Date(creation.getTime() + actionDuration * 24 * 60 * 60 * 1000); // assuming actionDuration is in days
+    return end.getTime() - now.getTime();
+  }
+
   onSelectedCategoriesChange(categories: Category[]): void {
     this.selectedCategoriesForFiltering = categories;
     this.filterProjects();
   }
 
-  // Method to handle changes in selected counties
   onSelectedCountiesChange(counties: County[]): void {
     this.selectedCountiesForFiltering = counties;
     this.filterProjects();
@@ -174,10 +170,28 @@ export class ProjectsPageComponent implements OnInit {
     this.showCompletionMessage(message);
   }
 
+  onSortOptionChange(sortOption: string): void {
+    this.selectedSortOption = sortOption;
+    this.filterProjects();
+  }
 
+  constructNoProjectsMessage(): string {
+    let filters = [];
 
+    if (this.selectedCategoriesForFiltering.length > 0) {
+      const categories = this.selectedCategoriesForFiltering.map(category => category.name).join(', ');
+      filters.push(`Categories: ${categories}`);
+    }
 
+    if (this.selectedCountiesForFiltering.length > 0) {
+      const counties = this.selectedCountiesForFiltering.map(county => county.name).join(', ');
+      filters.push(`Counties: ${counties}`);
+    }
 
-  
+    if (this.searchTerm.length > 0) {
+      filters.push(`Search Term: "${this.searchTerm}"`);
+    }
 
+    return filters.length > 0 ? `No projects found for the following filters: ${filters.join('; ')}` : '';
+  }
 }

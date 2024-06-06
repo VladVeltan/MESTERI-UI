@@ -33,12 +33,13 @@ export class ProjectService {
     return this.http.get<ProjectDto[]>(`${environment.apiUrl}/${PATHS.PROJECTS}/user/${userEmail}`);
   }
 
-  updateProject(project: Project): Observable<Project> {
-    return this.http.put<Project>(`${environment.apiUrl}/${PATHS.PROJECTS}`, project);
+  updateProject(project: ProjectDto): Observable<ProjectDto> {
+    return this.http.put<ProjectDto>(`${environment.apiUrl}/${PATHS.PROJECTS}`, project);
   }
+  
 
   deleteProject(projectId: string): Observable<void> {
-    return this.http.delete<void>(`${environment.apiUrl}/${PATHS.PROJECTS}/${projectId}`);
+    return this.http.delete<void>(`${environment.apiUrl}/${PATHS.PROJECTS}/${projectId}`,{ responseType: 'text' as 'json' });
   }
 
   getAllProjectsWithSorting(fieldToSortBy: string): Observable<Project[]> {
@@ -51,5 +52,9 @@ export class ProjectService {
 
   getAllProjectsWithPaginationAndSorting(offset: number, pageSize: number, field: string): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/${PATHS.PROJECTS}/pagination/sort/${offset}/${pageSize}/${field}`);
+  }
+
+  countAllProjects(): Observable<number> {
+    return this.http.get<number>(`${environment.apiUrl}/projects/count/count/count`);
   }
 }

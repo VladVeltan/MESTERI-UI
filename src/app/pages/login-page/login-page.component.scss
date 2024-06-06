@@ -33,4 +33,23 @@
  .text-muted a:hover {
    text-decoration: underline;
  }
- 
+ .input-container {
+  position: relative;
+}
+
+.form-control {
+  padding-right: 40px;
+}
+
+.toggle-visibility {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}

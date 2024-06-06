@@ -23,7 +23,7 @@ export class ListingsPageComponent implements OnInit {
   selectedCategoriesForFiltering: Category[] = [];
   selectedCountiesForFiltering: County[] = [];
   searchTerm: string = '';
-
+  listingCount: number | null = 0;
   originalListings: ListingDto[] = [];
   filteredListings: ListingDto[] = [];
   mediaListMap: Map<string, MediaItem[]> = new Map()
@@ -41,7 +41,18 @@ export class ListingsPageComponent implements OnInit {
 
   pageSizeOptions = [5, 10, 20, 50];
 
+  // Sorting variables
+  selectedSortOption: string = 'default';
+
   async ngOnInit(): Promise<void> {
+    this.listingService.countAllListings().subscribe({
+      next: count => {
+        this.listingCount = count;
+      },
+      error: err => {
+        console.error('Error fetching listing count', err);
+      }
+    });
     await this.loadListingsPage(this.currentPage);
   }
 
@@ -49,11 +60,12 @@ export class ListingsPageComponent implements OnInit {
     try {
       const paginatedListings = await this.listingService.getListingsWithPagination(page, this.pageSize).toPromise();
       if (paginatedListings) {
-        for (const listing of paginatedListings.content) {
+        const activeListings = paginatedListings.content.filter(listing => listing.status);
+        for (const listing of activeListings) {
           const mediaList = await this.getMediaForListing(listing.id);
           this.mediaListMap.set(listing.id, mediaList);
         }
-        this.originalListings = paginatedListings.content;
+        this.originalListings = activeListings;
         this.totalPages = paginatedListings.totalPages;
         this.filterListings();
       }
@@ -82,40 +94,26 @@ export class ListingsPageComponent implements OnInit {
         this.selectedCountiesForFiltering.length === 0 &&
         this.searchTerm.length === 0) {
       this.filteredListings = this.originalListings;
-      return;
+    } else {
+      let filteredListings = this.originalListings.filter(listing =>
+        listing.status && // Ensure listing is active
+        (this.selectedCategoriesForFiltering.length === 0 || 
+         this.selectedCategoriesForFiltering.some(category => category.name === listing.category.toString())) &&
+        (this.selectedCountiesForFiltering.length === 0 || 
+         this.selectedCountiesForFiltering.some(county => county.name === listing.county.toString())) &&
+        (this.searchTerm.length === 0 || 
+         Object.values(listing).some(value => value.toString().toLowerCase().includes(this.searchTerm.toLowerCase())))
+      );
+      this.filteredListings = filteredListings;
     }
-
-    let filteredListings = this.originalListings.filter(listing =>
-      (this.selectedCategoriesForFiltering.length === 0 || 
-       this.selectedCategoriesForFiltering.some(category => category.name === listing.category.toString())) &&
-      (this.selectedCountiesForFiltering.length === 0 || 
-       this.selectedCountiesForFiltering.some(county => county.name === listing.county.toString())) &&
-      (this.searchTerm.length === 0 || 
-       Object.values(listing).some(value => value.toString().toLowerCase().includes(this.searchTerm.toLowerCase())))
-    );
-
-    this.filteredListings = filteredListings;
+    this.sortListings();
     this.noListingsMessage = this.constructNoListingsMessage();
   }
 
-  constructNoListingsMessage(): string {
-    let filters = [];
-
-    if (this.selectedCategoriesForFiltering.length > 0) {
-      const categories = this.selectedCategoriesForFiltering.map(category => category.name).join(', ');
-      filters.push(`Categories: ${categories}`);
+  sortListings(): void {
+    if (this.selectedSortOption === 'date') {
+      this.filteredListings.sort((a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime());
     }
-
-    if (this.selectedCountiesForFiltering.length > 0) {
-      const counties = this.selectedCountiesForFiltering.map(county => county.name).join(', ');
-      filters.push(`Counties: ${counties}`);
-    }
-
-    if (this.searchTerm.length > 0) {
-      filters.push(`Search Term: "${this.searchTerm}"`);
-    }
-
-    return filters.length > 0 ? `No listings found for the following filters: ${filters.join('; ')}` : '';
   }
 
   onSelectedCategoriesChange(categories: Category[]): void {
@@ -137,5 +135,30 @@ export class ListingsPageComponent implements OnInit {
     this.pageSize = size;
     this.currentPage = 0; // Reset to first page
     this.loadListingsPage(this.currentPage);
+  }
+
+  onSortOptionChange(sortOption: string): void {
+    this.selectedSortOption = sortOption;
+    this.filterListings();
+  }
+
+  constructNoListingsMessage(): string {
+    let filters = [];
+
+    if (this.selectedCategoriesForFiltering.length > 0) {
+      const categories = this.selectedCategoriesForFiltering.map(category => category.name).join(', ');
+      filters.push(`Categories: ${categories}`);
+    }
+
+    if (this.selectedCountiesForFiltering.length > 0) {
+      const counties = this.selectedCountiesForFiltering.map(county => county.name).join(', ');
+      filters.push(`Counties: ${counties}`);
+    }
+
+    if (this.searchTerm.length > 0) {
+      filters.push(`Search Term: "${this.searchTerm}"`);
+    }
+
+    return filters.length > 0 ? `No listings found for the following filters: ${filters.join('; ')}` : '';
   }
 }

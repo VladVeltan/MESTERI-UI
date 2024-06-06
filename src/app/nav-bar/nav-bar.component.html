@@ -5,13 +5,14 @@
       <span class="logo-text">Mesteri</span>
     </a>
     <nav class="navigation">
-      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Home</a>
-      <a routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Profile</a>
-      <a routerLink="/listings" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Listings</a>
-      <a routerLink="/projects" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Projects</a>
-      <button routerLink="/post" class="btn btn-primary"> + Create post</button>
-      <button *ngIf="!(authService.isLoggedIn$ | async)" routerLink="/login" class="btn btn-primary">Login</button>
-      <button *ngIf="(authService.isLoggedIn$ | async)" (click)="logout()" class="btn btn-danger">Logout</button>
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Acasa</a>
+      <a routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Profil</a>
+      <a routerLink="/handyman" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Mesteri</a>
+      <a routerLink="/listings" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Anunturi</a>
+      <a routerLink="/projects" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" ariaCurrentWhenActive="page">Proiecte</a>
+      <button routerLink="/post" class="btn btn-primary"> + Creeaza postare</button>
+      <button *ngIf="!(authService.isLoggedIn$ | async)" routerLink="/login" class="btn btn-primary">Logare</button>
+      <button *ngIf="(authService.isLoggedIn$ | async)" (click)="logout()" class="btn btn-danger">Delogare</button>
     </nav>
   </div>
 </header>

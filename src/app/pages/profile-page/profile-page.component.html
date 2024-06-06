@@ -1,4 +1,4 @@
-<div class="profile-page">
+<div class="profile-page" *ngIf="user">
   <div class="profile-header">
     <div class="profile-picture">
       <img [src]="userProfilePicture" alt="Profile Picture" class="profile-img">
@@ -7,6 +7,7 @@
       </button>
       <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;">
     </div>
+
     <div class="user-details">
       <h2>{{ user.firstName }} {{ user.lastName }}</h2>
       <div *ngIf="user.role === 'HANDYMAN'">
@@ -14,8 +15,18 @@
           <ng-container *ngFor="let star of getStars(user.rating)">
             <mat-icon>{{ star }}</mat-icon>
           </ng-container>
+          <span class="review-count">({{ numberOfReviews }})</span>
+        </div>
+        <div class="toggle-reviews-btn" (click)="toggleView()">
+          <span *ngIf="showReviews" style="color: gray;">Vezi postari</span>
+          <span *ngIf="!showReviews" style="color: gray;">Vezi review-uri</span>
         </div>
         <div class="description" *ngIf="user.description">{{ user.description }}</div>
+      </div>
+      <div class="additional-info">
+        <p *ngIf="user.yearsOfExperience"><strong>Ani de experiență:</strong> {{ user.yearsOfExperience }}</p>
+        <p *ngIf="user.age"><strong>Vârstă:</strong> {{ user.age }}</p>
+        <p *ngIf="user.categoriesOfInterest"><strong>Categorii de interes:</strong> {{ user.categoriesOfInterest }}</p>
       </div>
       <button *ngIf="isCurrentUser" class="edit-btn" (click)="editUserDetails()">
         <mat-icon>edit</mat-icon> Editează
@@ -26,32 +37,57 @@
     </div>
   </div>
 
-  <div class="listings-section">
-    <h3>{{ isCurrentUser ? 'Anunțurile Tale' : 'Anunțurile lui ' + user.firstName }}</h3>
-    <div class="listing-item" *ngFor="let listing of userListings">
-      <div *ngIf="listing.status">
-        <app-listing-item [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
-      </div>
-     
-      <div class="listing-actions" *ngIf="isCurrentUser">
-        <button (click)="editListing(listing)">Editează</button>
-        <button (click)="deleteListing(listing.id)">Șterge</button>
+  <div *ngIf="showReviews" class="reviews-section">
+    <h3 class="recenzii">Recenziile lui {{ user.firstName }}</h3>
+    <div *ngIf="userReviews.length > 0; else noReviews">
+      <div class="review-item" *ngFor="let review of userReviews">
+        <app-review-item [review]="review"></app-review-item>
       </div>
     </div>
+    <ng-template #noReviews>
+      <p>Nu există recenzii pentru acest utilizator.</p>
+    </ng-template>
   </div>
 
-  <div class="projects-section">
-    <h3>{{ isCurrentUser ? 'Proiectele Tale' : 'Proiectele lui ' + user.firstName }}</h3>
-    <div class="project-item" *ngFor="let project of userProjects" >
-      <!-- <div *ngIf="project.status==false"> pun fals daca vreau sa nu apara cele inactive -->
-      <div *ngIf="project.status">
-        <app-project-item [project]="project" [mediaList]="mediaListMap.get(project.id) || []" [userEmail]="userEmail"></app-project-item>
+  <ng-container *ngIf="!showReviews">
+    <div class="listings-section">
+      <h3>{{ isCurrentUser ? 'Anunțurile Tale' : 'Anunțurile lui ' + user.firstName }}</h3>
+      <div *ngIf="userListings.length > 0; else noListings">
+        <div class="listing-item" *ngFor="let listing of userListings">
+          <div class="listing-header">
+            <div *ngIf="listing.status">
+              <app-listing-item [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
+            </div>
+          </div>
+          <div class="listing-actions" *ngIf="isCurrentUser">
+            <button (click)="editListing(listing)">Editează</button>
+            <button (click)="deleteListing(listing.id)">Șterge</button>
+          </div>
+        </div>
       </div>
-      
-      <div class="project-actions" *ngIf="isCurrentUser">
-        <button (click)="editProject(project)">Editează</button>
-        <button (click)="deleteProject(project.id)">Șterge</button>
-      </div>
+      <ng-template #noListings>
+        <p>Nu ai niciun anunț postat, <a routerLink="/post">creează unul acum</a>.</p>
+      </ng-template>
     </div>
-  </div>
+
+    <div class="projects-section">
+      <h3>{{ isCurrentUser ? 'Proiectele Tale' : 'Proiectele lui ' + user.firstName }}</h3>
+      <div *ngIf="userProjects.length > 0; else noProjects">
+        <div class="project-item" *ngFor="let project of userProjects">
+          <div class="project-header">
+            <div *ngIf="project.status">
+              <app-project-item [project]="project" [mediaList]="mediaListMap.get(project.id) || []" [userEmail]="userEmail"></app-project-item>
+            </div>
+          </div>
+          <div class="project-actions" *ngIf="isCurrentUser">
+            <button (click)="editProject(project)">Editează</button>
+            <button (click)="deleteProject(project.id)">Șterge</button>
+          </div>
+        </div>
+      </div>
+      <ng-template #noProjects>
+        <p>Nu ai niciun proiect postat, <a routerLink="/post">creează unul acum</a>.</p>
+      </ng-template>
+    </div>
+  </ng-container>
 </div>

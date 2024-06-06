@@ -7,5 +7,6 @@ export const PATHS = {
     LOGIN:'login',
     POST:'post',
     BIDS:'bids',
+    HANDYMAN:'handyman',
     NOT_FOUND: 'not-found'
  };

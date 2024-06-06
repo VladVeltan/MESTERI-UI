@@ -7,8 +7,10 @@
   <div class="details-container">
     <div class="user-details">
       <div class="posted-by" *ngIf="project.userEmail">
-        <mat-icon>person</mat-icon> {{ project.userFirstName }} {{ project.userLastName }}
-        <mat-icon>phone</mat-icon> {{ project.userPhone }}
+        <mat-icon>person</mat-icon> 
+        <a (click)="navigateToUserProfile(project.userEmail)">{{ project.userFirstName }} {{ project.userLastName }}</a>
+        <mat-icon>phone</mat-icon> 
+        {{ project.userPhone }}
       </div>
       <div class="date">
         <mat-icon class="spaced-icon">calendar_today</mat-icon> {{ getFormattedDate(project.creationDate) }}
@@ -18,19 +20,21 @@
         <mat-icon class="spaced-icon">location_on</mat-icon> {{ project.county }}, {{ project.city }}
       </div>
       <div class="description">{{ project.description }}</div>
+      <div class="expected-due-date" *ngIf="project.expectedDueDate">
+        <mat-icon class="spaced-icon">event</mat-icon>Timpul estimativ dorit pentru finalizare {{ getFormattedDate(project.expectedDueDate) }}
+      </div>
     </div>
 
     <div class="media" *ngIf="mediaList && mediaList[currentImageIndex]">
       <img 
         [src]="mediaList[currentImageIndex].imageUrl" 
         alt="Media" 
-        (click)="openImageDialog(currentImageIndex)"
         class="clickable-image"
       >
     </div>
 
     <div class="bidding-info" *ngIf="project.acceptBids">
-      <button *ngIf="remainingTime!='Lictiatie inchisa'" class="bid-button" (click)="openBidModal()">Liciteaza</button>
+      <button *ngIf="remainingTime != 'Lictiatie inchisa'" class="bid-button" (click)="openBidModal()">Liciteaza</button>
       <div *ngIf="allBids">
         <button class="history-button" *ngIf="allBids.length > 0" (click)="openBidHistoryModal()">Istoricul licitatiilor</button>
       </div>
@@ -41,4 +45,6 @@
 
   <app-bid-history-modal [bids]="allBids" [isVisible]="isBidHistoryModalVisible" (closeModalEvent)="closeBidHistoryModal()"></app-bid-history-modal>
   <app-bid-modal *ngIf="isBidModalOpen" (closeModal)="closeBidModal()" (submitBid)="submitBid($event.bidSum, $event.messageToUser)" [bids]="allBids"></app-bid-modal>
+
+  
 </div>

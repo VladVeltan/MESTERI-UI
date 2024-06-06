@@ -9,4 +9,7 @@ export interface User{
     media:string;
     rating:number;
     description:string;
+    yearsOfExperience:number;
+    age:number;
+    categoriesOfInterest:string;
 }

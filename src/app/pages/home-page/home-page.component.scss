@@ -1,0 +1,165 @@
+.custom-navbar {
+    background-color: #fff;
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .custom-logo {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .navigation {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navigation a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+    position: relative;
+  }
+  
+  .navigation a.active::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #ffcc00;
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+  }
+  
+  .navigation .btn {
+    margin-left: 20px;
+  }
+  
+  .hero {
+    background-color: #f8f9fa;
+    padding: 60px 0;
+    text-align: center;
+  }
+  
+  .hero-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .hero-subtitle {
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .btn-login {
+    background-color: #ffcc00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  
+  .cards-section {
+    padding: 40px 0;
+  }
+  
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(25% - 20px);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .card-subtitle {
+    font-size: 14px;
+    color: #ffcc00;
+    margin-bottom: 10px;
+  }
+  
+  .card-description {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .faq-section {
+    padding: 40px 0;
+    background-color: #f8f9fa;
+  }
+  .container{
+    display: flex;
+    flex-direction: column;
+  }
+  .faq-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .faq-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .faq-question {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .faq-answer {
+    font-size: 16px;
+    color: #666;
+    margin-top: 10px;
+  }
+  

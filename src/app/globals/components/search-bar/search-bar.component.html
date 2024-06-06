@@ -1,5 +1,10 @@
 <div class="search-bar">
-    <input class="search-input" type="text" placeholder="Caută..." [(ngModel)]="searchTerm">
-    <button class="search-button" (click)="search()">Caută</button>
-  </div>
-  
+  <input 
+    class="search-input" 
+    type="text" 
+    placeholder="Caută..." 
+    [(ngModel)]="searchTerm" 
+    (keyup)="onKeyup($event)"
+  >
+  <button class="search-button" (click)="search()">Caută</button>
+</div>

@@ -1,0 +1,52 @@
+<body class="body">
+    <div class="main-container">
+      <app-search-bar class="app-search-bar" (searchEvent)="onSearch($event)"></app-search-bar>
+  
+      <div class="handymen-container" *ngIf="originalHandymen.length > 0; else loading">
+        <div class="top-container">
+          <h2 class="handymen-title">{{handyManNumber}} Meșeriași</h2>
+          <form class="sort-form">
+            <label class="text-sortby">Sortare:</label>
+            <select class="select-default-sorting" name="orderby" [(ngModel)]="selectedSortOption" (ngModelChange)="onSortOptionChange($event)">
+              <option value="default" selected>Implicit</option>
+              <option value="ratingDesc">Rating Descrescător</option>
+              <option value="ratingAsc">Rating Crescător</option>
+            </select>
+          </form>
+        </div>
+        
+  
+        <ng-container *ngIf="searchTerm.length === 0">
+          <!-- Display original handymen -->
+          <ul class="handymen-list">
+            <ng-container *ngFor="let handyman of originalHandymen">
+              <app-handyman-item class="item" [handyman]="handyman"></app-handyman-item>
+            </ng-container>
+          </ul>
+        </ng-container>
+        
+        <ng-container *ngIf="searchTerm.length !== 0">
+          <!-- Display filtered handymen or no handymen message --> 
+          <ng-container *ngIf="filteredHandymen.length > 0; else noHandymen">
+            <ul class="handymen-list">
+              <ng-container *ngFor="let handyman of filteredHandymen">
+                <app-handyman-item class="item" [handyman]="handyman"></app-handyman-item>
+              </ng-container>
+            </ul>
+          </ng-container>
+        </ng-container>
+  
+        <!-- No handymen found message -->
+        <ng-template #noHandymen>
+          <p class="no-items-found-message">{{ noHandymenMessage }}</p>
+        </ng-template>
+      </div>
+  
+      <ng-template #loading>
+        <p>Loading handymen...</p>
+      </ng-template>
+      <!-- Footer Section -->
+      <footer class="footer"></footer>
+    </div>
+</body>
+  

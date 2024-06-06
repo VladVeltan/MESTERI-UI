@@ -3,6 +3,7 @@ import { authGuard } from "./guards/auth.guard";
 import { notAuthGuard } from "./guards/not-auth.guard";
 import { userGuard } from "./guards/user.guard";
 import { CreatePostPageComponent } from "./pages/create-post-page/create-post-page.component";
+import { HandymanPageComponent } from "./pages/handyman-page/handyman-page.component";
 import { HomePageComponent } from "./pages/home-page/home-page.component";
 import { ListingsPageComponent } from "./pages/listings-page/listings-page.component";
 import { LoginPageComponent } from "./pages/login-page/login-page.component";
@@ -18,6 +19,7 @@ export const routes: Routes = [
     { path: PATHS.LOGIN,'title':'Autentificare',canActivate:[notAuthGuard], component: LoginPageComponent },
     { path: PATHS.LISTINGS,'title':'Anunturi', component: ListingsPageComponent },
     { path: PATHS.PROFILE,'title':'Profil', component: ProfilePageComponent },
+    { path: PATHS.HANDYMAN,'title':'Mesteri', component: HandymanPageComponent },
     { path: 'profile/:email', component: ProfilePageComponent },
     // { path: PATHS.PROFILE,'title':'Profile',canActivate:[authGuard,userGuard], component: ProfilePageComponent },
     { path: PATHS.PROJECTS,'title':'Proiecte', component: ProjectsPageComponent },

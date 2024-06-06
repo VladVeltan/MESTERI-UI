@@ -5,6 +5,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { MatInputModule } from '@angular/material/input';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSliderModule,
-    MatInputModule
+    MatInputModule,
+    MatSlideToggleModule
   ],
   exports: [
     MatButtonModule,
@@ -21,7 +23,8 @@ import { MatInputModule } from '@angular/material/input';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSliderModule,
-    MatInputModule
+    MatInputModule,
+    MatSlideToggleModule
   ]
 })
 export class MaterialModule {}

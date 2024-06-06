@@ -15,11 +15,14 @@ import { ProjectItemComponent } from '../../globals/components/project-item/proj
 import { MaterialModule } from '../../globals/modules/material.module';
 import { MatDialog } from '@angular/material/dialog';
 import { ReviewModalComponent } from '../../globals/components/review-modal/review-modal.component';
+import { ReviewService } from '../../servicies/review.service';
+import { ReviewDto } from '../../types/reviewDto.types';
+import { ReviewItemComponent } from '../../globals/components/review-item/review-item.component';
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [NgFor,NgIf, ListingItemComponent, ProjectItemComponent, MaterialModule],
+  imports: [NgFor, NgIf, ListingItemComponent, ProjectItemComponent, MaterialModule, ReviewItemComponent],
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
@@ -31,14 +34,18 @@ export class ProfilePageComponent implements OnInit {
   mediaListMap: Map<string, MediaItem[]> = new Map();
   userEmail: string = '';
   userProfilePicture: string = 'assets/profil.png'; // Default profile picture
-  user!: User;
+  user!: User; // Declare the user variable
   isCurrentUser: boolean = false; // Flag to check if the profile belongs to the current user
+  numberOfReviews: number = 0; // Add a variable to store the number of reviews
+  userReviews: ReviewDto[] = []; // Add a property to store reviews
+  showReviews: boolean = false; // Add a boolean flag to control the view
 
   route = inject(ActivatedRoute);
   userService = inject(UserService);
   listingService = inject(ListingService);
   projectService = inject(ProjectService);
   mediaService = inject(MediaService);
+  reviewService = inject(ReviewService);
   dialog = inject(MatDialog); // Inject MatDialog
 
   ngOnInit(): void {
@@ -83,6 +90,7 @@ export class ProfilePageComponent implements OnInit {
     this.userService.findUserByEmail(this.userEmail).subscribe((user) => {
       this.user = user;
       this.loadUserProfilePicture(user.id);
+      this.loadUserReviews(user.email); // Load user reviews
     });
   }
 
@@ -124,13 +132,32 @@ export class ProfilePageComponent implements OnInit {
     }
   }
 
+  loadUserReviews(handymanEmail: string): void {
+    this.reviewService.getReviewsByHandymanEmail(handymanEmail).subscribe((reviews) => {
+      this.numberOfReviews = reviews.length;
+      this.userReviews = reviews; // Store the reviews
+      this.updateHandymanRating(reviews);
+    });
+  }
+
+  updateHandymanRating(reviews: any[]): void {
+    const totalRating = reviews.reduce((sum, review) => sum + review.mark, 0);
+    this.user.rating = reviews.length > 0 ? totalRating / reviews.length : 0;
+  }
+
   editListing(listing: ListingDto): void {
     // Implement listing editing logic
   }
 
   deleteListing(listingId: string): void {
-    this.listingService.deleteListing(listingId).subscribe(() => {
-      this.loadUserListings();
+    this.listingService.deleteListing(listingId).subscribe({
+      next: (response) => {
+        console.log('Delete response:', response); // Log the response from the backend
+        this.loadUserListings();
+      },
+      error: (error) => {
+        console.error('Error deleting listing:', error);
+      }
     });
   }
 
@@ -139,10 +166,15 @@ export class ProfilePageComponent implements OnInit {
   }
 
   deleteProject(projectId: string): void {
-    // this.projectService.deleteProject(projectId).subscribe(() => {
-    //   this.loadUserProjects();
-    // });
-    
+    this.projectService.deleteProject(projectId).subscribe({
+      next: (response) => {
+        console.log('Delete response:', response); // Log the response from the backend
+        this.loadUserProjects();
+      },
+      error: (error) => {
+        console.error('Error deleting project:', error);
+      }
+    });
   }
 
   editUserDetails(): void {
@@ -164,7 +196,6 @@ export class ProfilePageComponent implements OnInit {
             this.userProfilePicture = e.target.result;
           };
           reader.readAsDataURL(file);
-          console.log('Profile picture updated successfully');
         },
         error: (err) => {
           console.error('Failed to update profile picture:', err);
@@ -176,6 +207,7 @@ export class ProfilePageComponent implements OnInit {
   changeProfilePicture(): void {
     this.triggerFileInput();
   }
+
   getStars(rating: number): string[] {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5 ? 'star_half' : '';
@@ -189,16 +221,41 @@ export class ProfilePageComponent implements OnInit {
 
   leaveReview(): void {
     const dialogRef = this.dialog.open(ReviewModalComponent, {
-      data: { userId: this.user.id },
+      data: { userEmail: this.userEmail, handymanEmail: this.user.email }
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Review submitted:', result);
-        // Handle the review submission logic here
+        this.loadUserReviews(this.user.email); // Refresh reviews and rating
       }
     });
   }
-  
-  
+
+  toggleListingStatus(listing: ListingDto): void {
+    listing.status = !listing.status;
+    this.listingService.updateListing(listing).subscribe({
+      next: () => {
+        console.log('Listing status updated successfully');
+      },
+      error: (error) => {
+        console.error('Failed to update listing status:', error);
+      }
+    });
+  }
+
+  toggleProjectStatus(project: ProjectDto): void {
+    project.status = !project.status;
+    this.projectService.updateProject(project).subscribe({
+      next: () => {
+        console.log('Project status updated successfully');
+      },
+      error: (error) => {
+        console.error('Failed to update project status:', error);
+      }
+    });
+  }
+
+  toggleView(): void {
+    this.showReviews = !this.showReviews;
+  }
 }

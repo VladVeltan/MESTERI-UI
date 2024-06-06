@@ -1,63 +1,60 @@
 <body class="body">
-    <div class="side-bar-container">
-      <app-filter-sidebar 
-        (selectedCategoriesChange)="onSelectedCategoriesChange($event)" 
-        (selectedCountiesChange)="onSelectedCountiesChange($event)">
-      </app-filter-sidebar>
-    </div>
-  
-    <div class="main-container">
-      <app-search-bar class="app-search-bar" (searchEvent)="onSearch($event)"></app-search-bar>
-  
-      <div class="projects-container" *ngIf="originalProjects.length > 0; else loading">
-        <div class="top-container">
-          <h2 class="projects-title">Projects</h2>
-          <div class="sort-and-create-project-container">
-            <form class="sort-form">
-              <label class="text-sortby">Sort by:</label>
-              <select class="select-default-sorting" name="orderby">
-                <option value="date" selected>Date</option>
-                <option value="actionDuration">Duration</option>
-                <option value="title">Title</option>
-              </select>
-            </form>
-          </div>
-        </div>
-  
-        <ng-container *ngIf="selectedCategoriesForFiltering.length === 0 && selectedCountiesForFiltering.length === 0 && searchTerm.length === 0">
-            <!-- Display original projects -->
-            <ul class="projects-list">
-              <ng-container *ngFor="let project of originalProjects">
-                <app-project-item class="item" [userEmail]="userEmail"  [project]="project" [mediaList]="mediaListMap.get(project.id) || [] " (bidPlaced)="handleBidPlaced($event)"></app-project-item>
-              </ng-container>
-            </ul>
-          </ng-container>
-          
-          <ng-container *ngIf="selectedCategoriesForFiltering.length !== 0 || selectedCountiesForFiltering.length !== 0 || searchTerm.length !== 0">
-            <!-- Display filtered projects or no projects message -->
-            <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
-              <ul class="projects-list">
-                <ng-container *ngFor="let project of filteredProjects">
-                  <app-project-item class="item" [userEmail]="userEmail"  [project]="project" [mediaList]="mediaListMap.get(project.id) || []" (bidPlaced)="handleBidPlaced($event)"></app-project-item>
-                </ng-container>
-              </ul>
-            </ng-container>
-          </ng-container>
-  
-        <!-- No projects found message -->
-        <ng-template #noProjects>
-          <p class="no-items-found-message">{{ noProjectsMessage }}</p>
-        </ng-template>
-      </div>
-      
-      <app-feedback-modal
-          [message]="feedbackMessage"
-          (closeModal)="closeFeedbackModal()"
-      ></app-feedback-modal>
+  <div class="side-bar-container">
+    <app-filter-sidebar 
+      (selectedCategoriesChange)="onSelectedCategoriesChange($event)" 
+      (selectedCountiesChange)="onSelectedCountiesChange($event)">
+    </app-filter-sidebar>
+  </div>
 
-      <ng-template #loading>
-        <p>Loading projects...</p>
+  <div class="main-container">
+    <app-search-bar class="app-search-bar" (searchEvent)="onSearch($event)"></app-search-bar>
+
+    <div class="projects-container" *ngIf="originalProjects.length > 0; else loading">
+      <div class="top-container">
+        <h2 class="projects-title">{{numberOfProjects}} Proiecte</h2>
+        <div class="sort-and-create-project-container">
+          <form class="sort-form">
+            <label class="text-sortby">Sortare:</label>
+            <select class="select-default-sorting" name="orderby" [(ngModel)]="selectedSortOption" (ngModelChange)="onSortOptionChange($event)">
+              <option value="default" selected>Implicit</option>
+              <option value="date">Data</option>
+              <option value="actionDuration">Durata Licitatie</option>
+            </select>
+          </form>
+        </div>
+      </div>
+
+      <ng-container *ngIf="selectedCategoriesForFiltering.length === 0 && selectedCountiesForFiltering.length === 0 && searchTerm.length === 0">
+        <ul class="projects-list">
+          <ng-container *ngFor="let project of filteredProjects">
+            <app-project-item class="item" [userEmail]="userEmail" [project]="project" [mediaList]="mediaListMap.get(project.id) || []" (bidPlaced)="handleBidPlaced($event)"></app-project-item>
+          </ng-container>
+        </ul>
+      </ng-container>
+      
+      <ng-container *ngIf="selectedCategoriesForFiltering.length !== 0 || selectedCountiesForFiltering.length !== 0 || searchTerm.length !== 0">
+        <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
+          <ul class="projects-list">
+            <ng-container *ngFor="let project of filteredProjects">
+              <app-project-item class="item" [userEmail]="userEmail" [project]="project" [mediaList]="mediaListMap.get(project.id) || []" (bidPlaced)="handleBidPlaced($event)"></app-project-item>
+            </ng-container>
+          </ul>
+        </ng-container>
+      </ng-container>
+
+      <!-- No projects found message -->
+      <ng-template #noProjects>
+        <p class="no-items-found-message">{{ noProjectsMessage }}</p>
       </ng-template>
     </div>
-  </body>
-  
+    
+    <app-feedback-modal
+      [message]="feedbackMessage"
+      (closeModal)="closeFeedbackModal()"
+    ></app-feedback-modal>
+
+    <ng-template #loading>
+      <p>Loading projects...</p>
+    </ng-template>
+  </div>
+</body>

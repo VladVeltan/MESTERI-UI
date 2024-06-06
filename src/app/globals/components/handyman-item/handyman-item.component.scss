@@ -1,0 +1,60 @@
+.handyman-item {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &:hover {
+    border-color: blue;
+  }
+
+  .handyman-photo {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+
+  .handyman-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #007bff;
+        text-decoration: underline;
+      }
+    }
+
+    .spaced-icon {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      mat-icon {
+        margin-right: 5px;
+      }
+    }
+
+    .description {
+      font-size: 14px;
+      color: #666;
+      margin-top: 10px;
+    }
+  }
+}

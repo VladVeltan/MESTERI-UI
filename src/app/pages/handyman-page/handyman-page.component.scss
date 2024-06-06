@@ -1,0 +1,111 @@
+.body {
+    display: flex;
+    justify-content: center; /* Horizontally center the main container */
+    align-items: flex-start; /* Align items at the start vertically */
+  }
+  .main-container {
+    width: 80%;
+    margin-top: 10px;
+  }
+  
+  .top-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    border-radius: 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+  }
+  
+  .search-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .no-items-found-message {
+    color: #000;
+  }
+  
+  .handymen-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .handyman-item {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    transition: border-color 0.3s ease;
+  
+    &:hover {
+      border-color: blue;
+    }
+  
+    .handyman-photo {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+  
+    .handyman-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .handyman-details h3 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  
+    .spaced-icon {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+  
+      mat-icon {
+        margin-right: 5px;
+      }
+    }
+  
+    .description {
+      font-size: 14px;
+      color: #666;
+      margin: 10px 0;
+    }
+  }
+  .top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sort-form {
+    display: flex;
+    align-items: center;
+  
+    .text-sortby {
+      margin-right: 10px;
+    }
+  
+    .select-default-sorting {
+      padding: 5px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
+  }
+  
+  

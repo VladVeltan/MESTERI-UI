@@ -11,14 +11,13 @@
 
     <div class="listings-container" *ngIf="originalListings.length > 0; else loading">
       <div class="top-container">
-        <h2 class="listings-title">Listings</h2>
+        <h2 class="listings-title">{{listingCount}} Anunțuri</h2>
         <div class="sort-and-create-listing-container">
           <form class="sort-form">
             <label class="text-sortby">Sortare:</label>
-            <select class="select-default-sorting" name="orderby">
-              <option value="date" selected>Dată</option>
-              <option value="salary">Preț</option>
-              <option value="name">Titlu</option>
+            <select class="select-default-sorting" name="orderby" [(ngModel)]="selectedSortOption" (ngModelChange)="onSortOptionChange($event)">
+              <option value="default" selected>Implicit</option>
+              <option value="date">Data</option>
             </select>
           </form>
         </div>
@@ -27,7 +26,7 @@
       <ng-container *ngIf="selectedCategoriesForFiltering.length === 0 && selectedCountiesForFiltering.length === 0 && searchTerm.length === 0">
         <!-- Display original listings -->
         <ul class="listings-list">
-          <ng-container *ngFor="let listing of originalListings">
+          <ng-container *ngFor="let listing of filteredListings">
             <app-listing-item class="item" *ngIf="mediaListMap.get(listing.id) !== undefined" [listingDto]="listing" [mediaList]="mediaListMap.get(listing.id) || []"></app-listing-item>
           </ng-container>
         </ul>

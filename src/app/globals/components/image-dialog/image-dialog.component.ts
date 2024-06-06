@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '../../modules/material.module';
-
+import { MediaItem } from '../../../types/media.types';
 
 export interface DialogData {
-  images: string[];
+  mediaList: MediaItem[];
   currentIndex: number;
 }
 
@@ -13,27 +13,33 @@ export interface DialogData {
   standalone: true,
   imports: [MaterialModule],
   templateUrl: './image-dialog.component.html',
-  styleUrl: './image-dialog.component.scss'
+  styleUrls: ['./image-dialog.component.scss']
 })
 export class ImageDialogComponent {
+  mediaList: MediaItem[];
+  currentIndex: number;
+
   constructor(
     public dialogRef: MatDialogRef<ImageDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
+  ) {
+    this.mediaList = data.mediaList;
+    this.currentIndex = data.currentIndex;
+  }
 
-  onClose(): void {
+  onNoClick(): void {
     this.dialogRef.close();
   }
 
-  navigateToPreviousImage(): void {
-    if (this.data.currentIndex > 0) {
-      this.data.currentIndex--;
+  navigateToNextImage(): void {
+    if (this.currentIndex < this.mediaList.length - 1) {
+      this.currentIndex++;
     }
   }
 
-  navigateToNextImage(): void {
-    if (this.data.currentIndex < this.data.images.length - 1) {
-      this.data.currentIndex++;
+  navigateToPreviousImage(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
     }
   }
 }

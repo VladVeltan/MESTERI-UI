@@ -6,11 +6,12 @@ import { PATHS } from '../../globals/routes';
 import { EMAIL_VALIDATION_PATTERN, PASSWORD_VALIDATION_PATTERN } from '../../globals/validators/regex-patterns';
 import { AuthData } from '../../types/auth.types';
 import { NgIf } from '@angular/common';
+import { MaterialModule } from '../../globals/modules/material.module';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, MaterialModule],
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
@@ -22,6 +23,7 @@ export class LoginPageComponent implements OnInit {
   formData!: FormGroup;
   errorMessage: string | null = null;
   successMessage: string | null = null;
+  passwordFieldType: string = 'password';
 
   ngOnInit() {
     this.formData = this.formBuilder.group({
@@ -49,6 +51,10 @@ export class LoginPageComponent implements OnInit {
         console.error('Login error:', error);
       }
     );
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
   navigateToRegister(): void {

@@ -11,135 +11,211 @@
   &:hover {
     border-color: blue;
   }
-}
 
-.title-category {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 10px;
-}
+  .title-category {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 
-.title {
-  font-size: 24px;
-  font-weight: bold;
-}
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
 
-.category {
-  font-size: 14px;
-  color: #888;
-}
+  .category {
+    font-size: 14px;
+    color: #888;
+  }
 
-.details-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
+  .details-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
 
-.user-details,
-.media {
-  display: flex;
-  flex-direction: column;
-  flex: 2; /* Adjusted flex value for user-details and media */
-  margin-right: 10px;
-}
+  .user-details,
+  .media {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    margin-right: 10px;
+  }
 
-.bidding-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Centering buttons vertically */
-  align-items: center; /* Centering buttons horizontally */
-  flex: 0 1 70px; /* Make the bidding-info container smaller */
-  margin-left: auto; /* Pushes the container to the right edge */
-  gap: 10px; /* Adds space between buttons */
-}
+  .bidding-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 0 1 70px;
+    margin-left: auto;
+    gap: 10px;
+  }
 
-.user-details .posted-by,
-.user-details .date,
-.user-details .location,
-.user-details .description {
-  display: flex;
-  align-items: center;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
+  .user-details .posted-by,
+  .user-details .date,
+  .user-details .location,
+  .user-details .description,
+  .user-details .expected-due-date {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
 
-.date mat-icon,
-.location mat-icon,
-.posted-by mat-icon {
-  margin-right: 5px;
-}
+  .user-details .posted-by a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: color 0.3s ease;
 
-.description {
-  font-size: 14px;
-  color: #666;
-  margin-top: 10px;
-}
+    &:hover {
+      color: #007bff;
+      text-decoration: underline;
+    }
+  }
 
-.media {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .date mat-icon,
+  .location mat-icon,
+  .posted-by mat-icon,
+  .expected-due-date mat-icon {
+    margin-right: 5px;
+  }
 
-.clickable-image {
-  cursor: pointer;
-  border-radius: 5px;
-  max-width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
+  .description {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+  }
 
-.clickable-image:hover {
-  transform: scale(1.05);
-}
+  .expected-due-date {
+    font-size: 14px;
+    color: grey;
+    margin-top: 10px;
+  }
 
-.bid-button,
-.history-button {
-  padding: 6px 0; /* Adjusted padding to make font slightly smaller */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 12px; /* Smaller font size */
-  width: 100%; /* Ensures buttons take full width of the container */
-  box-sizing: border-box; /* Ensures padding and border are included in the width */
-  text-align: center; /* Centers the text inside the button */
-  color: white;
-}
+  .media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.bid-button {
-  background-color: #007bff;
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  transition: background 0.3s ease;
-}
+  .clickable-image {
+    cursor: pointer;
+    border-radius: 5px;
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 
-.bid-button:hover {
-  background: linear-gradient(135deg, #0056b3, #0041a8); /* Darker gradient on hover */
-}
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
 
-.history-button {
-  background-color: #28a745;
-  background: linear-gradient(135deg, #28a745, #218838);
-  transition: background 0.3s ease;
-}
+  .bid-button,
+  .history-button {
+    padding: 6px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    color: white;
+  }
 
-.history-button:hover {
-  background: linear-gradient(135deg, #218838, #1a6629); /* Darker gradient on hover */
-}
+  .bid-button {
+    background-color: #007bff;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    transition: background 0.3s ease;
+  }
 
-.countdown {
-  font-size: 14px; /* Adjust the size as needed */
-  color: #ff69b4; /* Light pink color */
-  background: linear-gradient(135deg, #ffe6f1, #ffb3c6);
-  padding: 6px 0;
-  border-radius: 5px;
-  width: 100%; /* Same width as buttons */
-  text-align: center;
-  box-sizing: border-box; /* Ensures padding and border are included in the width */
-}
+  .bid-button:hover {
+    background: linear-gradient(135deg, #0056b3, #0041a8);
+  }
 
-.spaced-icon {
-  margin-right: 5px;
+  .history-button {
+    background-color: #28a745;
+    background: linear-gradient(135deg, #28a745, #218838);
+    transition: background 0.3s ease;
+  }
+
+  .history-button:hover {
+    background: linear-gradient(135deg, #218838, #1a6629);
+  }
+
+  .countdown {
+    font-size: 14px;
+    color: #ff69b4;
+    background: linear-gradient(135deg, #ffe6f1, #ffb3c6);
+    padding: 6px 0;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .spaced-icon {
+    margin-right: 5px;
+  }
+
+  .enlarged-image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .enlarged-image-container {
+    position: relative;
+  }
+
+  .enlarged-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+  }
+
+  .navigate-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .left-button {
+    left: 10px;
+  }
+
+  .right-button {
+    right: 10px;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 0, 0.5);
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+  }
 }

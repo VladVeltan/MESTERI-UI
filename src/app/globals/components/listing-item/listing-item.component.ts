@@ -79,11 +79,7 @@ export class ListingItemComponent {
     });
   }
 
-  openImageDialog(index: number): void {
-    const imageUrls = this.mediaList.map(media => media.imageUrl);
-    const dialogData: DialogData = { images: imageUrls, currentIndex: index };
-    this.dialog.open(ImageDialogComponent, { data: dialogData });
-  }
+  
 
   getFormattedDate(date: string): string {
     return this.datePipe.transform(date, 'dd.MM.yyyy')!;
