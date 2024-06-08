@@ -46,12 +46,12 @@ export class ProjectService {
     return this.http.get<Project[]>(`${environment.apiUrl}/${PATHS.PROJECTS}/sort/${fieldToSortBy}`);
   }
 
-  getAllProjectsWithPagination(offset: number, pageSize: number): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/${PATHS.PROJECTS}/pagination/${offset}/${pageSize}`);
+  getAllProjectsWithPagination(page: number, pageSize: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/${PATHS.PROJECTS}/pagination/${page}/${pageSize}`);
   }
 
-  getAllProjectsWithPaginationAndSorting(offset: number, pageSize: number, field: string): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/${PATHS.PROJECTS}/pagination/sort/${offset}/${pageSize}/${field}`);
+  getAllProjectsWithPaginationAndSorting(page: number, pageSize: number, field: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/${PATHS.PROJECTS}/pagination/sort/${page}/${pageSize}/${field}`);
   }
 
   countAllProjects(): Observable<number> {

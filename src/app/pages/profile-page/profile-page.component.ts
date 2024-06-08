@@ -18,6 +18,7 @@ import { ReviewModalComponent } from '../../globals/components/review-modal/revi
 import { ReviewService } from '../../servicies/review.service';
 import { ReviewDto } from '../../types/reviewDto.types';
 import { ReviewItemComponent } from '../../globals/components/review-item/review-item.component';
+import { categoryImages } from '../../types/categoryImages.types'; // Import categoryImages
 
 @Component({
   selector: 'app-profile-page',
@@ -257,5 +258,9 @@ export class ProfilePageComponent implements OnInit {
 
   toggleView(): void {
     this.showReviews = !this.showReviews;
+  }
+
+  getCategoryImage(categoryName: string): string {
+    return categoryImages[categoryName] || 'assets/default.png';
   }
 }

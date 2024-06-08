@@ -15,16 +15,16 @@ import { Routes } from "@angular/router";
 
 
 export const routes: Routes = [
-    { path: PATHS.HOME,'title':'Acasa',component: HomePageComponent },
-    { path: PATHS.LOGIN,'title':'Autentificare',canActivate:[notAuthGuard], component: LoginPageComponent },
-    { path: PATHS.LISTINGS,'title':'Anunturi', component: ListingsPageComponent },
-    { path: PATHS.PROFILE,'title':'Profil', component: ProfilePageComponent },
-    { path: PATHS.HANDYMAN,'title':'Mesteri', component: HandymanPageComponent },
-    { path: 'profile/:email', component: ProfilePageComponent },
-    // { path: PATHS.PROFILE,'title':'Profile',canActivate:[authGuard,userGuard], component: ProfilePageComponent },
-    { path: PATHS.PROJECTS,'title':'Proiecte', component: ProjectsPageComponent },
-    { path: PATHS.POST,'title':'Creeaza postare', component: CreatePostPageComponent },
-    { path: PATHS.REGISTER,'title':'Inregistrare', component: RegisterPageComponent },
-    { path: '', 'title':'Login',redirectTo: PATHS.LOGIN, pathMatch: 'full' },
-    { path: '**', redirectTo: PATHS.HOME } 
-  ];
+  { path: PATHS.HOME,'title':'Acasa',component: HomePageComponent },
+  { path: PATHS.LOGIN,'title':'Autentificare',canActivate:[notAuthGuard], component: LoginPageComponent },
+  { path: PATHS.LISTINGS,'title':'Anunturi', component: ListingsPageComponent },
+  { path: PATHS.PROFILE,'title':'Profil', component: ProfilePageComponent },
+  { path: PATHS.HANDYMAN,'title':'Mesteri', component: HandymanPageComponent },
+  { path: 'profile/:email', component: ProfilePageComponent },
+  // { path: PATHS.PROFILE,'title':'Profile',canActivate:[authGuard,userGuard], component: ProfilePageComponent },
+  { path: PATHS.PROJECTS,'title':'Proiecte', component: ProjectsPageComponent },
+  { path: PATHS.POST,'title':'Creeaza postare', component: CreatePostPageComponent },
+  { path: PATHS.REGISTER,'title':'Inregistrare', component: RegisterPageComponent },
+  { path: '', 'title':'Login',redirectTo: PATHS.LOGIN, pathMatch: 'full' },
+  { path: '**', redirectTo: PATHS.HOME}
+];

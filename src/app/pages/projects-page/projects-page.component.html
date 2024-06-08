@@ -9,7 +9,7 @@
   <div class="main-container">
     <app-search-bar class="app-search-bar" (searchEvent)="onSearch($event)"></app-search-bar>
 
-    <div class="projects-container" *ngIf="originalProjects.length > 0; else loading">
+    <div class="projects-container" *ngIf="paginatedProjects.length > 0; else noProjects">
       <div class="top-container">
         <h2 class="projects-title">{{numberOfProjects}} Proiecte</h2>
         <div class="sort-and-create-project-container">
@@ -26,7 +26,7 @@
 
       <ng-container *ngIf="selectedCategoriesForFiltering.length === 0 && selectedCountiesForFiltering.length === 0 && searchTerm.length === 0">
         <ul class="projects-list">
-          <ng-container *ngFor="let project of filteredProjects">
+          <ng-container *ngFor="let project of paginatedProjects">
             <app-project-item class="item" [userEmail]="userEmail" [project]="project" [mediaList]="mediaListMap.get(project.id) || []" (bidPlaced)="handleBidPlaced($event)"></app-project-item>
           </ng-container>
         </ul>
@@ -35,19 +35,31 @@
       <ng-container *ngIf="selectedCategoriesForFiltering.length !== 0 || selectedCountiesForFiltering.length !== 0 || searchTerm.length !== 0">
         <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
           <ul class="projects-list">
-            <ng-container *ngFor="let project of filteredProjects">
+            <ng-container *ngFor="let project of paginatedProjects">
               <app-project-item class="item" [userEmail]="userEmail" [project]="project" [mediaList]="mediaListMap.get(project.id) || []" (bidPlaced)="handleBidPlaced($event)"></app-project-item>
             </ng-container>
           </ul>
         </ng-container>
       </ng-container>
 
+      <!-- Pagination controls -->
+      <div class="pagination-controls">
+        <label for="pageSize">Elemente pe pagină:</label>
+        <select id="pageSize" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange($event)">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      
+        <button class="pagination-button" [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">Anterior</button>
+        <span class="pagination-info">Pagina {{currentPage + 1}} din {{totalPages}}</span>
+        <button class="pagination-button" [disabled]="currentPage >= totalPages - 1" (click)="onPageChange(currentPage + 1)">Următor</button>
+      </div>
+
       <!-- No projects found message -->
-      <ng-template #noProjects>
-        <p class="no-items-found-message">{{ noProjectsMessage }}</p>
-      </ng-template>
+      
     </div>
-    
+    <ng-template #noProjects>
+      <p class="no-items-found-message">{{ noProjectsMessage }}</p>
+    </ng-template>
     <app-feedback-modal
       [message]="feedbackMessage"
       (closeModal)="closeFeedbackModal()"

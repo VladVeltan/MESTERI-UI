@@ -3,14 +3,15 @@ import { Category } from '../../../types/category.types';
 import { County } from '../../../types/county.types';
 import { NgFor, NgIf } from '@angular/common';
 import { categories } from '../../../types/category.types';
+import { categoryImages } from '../../../types/categoryImages.types';
 import { counties } from '../../../types/county.types';
 
 @Component({
   selector: 'app-filter-sidebar',
   standalone: true,
-  imports: [NgIf,NgFor],
+  imports: [NgIf, NgFor],
   templateUrl: './filter-sidebar.component.html',
-  styleUrl: './filter-sidebar.component.scss'
+  styleUrls: ['./filter-sidebar.component.scss']
 })
 export class FilterSidebarComponent {
 
@@ -20,30 +21,28 @@ export class FilterSidebarComponent {
   showCategoryDropdown: boolean = false;
   showCountyDropdown: boolean = false;
 
-
   selectedCategories: Category[] = [];
   selectedCounties: County[] = [];
 
-  categories:Category[]=categories
-  counties:County[]=counties
+  categories: Category[] = categories;
+  categoryImages = categoryImages;
+  counties: County[] = counties;
 
   toggleCategoryDropdown(): void {
     this.showCategoryDropdown = !this.showCategoryDropdown;
     this.showCountyDropdown = false;
   }
+  
   toggleCountyDropdown(): void {
     this.showCountyDropdown = !this.showCountyDropdown;
     this.showCategoryDropdown = false;
   }
 
-
   selectCategory(category: Category): void {
-
     this.showCategoryDropdown = false;
   }
 
   selectCounty(county: County): void {
-
     this.showCountyDropdown = false;
   }
 
@@ -69,7 +68,6 @@ export class FilterSidebarComponent {
     } else if (type === 'county') {
       this.emitSelectedCounties();
     }
-
   }
 
   isSelected(item: Category | County, type: string): boolean {
@@ -85,10 +83,7 @@ export class FilterSidebarComponent {
     this.selectedCategoriesChange.emit(this.selectedCategories);
   }
 
-  // Method to emit changes when counties are selected/deselected
   emitSelectedCounties(): void {
     this.selectedCountiesChange.emit(this.selectedCounties);
   }
-  
-
 }

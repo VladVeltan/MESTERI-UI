@@ -3,13 +3,15 @@ import { FormGroup, FormControl, FormBuilder, Validators, ReactiveFormsModule } 
 import { Router } from '@angular/router';
 import { AuthService } from '../../servicies/auth.service';
 import { PATHS } from '../../globals/routes';
-import { NgIf } from '@angular/common';
+import { NgIf, NgFor } from '@angular/common';
 import { MaterialModule } from '../../globals/modules/material.module';
+import { categoryImages } from '../../types/categoryImages.types';
+import { categories } from '../../types/category.types';
 
 @Component({
   selector: 'app-register-page',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, MaterialModule],
+  imports: [ReactiveFormsModule, NgIf, NgFor, MaterialModule],
   templateUrl: './register-page.component.html',
   styleUrls: ['./register-page.component.scss']
 })
@@ -24,6 +26,9 @@ export class RegisterPageComponent implements OnInit {
   isMester: boolean = false;
   passwordFieldType: string = 'password';
   confirmPasswordFieldType: string = 'password';
+  categories = categories.map(category => category.name);
+  selectedCategories: string[] = [];
+  categoryImages = categoryImages; // Add this line to make categoryImages available in the template
 
   ngOnInit() {
     this.formData = this.formBuilder.group({
@@ -39,12 +44,13 @@ export class RegisterPageComponent implements OnInit {
       ]),
       confirmPassword: new FormControl('', [Validators.required, this.passwordMatchValidator]),
       phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9]+$')]),
-      experience: new FormControl(''),
+      yearsOfExperience: new FormControl(''),
       age: new FormControl('', [Validators.min(18)]),
       creationDate: new Date().toISOString().slice(0, -5),
-      rating:0
+      rating: 0,
+      categoriesOfInterest: new FormControl(''),
     });
-    
+
     this.onRoleChange();
     this.formData.get('role')?.valueChanges.subscribe(() => this.onRoleChange());
   }
@@ -52,7 +58,7 @@ export class RegisterPageComponent implements OnInit {
   onRoleChange() {
     const role = this.formData.get('role')?.value;
     this.isMester = role === 'HANDYMAN';
-    const experienceControl = this.formData.get('experience');
+    const experienceControl = this.formData.get('yearsOfExperience');
     const ageControl = this.formData.get('age');
 
     if (this.isMester) {
@@ -86,7 +92,13 @@ export class RegisterPageComponent implements OnInit {
       this.errorMessage = 'Vă rugăm să corectați erorile din formular.';
       return;
     }
-    console.log(this.formData.value,"in clickSumbit")
+
+    if (this.isMester) {
+      this.formData.patchValue({
+        categoriesOfInterest: this.selectedCategories.join(',')
+      });
+    }
+
     this.authService.register(this.formData.value).subscribe(
       () => {
         this.successMessage = 'Înregistrare reușită!';
@@ -111,5 +123,18 @@ export class RegisterPageComponent implements OnInit {
 
   navigateToLogin(): void {
     this.router.navigate([PATHS.LOGIN]);
+  }
+
+  toggleCategorySelection(category: string): void {
+    const index = this.selectedCategories.indexOf(category);
+    if (index === -1) {
+      this.selectedCategories.push(category);
+    } else {
+      this.selectedCategories.splice(index, 1);
+    }
+  }
+
+  isCategorySelected(category: string): boolean {
+    return this.selectedCategories.includes(category);
   }
 }

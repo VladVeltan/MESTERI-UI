@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
-
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ProjectDto } from '../../types/projectDto.types';
 import { FilterSidebarComponent } from "../../globals/components/filter-sidebar/filter-sidebar.component";
-
 import { SearchBarComponent } from '../../globals/components/search-bar/search-bar.component';
 import { Category } from '../../types/category.types';
 import { County } from '../../types/county.types';
@@ -20,7 +18,7 @@ import { FormsModule, NgForm, NgModel } from '@angular/forms';
   standalone: true,
   templateUrl: './projects-page.component.html',
   styleUrl: './projects-page.component.scss',
-  imports: [NgFor, NgIf, FilterSidebarComponent, ProjectItemComponent, SearchBarComponent,FeedbackModalComponent,FormsModule]
+  imports: [NgFor, NgIf, FilterSidebarComponent, ProjectItemComponent, SearchBarComponent, FeedbackModalComponent, FormsModule]
 })
 export class ProjectsPageComponent implements OnInit {
   @ViewChild(FeedbackModalComponent) feedbackModal!: FeedbackModalComponent;
@@ -33,6 +31,7 @@ export class ProjectsPageComponent implements OnInit {
 
   originalProjects: ProjectDto[] = [];
   filteredProjects: ProjectDto[] = [];
+  paginatedProjects: ProjectDto[] = [];
   mediaListMap: Map<string, MediaItem[]> = new Map();
 
   isCreateProjectModalOpen: boolean = false;
@@ -44,6 +43,13 @@ export class ProjectsPageComponent implements OnInit {
   projectService = inject(ProjectService);
   mediaService = inject(MediaService);
 
+  // Pagination variables
+  currentPage: number = 0;
+  pageSize: number = 10;
+  totalPages: number = 1;
+
+  pageSizeOptions = [5, 10, 20, 50];
+
   // Sorting variables
   selectedSortOption: string = 'default';
 
@@ -51,14 +57,14 @@ export class ProjectsPageComponent implements OnInit {
     this.projectService.countAllProjects().subscribe({
       next: count => {
         this.numberOfProjects = count;
+        this.totalPages = Math.ceil(this.numberOfProjects / this.pageSize);
       },
       error: err => {
         console.error('Error fetching project count', err);
       }
     });
     this.decodeToken();
-    await this.getProjectsWithMedia();
-    this.filterProjects(); // Initialize filtered projects
+    await this.loadProjectsPage();
   }
 
   decodeToken(): void {
@@ -76,15 +82,17 @@ export class ProjectsPageComponent implements OnInit {
     }
   }
 
-  async getProjectsWithMedia(): Promise<void> {
+  async loadProjectsPage(): Promise<void> {
     try {
-      const projects = await this.projectService.getAllProjects().toPromise();
-      if (projects) {
-        for (const project of projects) {
+      const paginatedProjects = await this.projectService.getAllProjectsWithPagination(this.currentPage, this.pageSize).toPromise();
+      if (paginatedProjects) {
+        const activeProjects = paginatedProjects.content.filter((project: ProjectDto) => project.status);
+        for (const project of activeProjects) {
           const mediaList = await this.getMediaForProject(project.id);
           this.mediaListMap.set(project.id, mediaList);
         }
-        this.originalProjects = projects;
+        this.originalProjects = activeProjects;
+        this.filterProjects();
       }
     } catch (error) {
       console.error('Error fetching projects:', error);
@@ -103,26 +111,31 @@ export class ProjectsPageComponent implements OnInit {
 
   onSearch(searchTerm: string): void {
     this.searchTerm = searchTerm;
+    this.currentPage = 0; // Reset to the first page on search
     this.filterProjects();
   }
 
   filterProjects(): void {
-    if (this.selectedCategoriesForFiltering.length === 0 &&
+    if (
+      this.selectedCategoriesForFiltering.length === 0 &&
       this.selectedCountiesForFiltering.length === 0 &&
-      this.searchTerm.length === 0) {
+      this.searchTerm.length === 0
+    ) {
       this.filteredProjects = this.originalProjects;
     } else {
-      let filteredProjects = this.originalProjects.filter(project =>
+      const filteredProjects = this.originalProjects.filter((project) =>
+        project.status &&
         (this.selectedCategoriesForFiltering.length === 0 ||
-          this.selectedCategoriesForFiltering.some(category => category.name === project.category.toString())) &&
+          this.selectedCategoriesForFiltering.some((category) => category.name === (project.category ? project.category.toString() : ''))) &&
         (this.selectedCountiesForFiltering.length === 0 ||
-          this.selectedCountiesForFiltering.some(county => county.name === project.county.toString())) &&
+          this.selectedCountiesForFiltering.some((county) => county.name === (project.county ? project.county.toString() : ''))) &&
         (this.searchTerm.length === 0 ||
-          Object.values(project).some(value => value.toString().toLowerCase().includes(this.searchTerm.toLowerCase())))
+          Object.values(project).some((value) => value && value.toString().toLowerCase().includes(this.searchTerm.toLowerCase())))
       );
       this.filteredProjects = filteredProjects;
     }
     this.sortProjects();
+    this.paginateProjects();
     this.noProjectsMessage = this.constructNoProjectsMessage();
   }
 
@@ -141,14 +154,60 @@ export class ProjectsPageComponent implements OnInit {
     return end.getTime() - now.getTime();
   }
 
+  paginateProjects(): void {
+    const start = this.currentPage * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedProjects = this.filteredProjects.slice(start, end);
+  }
+
   onSelectedCategoriesChange(categories: Category[]): void {
     this.selectedCategoriesForFiltering = categories;
+    this.currentPage = 0; // Reset to the first page on filter change
     this.filterProjects();
   }
 
   onSelectedCountiesChange(counties: County[]): void {
     this.selectedCountiesForFiltering = counties;
+    this.currentPage = 0; // Reset to the first page on filter change
     this.filterProjects();
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.paginateProjects();
+  }
+
+  onPageSizeChange(size: number): void {
+    this.pageSize = size;
+    this.currentPage = 0; // Reset to the first page on page size change
+    this.totalPages = Math.ceil(this.filteredProjects.length / this.pageSize);
+    this.paginateProjects();
+  }
+
+  onSortOptionChange(sortOption: string): void {
+    this.selectedSortOption = sortOption;
+    this.currentPage = 0; // Reset to the first page on sort change
+    this.filterProjects();
+  }
+
+  constructNoProjectsMessage(): string {
+    let filters = [];
+
+    if (this.selectedCategoriesForFiltering.length > 0) {
+      const categories = this.selectedCategoriesForFiltering.map(category => category.name).join(', ');
+      filters.push(`Categoria: ${categories}`);
+    }
+
+    if (this.selectedCountiesForFiltering.length > 0) {
+      const counties = this.selectedCountiesForFiltering.map(county => county.name).join(', ');
+      filters.push(`Judetul: ${counties}`);
+    }
+
+    if (this.searchTerm.length > 0) {
+      filters.push(`Termentul de cautare: "${this.searchTerm}"`);
+    }
+
+    return filters.length > 0 ? `Nu s-au gasit proiecte pentru urmatoarele filtre: ${filters.join('; ')}` : '';
   }
 
   openFeedbackModal(message: string): void {
@@ -168,30 +227,5 @@ export class ProjectsPageComponent implements OnInit {
 
   handleBidPlaced(message: string): void {
     this.showCompletionMessage(message);
-  }
-
-  onSortOptionChange(sortOption: string): void {
-    this.selectedSortOption = sortOption;
-    this.filterProjects();
-  }
-
-  constructNoProjectsMessage(): string {
-    let filters = [];
-
-    if (this.selectedCategoriesForFiltering.length > 0) {
-      const categories = this.selectedCategoriesForFiltering.map(category => category.name).join(', ');
-      filters.push(`Categories: ${categories}`);
-    }
-
-    if (this.selectedCountiesForFiltering.length > 0) {
-      const counties = this.selectedCountiesForFiltering.map(county => county.name).join(', ');
-      filters.push(`Counties: ${counties}`);
-    }
-
-    if (this.searchTerm.length > 0) {
-      filters.push(`Search Term: "${this.searchTerm}"`);
-    }
-
-    return filters.length > 0 ? `No projects found for the following filters: ${filters.join('; ')}` : '';
   }
 }

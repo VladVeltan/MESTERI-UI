@@ -26,7 +26,6 @@
       <div class="additional-info">
         <p *ngIf="user.yearsOfExperience"><strong>Ani de experiență:</strong> {{ user.yearsOfExperience }}</p>
         <p *ngIf="user.age"><strong>Vârstă:</strong> {{ user.age }}</p>
-        <p *ngIf="user.categoriesOfInterest"><strong>Categorii de interes:</strong> {{ user.categoriesOfInterest }}</p>
       </div>
       <button *ngIf="isCurrentUser" class="edit-btn" (click)="editUserDetails()">
         <mat-icon>edit</mat-icon> Editează
@@ -34,6 +33,18 @@
       <button *ngIf="!isCurrentUser && user.role === 'HANDYMAN'" class="review-btn" (click)="leaveReview()">
         <mat-icon>rate_review</mat-icon> Lasă un review
       </button>
+    </div>
+    
+    <div class="categories-container" *ngIf="user.categoriesOfInterest">
+      <h4>Categorii din aria de interes</h4>
+      <div class="categories-grid">
+        <ng-container *ngFor="let category of user.categoriesOfInterest.split(',')">
+          <div class="category-item">
+            <img [src]="getCategoryImage(category.trim())" alt="{{ category.trim() }}" class="category-icon">
+            <div class="category-name">{{ category.trim() }}</div>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 

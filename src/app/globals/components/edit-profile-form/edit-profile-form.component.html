@@ -1,0 +1,36 @@
+<form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="firstName">First Name:</label>
+      <input id="firstName" formControlName="firstName">
+    </div>
+    <div>
+      <label for="lastName">Last Name:</label>
+      <input id="lastName" formControlName="lastName">
+    </div>
+    <div>
+      <label for="yearsOfExperience">Years of Experience:</label>
+      <input id="yearsOfExperience" formControlName="yearsOfExperience" type="number">
+    </div>
+    <div>
+      <label for="age">Age:</label>
+      <input id="age" formControlName="age" type="number">
+    </div>
+    <div>
+      <label for="categoriesOfInterest">Categories of Interest:</label>
+      <input id="categoriesOfInterest" formControlName="categoriesOfInterest">
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input id="email" formControlName="email" type="email">
+    </div>
+    <div>
+      <label for="phone">Phone:</label>
+      <input id="phone" formControlName="phone">
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input id="password" formControlName="password" type="password">
+    </div>
+    <button type="submit" [disabled]="editProfileForm.invalid">Submit</button>
+  </form>
+  
