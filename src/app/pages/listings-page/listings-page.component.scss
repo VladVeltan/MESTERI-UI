@@ -11,9 +11,7 @@
 .top-container{
   display: flex;
   justify-content: space-between;
-  
 }
-
 
 .search-button {
   padding: 10px 20px;
@@ -31,7 +29,6 @@
   background-color: #0056b3; /* Schimbăm culoarea de fundal la hover */
 }
 
-
 .select-default-sorting {
   padding: 8px 12px;
   border-radius: 15px;
@@ -47,10 +44,6 @@
 .no-items-found-message{
   color:#000
 }
-
-
-
-
 
 .pagination-controls {
   display: flex;
@@ -95,6 +88,3 @@
   border: 1px solid #ced4da;
   margin-right: 20px;
 }
-
-
-

@@ -46,4 +46,47 @@
   .no-items-found-message {
     color: #000;
   }
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pagination-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .pagination-button:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  .pagination-info {
+    margin: 0 15px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  #pageSize {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    margin-right: 20px;
+  }
   

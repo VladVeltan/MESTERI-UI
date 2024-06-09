@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 import { ListingService } from '../../servicies/listing.service';
 import { ProjectService } from '../../servicies/project.service';
 import { MediaService } from '../../servicies/media.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-post-page',
@@ -23,6 +24,7 @@ export class CreatePostPageComponent {
   listingService = inject(ListingService);
   projectService = inject(ProjectService);
   mediaService = inject(MediaService);
+  router = inject(Router); 
   isProject: boolean = false;
   hasClicked: boolean = false; // Variable to track button click
 
@@ -54,7 +56,7 @@ export class CreatePostPageComponent {
       this.projectService.postProject(this.formData).subscribe(
         (response) => {
           const projectId = response.id; // Adaptează în funcție de răspunsul API-ului
-          this.uploadFiles('project_id', projectId, formData.images);
+          this.uploadFiles('Proiectul', projectId, formData.images);
         },
         (error) => {
           console.error('Error creating project:', error);
@@ -64,7 +66,7 @@ export class CreatePostPageComponent {
       this.listingService.postListing(this.formData).subscribe(
         (response) => {
           const listingId = response.id; // Adaptează în funcție de răspunsul API-ului
-          this.uploadFiles('listing_id', listingId, formData.images);
+          this.uploadFiles('Anuntul', listingId, formData.images);
         },
         (error) => {
           console.error('Error creating listing:', error);
@@ -77,8 +79,9 @@ export class CreatePostPageComponent {
     console.log("in update files",files)
     this.mediaService.uploadMedia(whichEntity, entityId, files).subscribe(
       (response) => {
-        this.showCompletionMessage(`${whichEntity} created and files uploaded successfully!`);
+        this.showCompletionMessage(`${whichEntity} a fost creat si fiserele au fost incarcate!`);
         console.log(`${whichEntity} created and files uploaded successfully!`, response);
+        // this.redirectToProfile();
       },
       (error) => {
         console.error(`Error uploading files for ${whichEntity}:`, error);
@@ -106,5 +109,8 @@ export class CreatePostPageComponent {
     setTimeout(() => {
       this.feedbackModal.hideModal();
     }, 3000); // Adjust duration as needed
+  }
+  redirectToProfile(): void {
+    this.router.navigate(['/profile']); // Navigate to profile page
   }
 }

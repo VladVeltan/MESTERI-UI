@@ -6,7 +6,10 @@ export interface User{
     password:string;
     role:string;
     phone:string;
-    media:string;
     rating:number;
     description:string;
+    yearsOfExperience:number;
+    age:number;
+    categoriesOfInterest:string;
+    creationDate:string;
 }

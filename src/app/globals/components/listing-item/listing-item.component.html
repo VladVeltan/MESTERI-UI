@@ -1,20 +1,18 @@
 <div class="listing-item">
-
   <div class="title-category">
     <div class="title">{{ listingDto.title }}</div>
     <div class="category">{{ listingDto.category }}</div>
   </div>
 
   <div class="details">
-
     <div class="wrapper">
       <div class="posted-by" *ngIf="listingDto.userEmail">
         <div class="spaced-icon">
-          <mat-icon>person</mat-icon> 
+          <mat-icon>person</mat-icon>
           <a (click)="navigateToUserProfile(listingDto.userEmail)">{{ listingDto.userFirstName }} {{ listingDto.userLastName }}</a>
         </div>
-        <div class="spaced-icon"> 
-          <mat-icon>phone</mat-icon> 
+        <div class="spaced-icon">
+          <mat-icon>phone</mat-icon>
           {{ listingDto.userPhone }}
         </div>
       </div>
@@ -28,13 +26,20 @@
       <div class="description">{{ listingDto.description }}</div>
     </div>
 
-    <div class="media" *ngIf="mediaList && mediaList[currentImageIndex]">
+    <div class="media" *ngIf="mediaList && mediaList.length > 0">
       <img 
         [src]="mediaList[currentImageIndex].imageUrl" 
         alt="Media" 
-        (click)="openImageDialog(currentImageIndex)"
-        class="clickable-image"
+        class="clickable-image" 
+        (click)="openImageModal(currentImageIndex)"
       >
     </div>
   </div>
+  
+  <app-image-modal 
+    *ngIf="showImageModal" 
+    [mediaList]="mediaList" 
+    [currentIndex]="currentImageIndex" 
+    (close)="closeImageModal()"
+  ></app-image-modal>
 </div>

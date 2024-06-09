@@ -11,8 +11,9 @@ export interface RegisterData{
     phone:string;
     rating:string;
     creationDate:string;
-    // age:string;
-    // experience:string;
+    yearsOfExperience:number;
+    age:number;
+    categoriesOfInterest:string;
 }
 export interface UserData {
     role: string;

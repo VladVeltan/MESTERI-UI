@@ -9,7 +9,12 @@
               <label for="inputEmail" class="sr-only">Adresă de email</label>
               <input type="text" id="email" class="form-control" formControlName="email" placeholder="Adresă de email" required autofocus>
               <label for="inputPassword" class="sr-only">Parolă</label>
-              <input type="password" id="inputPassword" class="form-control" formControlName="password" placeholder="Parolă" required>
+              <div class="input-container">
+                <input [type]="passwordFieldType" id="inputPassword" class="form-control" formControlName="password" placeholder="Parolă" required>
+                <button type="button" class="toggle-visibility" (click)="togglePasswordVisibility()">
+                  <mat-icon class="vis-btn">{{ passwordFieldType === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+                </button>
+              </div>
               <button class="btn btn-lg btn-primary btn-block" type="submit">Autentificare</button>
               <!-- Mesaj de eroare -->
               <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>

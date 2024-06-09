@@ -1,12 +1,19 @@
-<div mat-dialog-content class="image-dialog-content">
-  <button mat-icon-button class="close-button" (click)="onClose()">
-    <mat-icon>close</mat-icon>
-  </button>
-  <button mat-icon-button class="nav-button left" (click)="navigateToPreviousImage()">
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-  <img [src]="data.images[data.currentIndex]" alt="Image" class="dialog-image">
-  <button mat-icon-button class="nav-button right" (click)="navigateToNextImage()">
-    <mat-icon>chevron_right</mat-icon>
-  </button>
+<div class="dialog-content">
+  <div class="cls-wrapper">
+    <button mat-icon-button class="close-button" (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+  <div class="img-wrapper">
+    <button class="left" mat-icon-button (click)="navigateToPreviousImage()" [disabled]="currentIndex === 0">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <img [src]="mediaList[currentIndex].imageUrl" alt="Image">
+    <button class="right" mat-icon-button (click)="navigateToNextImage()" [disabled]="currentIndex === mediaList.length - 1">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+ 
+  
 </div>

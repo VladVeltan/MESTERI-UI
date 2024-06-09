@@ -1,0 +1,13 @@
+<div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <img [src]="mediaList[currentIndex].imageUrl" alt="Current Image" class="modal-image">
+      <button class="nav-button left" (click)="previousImage()" [disabled]="currentIndex === 0">
+        &lt;
+      </button>
+      <button class="nav-button right" (click)="nextImage()" [disabled]="currentIndex === mediaList.length - 1">
+        &gt;
+      </button>
+      <button class="close-button" (click)="closeModal()">x</button>
+    </div>
+  </div>
+  

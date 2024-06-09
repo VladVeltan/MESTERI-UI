@@ -46,7 +46,8 @@ export class MediaService {
     });
     return this.http.post<any>(`${environment.apiUrl}/medias/${whichEntity}/${entityId}`, formData, {
       reportProgress: true,
-      observe: 'events'
+      observe: 'events',
+      responseType:'text' as 'json'
     });
   }
   
@@ -55,7 +56,8 @@ export class MediaService {
     formData.append('image', file);
     return this.http.put<any>(`${environment.apiUrl}/medias/${whichEntity}/${entityId}`, formData, {
       reportProgress: true,
-      observe: 'events'
+      observe: 'events',
+      responseType:'text' as 'json'
     });
   }
 

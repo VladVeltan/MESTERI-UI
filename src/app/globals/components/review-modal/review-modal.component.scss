@@ -1,97 +1,105 @@
 .review-modal {
-    position: relative;
-    padding: 20px;
-    max-width: 600px;
-    width: 500px;
-    margin: auto;
-    min-height: 400px; /* Increase the height of the modal */
-  
-    .close-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background: rgb(207, 207, 207);
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      border-radius: 50%; /* Make the button round */
-      width: 30px;
-      height: 30px;
+  position: relative;
+  padding: 20px;
+  max-width: 600px;
+  width: 500px;
+  margin: auto;
+  min-height: 400px;
+
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgb(207, 207, 207);
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .review-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .rating-container {
       display: flex;
-      align-items: center;
       justify-content: center;
-    }
-  
-    h2 {
-      text-align: center;
       margin-bottom: 20px;
+      padding-bottom: 20px;
+      width: 100%;
+
+      .star {
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: lightgray;
+        transition: color 0.2s;
+        display: inline-block;
+
+        &.filled,
+        &.half-filled {
+          color: gold;
+        }
+      }
     }
-  
-    .review-form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  
-      .rating-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-        padding-bottom: 20px;
-        width: 100%; /* Ensure the container takes the full width */
-  
-        .star {
-          cursor: pointer;
-          font-size: 1.5rem;
-          color: lightgray;
-          transition: color 0.2s;
-          display: inline-block;
-  
-          &.filled,
-          &.half-filled {
-            color: gold;
-          }
-        }
+
+    .full-width {
+      width: 90%;
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
       }
-  
-      .full-width {
-        width: 90%; /* Make the review field wider */
-        margin-bottom: 20px;
-  
-        label {
-          display: block;
-          margin-bottom: 8px;
-          font-weight: bold;
-        }
-  
-        textarea {
-          width: 400px;
-          height: 200px; /* Make the writing zone bigger */
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          resize: none; /* Prevent the textarea from being resizable */
-          font-size: 14px;
-        }
-      }
-  
-      .actions {
-        display: flex;
-        justify-content: center;
+
+      textarea,
+      select {
         width: 100%;
-        margin-top: auto; /* Ensure the button is at the bottom of the modal */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
       }
-  
-      button {
-        background-color: #007bff;
-        font-size: 16px;
-        padding: 10px 20px;
-        border-radius: 5px;
-        color: white;
-  
-        &:hover {
-          background-color: #0056b3;
-        }
+
+      textarea {
+        height: 200px;
+        resize: none;
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-top: auto;
+    }
+
+    button {
+      background-color: #007bff;
+      font-size: 16px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: white;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      &.disabled-button {
+        background-color: grey;
+        cursor: not-allowed;
       }
     }
   }
-  
+}

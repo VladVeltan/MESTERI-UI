@@ -20,5 +20,10 @@ export class SearchBarComponent {
     // Emite evenimentul de căutare cu termenul introdus
     this.searchEvent.emit(this.searchTerm);
   }
+  onKeyup(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.search();
+    }
+  }
   
 }

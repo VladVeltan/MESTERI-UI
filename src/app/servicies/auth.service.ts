@@ -46,7 +46,10 @@ export class AuthService {
         rating:registerData.rating,
         role:registerData.role,
         phone:registerData.phone,
-        creationDate:registerData.creationDate
+        creationDate:registerData.creationDate,
+        yearsOfExperience:registerData.yearsOfExperience,
+        age:registerData.age,
+        categoriesOfInterest:registerData.categoriesOfInterest
     }
     console.log(data,"data")
     return this.http.post<AccessToken>(url, data)
