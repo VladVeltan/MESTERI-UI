@@ -18,17 +18,20 @@ import { ReviewModalComponent } from '../../globals/components/review-modal/revi
 import { ReviewService } from '../../servicies/review.service';
 import { ReviewDto } from '../../types/reviewDto.types';
 import { ReviewItemComponent } from '../../globals/components/review-item/review-item.component';
-import { categoryImages } from '../../types/categoryImages.types'; // Import categoryImages
+import { categoryImages } from '../../types/categoryImages.types';
+import { EditProfileFormComponent } from '../../globals/components/edit-profile-form/edit-profile-form.component'; // Import the edit profile form component
+import { FeedbackModalComponent } from '../../globals/components/feedback-modal/feedback-modal.component';
 
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [NgFor, NgIf, ListingItemComponent, ProjectItemComponent, MaterialModule, ReviewItemComponent],
+  imports: [NgFor, NgIf, ListingItemComponent, FeedbackModalComponent, ProjectItemComponent, MaterialModule, ReviewItemComponent, EditProfileFormComponent],
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild(FeedbackModalComponent) feedbackModal!: FeedbackModalComponent;
 
   userListings: ListingDto[] = [];
   userProjects: ProjectDto[] = [];
@@ -40,6 +43,7 @@ export class ProfilePageComponent implements OnInit {
   numberOfReviews: number = 0; // Add a variable to store the number of reviews
   userReviews: ReviewDto[] = []; // Add a property to store reviews
   showReviews: boolean = false; // Add a boolean flag to control the view
+  showEditForm: boolean = false; // Add a flag to show the edit form
 
   route = inject(ActivatedRoute);
   userService = inject(UserService);
@@ -63,6 +67,12 @@ export class ProfilePageComponent implements OnInit {
     });
     this.loadUserListings();
     this.loadUserProjects();
+  }
+  showCompletionMessage(message: string): void {
+    this.feedbackModal.showMessage(message);
+    setTimeout(() => {
+      this.feedbackModal.hideModal();
+    }, 3000); // Adjust duration as needed
   }
 
   decodeToken(): void {
@@ -155,6 +165,7 @@ export class ProfilePageComponent implements OnInit {
       next: (response) => {
         console.log('Delete response:', response); // Log the response from the backend
         this.loadUserListings();
+        this.showCompletionMessage("Anuntul a fost sters cu succes")
       },
       error: (error) => {
         console.error('Error deleting listing:', error);
@@ -171,6 +182,7 @@ export class ProfilePageComponent implements OnInit {
       next: (response) => {
         console.log('Delete response:', response); // Log the response from the backend
         this.loadUserProjects();
+        this.showCompletionMessage("Proiectul a fost sters cu succes")
       },
       error: (error) => {
         console.error('Error deleting project:', error);
@@ -179,7 +191,25 @@ export class ProfilePageComponent implements OnInit {
   }
 
   editUserDetails(): void {
-    // Implement user details editing logic
+    this.showEditForm = true;
+  }
+
+  onFormSubmitted(updatedUser: User): void {
+    this.userService.updateUser(updatedUser).subscribe({
+      next: (user) => {
+        this.user = user;
+        this.showEditForm = false;
+        this.showCompletionMessage('Profilul a fost actualizat cu succes!');
+        this.loadUserData(); // Reload user data to reflect updates
+      },
+      error: (error) => {
+        console.error('Error updating user:', error);
+      }
+    });
+  }
+
+  closeEditForm(): void {
+    this.showEditForm = false;
   }
 
   triggerFileInput(): void {

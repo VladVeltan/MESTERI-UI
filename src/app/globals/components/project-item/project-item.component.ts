@@ -1,21 +1,22 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { ProjectDto } from '../../../types/projectDto.types'; 
+import { ProjectDto } from '../../../types/projectDto.types';
 import { MediaItem } from '../../../types/media.types';
 import { NgIf } from '@angular/common';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { HammerModule } from '@angular/platform-browser';
 import { BidService } from '../../../servicies/bid.service';
 import { BidModalComponent } from '../bid-modal/bid-modal.component';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { Bid } from '../../../types/bid.types';
 import { BidHistoryModalComponent } from '../bid-history-modal/bid-history-modal.component';
 import { MaterialModule } from '../../modules/material.module';
 import { Router } from '@angular/router';
+import { ImageModalComponent } from '../image-modal/image-modal.component';
 
 @Component({
   selector: 'app-project-item',
   standalone: true,
-  imports: [NgIf, ImageCropperModule, HammerModule, BidModalComponent, BidHistoryModalComponent, MaterialModule],
+  imports: [NgIf, ImageCropperModule, HammerModule, BidModalComponent, BidHistoryModalComponent, MaterialModule,ImageModalComponent],
   templateUrl: './project-item.component.html',
   styleUrls: ['./project-item.component.scss']
 })
@@ -33,9 +34,10 @@ export class ProjectItemComponent implements OnInit {
   croppedImages: any[] = [];
   isBidModalOpen: boolean = false;
   isBidHistoryModalVisible: boolean = false;
+  showImageModal: boolean = false;
   bidDto: any = {};
 
-  fullSizeImages!:MediaItem[];
+  fullSizeImages!: MediaItem[];
 
   latestBid!: Bid;
   allBids!: Bid[];
@@ -45,7 +47,7 @@ export class ProjectItemComponent implements OnInit {
   router = inject(Router);
 
   ngOnInit(): void {
-    this.fullSizeImages=this.mediaList;
+    this.fullSizeImages = this.mediaList;
     this.resizeMediaImages();
     this.bidDto = {
       id: '',
@@ -70,6 +72,15 @@ export class ProjectItemComponent implements OnInit {
     if (this.mediaList && this.currentImageIndex > 0) {
       this.currentImageIndex--;
     }
+  }
+
+  openImageModal(index: number): void {
+    this.currentImageIndex = index;
+    this.showImageModal = true;
+  }
+
+  closeImageModal(): void {
+    this.showImageModal = false;
   }
 
   async resizeMediaImages(): Promise<void> {
@@ -105,7 +116,6 @@ export class ProjectItemComponent implements OnInit {
     });
   }
 
-  
   openBidModal(): void {
     this.isBidModalOpen = true;
   }
@@ -117,15 +127,18 @@ export class ProjectItemComponent implements OnInit {
   submitBid(bidSum: number, messageToUser: string): void {
     this.bidDto.amount = bidSum.toString();
     this.bidDto.message = messageToUser;
-    console.log("suntem in project-item", this.userEmail);
+    console.log('suntem in project-item', this.userEmail);
 
-    this.bidService.postBid(this.bidDto).subscribe(response => {
-      console.log('Licitația a fost trimisă cu succes!', this.bidDto);
-      this.bidPlaced.emit('Bid placed successfully!');
-      this.fetchLatestBid(); // Refresh bids after placing a bid
-    }, error => {
-      console.error('Eroare la trimiterea licitației:', error);
-    });
+    this.bidService.postBid(this.bidDto).subscribe(
+      (response) => {
+        console.log('Licitația a fost trimisă cu succes!', this.bidDto);
+        this.bidPlaced.emit('Bid placed successfully!');
+        this.fetchLatestBid(); // Refresh bids after placing a bid
+      },
+      (error) => {
+        console.error('Eroare la trimiterea licitației:', error);
+      }
+    );
 
     this.closeBidModal();
   }
@@ -174,12 +187,12 @@ export class ProjectItemComponent implements OnInit {
 
     const diffMs = end.getTime() - now.getTime();
     // console.log(actionDuration)
-    // console.log("Timp la care a fost creată licitația:", creation);
-    // console.log("Timpul la care ar trebui să se termine licitația:", end);
-    // console.log("Diferența de timp dintre timpul actual și timpul la care ar trebui să se termine licitația:", diffMs);
+    // console.log('Timp la care a fost creată licitația:', creation);
+    // console.log('Timpul la care ar trebui să se termine licitația:', end);
+    // console.log('Diferența de timp dintre timpul actual și timpul la care ar trebui să se termine licitația:', diffMs);
 
     if (diffMs <= 0) {
-      return "Lictiatie inchisa";
+      return 'Lictiatie inchisa';
     }
 
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -189,11 +202,11 @@ export class ProjectItemComponent implements OnInit {
     // console.log(`Zile rămase: ${diffDays}, Ore rămase: ${diffHrs}, Minute rămase: ${diffMins}`);
 
     if (diffDays > 0) {
-        return `${diffDays} zile ramase`;
+      return `${diffDays} zile ramase`;
     } else if (diffHrs > 0) {
-        return `${diffHrs} ore ramase`;
+      return `${diffHrs} ore ramase`;
     } else {
-        return `${diffMins} minute ramase`;
+      return `${diffMins} minute ramase`;
     }
   }
 

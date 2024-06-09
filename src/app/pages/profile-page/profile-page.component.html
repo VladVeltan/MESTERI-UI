@@ -47,8 +47,12 @@
       </div>
     </div>
   </div>
+  <app-feedback-modal></app-feedback-modal>
+  <div *ngIf="showEditForm">
+    <app-edit-profile-form [user]="user" (formSubmitted)="onFormSubmitted($event)" (closeForm)="closeEditForm()"></app-edit-profile-form>
+  </div>
 
-  <div *ngIf="showReviews" class="reviews-section">
+  <div *ngIf="showReviews && !showEditForm" class="reviews-section">
     <h3 class="recenzii">Recenziile lui {{ user.firstName }}</h3>
     <div *ngIf="userReviews.length > 0; else noReviews">
       <div class="review-item" *ngFor="let review of userReviews">
@@ -60,7 +64,7 @@
     </ng-template>
   </div>
 
-  <ng-container *ngIf="!showReviews">
+  <ng-container *ngIf="!showReviews && !showEditForm">
     <div class="listings-section">
       <h3>{{ isCurrentUser ? 'Anunțurile Tale' : 'Anunțurile lui ' + user.firstName }}</h3>
       <div *ngIf="userListings.length > 0; else noListings">
